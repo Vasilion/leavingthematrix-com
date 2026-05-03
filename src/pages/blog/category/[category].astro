@@ -1,0 +1,87 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { BLOG_CATEGORIES } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  return BLOG_CATEGORIES.map((cat) => ({
+    params: { category: cat.id },
+    props: { category: cat },
+  }));
+}
+
+const { category } = Astro.props;
+
+const posts = (
+  await getCollection('blog', ({ data }) => !data.draft && data.category === category.id)
+).sort((a, b) => +b.data.date - +a.data.date);
+---
+
+<Layout title={category.label} description={category.description}>
+  <section class="border-b border-bone/5">
+    <div class="container-wide py-20">
+      <p class="eyebrow">Blog · {category.label}</p>
+      <h1 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+        {category.label}
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg text-bone-dim">{category.description}</p>
+
+      <div class="mt-10 flex flex-wrap gap-2">
+        <a
+          href="/blog"
+          class="rounded-full border border-bone/15 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-bone-dim transition-colors hover:border-bone/30 hover:text-bone"
+        >
+          All
+        </a>
+        {BLOG_CATEGORIES.map((cat) => (
+          <a
+            href={`/blog/category/${cat.id}`}
+            class:list={[
+              'rounded-full border px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors',
+              cat.id === category.id
+                ? 'border-signal bg-signal/10 text-signal'
+                : 'border-bone/15 text-bone-dim hover:border-bone/30 hover:text-bone',
+            ]}
+          >
+            {cat.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16">
+    {posts.length === 0 ? (
+      <div class="card text-center">
+        <p class="text-bone-dim">No posts in this category yet. Check back soon.</p>
+      </div>
+    ) : (
+      <ul class="grid gap-6 md:grid-cols-2">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.slug}`} class="card-interactive flex h-full flex-col group">
+              <div class="flex items-center justify-between text-xs">
+                <span class="eyebrow text-pulse">{post.data.category}</span>
+                <span class="font-mono text-bone-mute">
+                  {post.data.date.toISOString().slice(0, 10)}
+                </span>
+              </div>
+              <h2 class="mt-4 font-display text-2xl uppercase tracking-tight text-bone group-hover:text-signal">
+                {post.data.title}
+              </h2>
+              <p class="mt-3 flex-1 text-sm text-bone-dim line-clamp-3">{post.data.summary}</p>
+              <div class="mt-6 flex items-center justify-between text-xs text-bone-mute">
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.slice(0, 3).map((tag) => (
+                    <span class="font-mono">#{tag}</span>
+                  ))}
+                </div>
+                <span>{post.data.readMinutes} min</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Layout>

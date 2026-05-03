@@ -1,0 +1,49 @@
+---
+import { SITE } from '../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-bone/5 bg-ink-900">
+  <div class="container-wide grid gap-12 py-16 md:grid-cols-4">
+    <div class="md:col-span-2">
+      <p class="font-display text-2xl tracking-tight text-bone">{SITE.name}</p>
+      <p class="mt-3 max-w-md text-sm text-bone-mute">{SITE.tagline}</p>
+      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-secondary mt-6">
+        Join on Discord
+      </a>
+    </div>
+
+    <div>
+      <p class="eyebrow">Site</p>
+      <ul class="mt-4 space-y-2 text-sm text-bone-dim">
+        <li><a href="/" class="hover:text-signal">Home</a></li>
+        <li><a href="/membership" class="hover:text-signal">Membership</a></li>
+        <li><a href="/blog" class="hover:text-signal">Blog</a></li>
+        <li><a href="/about" class="hover:text-signal">About</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="eyebrow">Legal</p>
+      <ul class="mt-4 space-y-2 text-sm text-bone-dim">
+        <li><a href="/legal/disclaimer" class="hover:text-signal">Disclaimer</a></li>
+        <li><a href="/legal/terms" class="hover:text-signal">Terms</a></li>
+        <li><a href="/legal/privacy" class="hover:text-signal">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-bone/5">
+    <div class="container-wide flex flex-col gap-4 py-6 text-xs text-bone-mute md:flex-row md:items-center md:justify-between">
+      <p>
+        Educational content only. Not financial advice. Past performance does not indicate future results.
+        Trading involves substantial risk of loss. See the
+        <a href="/legal/disclaimer" class="text-bone-dim hover:text-signal">full disclaimer</a>.
+      </p>
+      <p>
+        &copy; {year} <a href="https://www.unycross.com" target="_blank" rel="noopener" class="hover:text-signal">{SITE.parentCompany}</a>
+      </p>
+    </div>
+  </div>
+</footer>

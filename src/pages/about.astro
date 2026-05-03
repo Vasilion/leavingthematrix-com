@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../lib/site';
+---
+
+<Layout title="About" description="Who runs Leaving The Matrix and why.">
+  <section class="container-prose py-24">
+    <p class="eyebrow">About</p>
+    <h1 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+      Why this exists.
+    </h1>
+
+    <div class="prose-ltm mt-12">
+      <p class="lead text-xl text-bone-dim">
+        Leaving The Matrix is run by Luke Vasilion — senior frontend engineer by day, full-time
+        markets person by night. The community started as a small group of friends asking the same
+        questions about positioning, risk, and what to actually do when the tape gets weird.
+      </p>
+
+      <h2>The thesis</h2>
+      <p>
+        Most "stock picking" services fall into two camps: hype machines that disappear when the
+        trade goes wrong, or expensive black-box subscriptions that teach you nothing. We're trying
+        to be neither. Every call comes with a thesis. Every thesis comes with the parts that could
+        kill it. Every closed position gets reviewed honestly, including the losers.
+      </p>
+
+      <h2>The framework</h2>
+      <p>
+        We trade and invest using a layered framework: <strong>quality × discount × smart-money
+        confirmation</strong>. Fundamentals first. Valuation second. Insider, congress, and 13F flow
+        as the third leg. Technicals as context, not gospel. It's the same framework Nova — our
+        in-house trading copilot — uses to score every name we cover.
+      </p>
+
+      <h2>The reality</h2>
+      <p>
+        Trading is hard. Most people lose money. We're not selling a path to retirement; we're
+        selling a way to think about markets that, if you put in the work, gives you a real shot.
+        Read the disclaimer. Manage your risk. Show up.
+      </p>
+
+      <hr />
+
+      <p class="text-bone-mute">
+        <em>This page is a placeholder. Luke's full story, photos, and the LTM origin lore drop here once he sends them over.</em>
+      </p>
+    </div>
+
+    <div class="mt-16">
+      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary">
+        Join the Discord
+      </a>
+    </div>
+  </section>
+</Layout>

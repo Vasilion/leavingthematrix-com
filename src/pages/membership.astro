@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PricingTier from '../components/PricingTier.astro';
+import { PRICING_TIERS, SITE } from '../lib/site';
+
+const faq = [
+  {
+    q: 'How does billing work?',
+    a: 'Subscriptions are managed through Discord via mee6. You pay there, your role on the server unlocks the gated channels automatically. Cancel anytime in your mee6 dashboard.',
+  },
+  {
+    q: 'Are signals real-time?',
+    a: 'Yes. Members get pings the moment a position is opened or closed. We post entries, exits, stops, and the thesis behind each.',
+  },
+  {
+    q: 'Do you teach options?',
+    a: 'Yes. The Pro tier unlocks the options channel and the riskier rooms (monthly options gamble, degen trades). The education library covers covered calls, credit spreads, iron condors, the wheel, and more.',
+  },
+  {
+    q: 'What if I\'m a complete beginner?',
+    a: 'Start in #getting-started and #dollar-cost-averaging. The community is friendly to first-timers — there\'s a real path from "I just opened a brokerage" to "I\'m running a covered-call ladder."',
+  },
+  {
+    q: 'Is this financial advice?',
+    a: 'No. Everything is for educational and informational purposes only. We share what we trade, but you\'re responsible for your own decisions. See the full disclaimer.',
+  },
+];
+---
+
+<Layout
+  title="Membership"
+  description="Two tiers. Real signals. Education from DCA to options Greeks. Subscriptions handled through the Discord."
+>
+  <section class="border-b border-bone/5">
+    <div class="container-wide py-24">
+      <p class="eyebrow">Membership</p>
+      <h1 class="mt-4 font-display text-display-xl uppercase tracking-tight">
+        Two tiers. <br />
+        <span class="text-signal">Zero gatekeeping.</span>
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg text-bone-dim">
+        Standard gets you the full education library and the bulk of our signal lanes.
+        Pro unlocks the rooms behind the wall — options, deep value, and the riskier swings —
+        plus a direct line to Luke.
+      </p>
+    </div>
+  </section>
+
+  <section class="container-wide py-24">
+    <div class="grid gap-6 md:grid-cols-2">
+      {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
+    </div>
+
+    <div class="mt-12 rounded-xl border border-warn/20 bg-warn/5 p-6 text-sm text-warn/90">
+      <strong class="font-semibold">Pricing placeholders.</strong> Final tier numbers will replace the "TBD"
+      values shortly. The Discord subscription is live; subscribing now locks in the rate.
+    </div>
+  </section>
+
+  <section class="container-wide py-24">
+    <p class="eyebrow">FAQ</p>
+    <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">Common questions</h2>
+
+    <div class="mt-12 grid gap-4">
+      {faq.map((item) => (
+        <details class="card group">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
+            <span class="font-display text-xl tracking-tight text-bone">{item.q}</span>
+            <span class="text-signal transition-transform group-open:rotate-45">+</span>
+          </summary>
+          <p class="mt-4 text-bone-dim">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-wide pb-24">
+    <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-12 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h2 class="font-display text-display-md uppercase tracking-tight">Still on the fence?</h2>
+        <p class="mt-3 text-bone-dim">Lurk in #getting-started for a few days. See if the vibe fits.</p>
+      </div>
+      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary whitespace-nowrap">
+        Join the Discord
+      </a>
+    </div>
+  </section>
+</Layout>

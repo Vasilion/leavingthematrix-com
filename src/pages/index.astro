@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import TickerTape from '../components/TickerTape.astro';
+import ChannelGrid from '../components/ChannelGrid.astro';
+import NovaCallout from '../components/NovaCallout.astro';
+import { SITE, PRICING_TIERS } from '../lib/site';
+import PricingTier from '../components/PricingTier.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => +b.data.date - +a.data.date)
+  .slice(0, 3);
+---
+
+<Layout>
+  <Hero />
+  <TickerTape />
+
+  <ChannelGrid />
+
+  <NovaCallout />
+
+  <section class="container-wide py-24">
+    <div class="max-w-2xl">
+      <p class="eyebrow">Membership</p>
+      <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+        Pick a tier.<br />
+        <span class="text-signal">Get to work.</span>
+      </h2>
+      <p class="mt-6 text-lg text-bone-dim">
+        Both tiers unlock the full education library and signal lanes. Pro adds the gated rooms —
+        options, deep value, and the riskier swings.
+      </p>
+    </div>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-2">
+      {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
+    </div>
+
+    <p class="mt-8 text-center text-xs text-bone-mute">
+      Pricing not final — placeholder while we finalize tier numbers. Discord subscription handles billing.
+    </p>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="container-wide pb-24">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="eyebrow">From the desk</p>
+          <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">Latest writing</h2>
+        </div>
+        <a href="/blog" class="hidden text-sm text-bone-dim hover:text-signal md:inline">All posts →</a>
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {posts.map((post) => (
+          <a href={`/blog/${post.slug}`} class="card-interactive group">
+            <p class="eyebrow text-pulse">{post.data.category}</p>
+            <h3 class="mt-3 font-display text-xl uppercase tracking-tight text-bone group-hover:text-signal">
+              {post.data.title}
+            </h3>
+            <p class="mt-3 text-sm text-bone-dim line-clamp-3">{post.data.summary}</p>
+            <div class="mt-6 text-xs text-bone-mute">
+              {post.data.date.toISOString().slice(0, 10)} · {post.data.readMinutes} min read
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="container-wide pb-24">
+    <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 bg-gradient-to-br from-ink-800 to-ink-900 p-12 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h2 class="font-display text-display-md uppercase tracking-tight">
+          Ready to leave the matrix?
+        </h2>
+        <p class="mt-3 text-bone-dim">
+          One Discord. Every lane. The community is already inside.
+        </p>
+      </div>
+      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary whitespace-nowrap">
+        Join the Discord
+      </a>
+    </div>
+  </section>
+</Layout>

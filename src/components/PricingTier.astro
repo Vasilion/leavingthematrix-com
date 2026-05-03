@@ -1,0 +1,71 @@
+---
+import { SITE } from '../lib/site';
+
+interface Props {
+  name: string;
+  price: string;
+  period: string;
+  tagline: string;
+  features: readonly string[];
+  cta: string;
+  popular?: boolean;
+}
+
+const { name, price, period, tagline, features, cta, popular = false } = Astro.props;
+---
+
+<article
+  class:list={[
+    'relative flex flex-col rounded-2xl border p-8 transition-all',
+    popular
+      ? 'border-signal/60 bg-ink-800 shadow-signal-glow'
+      : 'border-bone/10 bg-ink-800/60',
+  ]}
+>
+  {popular && (
+    <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-signal px-4 py-1 text-xs font-bold uppercase tracking-widest text-black">
+      Most Popular
+    </span>
+  )}
+
+  <header>
+    <h3 class="font-display text-3xl uppercase tracking-tight text-bone">{name}</h3>
+    <p class="mt-2 text-sm text-bone-dim">{tagline}</p>
+    <div class="mt-6 flex items-baseline gap-1">
+      {price === 'TBD' ? (
+        <>
+          <span class="font-display text-4xl text-bone-mute">$</span>
+          <span class="font-display text-5xl text-bone">TBD</span>
+          <span class="text-sm text-bone-mute">{period}</span>
+        </>
+      ) : (
+        <>
+          <span class="font-display text-4xl text-bone">{price}</span>
+          <span class="text-sm text-bone-mute">{period}</span>
+        </>
+      )}
+    </div>
+  </header>
+
+  <ul class="mt-8 space-y-3 text-sm text-bone-dim">
+    {features.map((feature) => (
+      <li class="flex items-start gap-3">
+        <svg class="mt-0.5 h-4 w-4 flex-none text-signal" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>{feature}</span>
+      </li>
+    ))}
+  </ul>
+
+  <div class="mt-10 flex-1"></div>
+
+  <a
+    href={SITE.discord.subscribe}
+    target="_blank"
+    rel="noopener"
+    class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
+  >
+    {cta}
+  </a>
+</article>

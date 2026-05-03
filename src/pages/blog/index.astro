@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { BLOG_CATEGORIES } from '../../lib/site';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => +b.data.date - +a.data.date
+);
+---
+
+<Layout
+  title="Blog"
+  description="Education, market notes, trade reviews, and Nova dev posts."
+>
+  <section class="border-b border-bone/5">
+    <div class="container-wide py-20">
+      <p class="eyebrow">Blog</p>
+      <h1 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+        Writing from the desk.
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg text-bone-dim">
+        Educational deep-dives, weekly market notes, post-mortems on real trades, and ongoing Nova
+        dev posts.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-2">
+        <a
+          href="/blog"
+          class="rounded-full border border-signal bg-signal/10 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-signal"
+        >
+          All
+        </a>
+        {BLOG_CATEGORIES.map((cat) => (
+          <a
+            href={`/blog/category/${cat.id}`}
+            class="rounded-full border border-bone/15 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-bone-dim transition-colors hover:border-bone/30 hover:text-bone"
+          >
+            {cat.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16">
+    {allPosts.length === 0 ? (
+      <div class="card text-center">
+        <p class="text-bone-dim">No posts yet. Check back soon.</p>
+      </div>
+    ) : (
+      <ul class="grid gap-6 md:grid-cols-2">
+        {allPosts.map((post) => (
+          <li>
+            <a href={`/blog/${post.slug}`} class="card-interactive flex h-full flex-col group">
+              <div class="flex items-center justify-between text-xs">
+                <span class="eyebrow text-pulse">{post.data.category}</span>
+                <span class="font-mono text-bone-mute">
+                  {post.data.date.toISOString().slice(0, 10)}
+                </span>
+              </div>
+              <h2 class="mt-4 font-display text-2xl uppercase tracking-tight text-bone group-hover:text-signal">
+                {post.data.title}
+              </h2>
+              <p class="mt-3 flex-1 text-sm text-bone-dim line-clamp-3">{post.data.summary}</p>
+              <div class="mt-6 flex items-center justify-between text-xs text-bone-mute">
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.slice(0, 3).map((tag) => (
+                    <span class="font-mono">#{tag}</span>
+                  ))}
+                </div>
+                <span>{post.data.readMinutes} min</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Layout>

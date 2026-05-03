@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title} description={post.data.summary}>
+  <article class="container-prose py-16 md:py-24">
+    <a href="/blog" class="btn-ghost -ml-3">← All posts</a>
+
+    <header class="mt-8 border-b border-bone/10 pb-8">
+      <div class="flex flex-wrap items-center gap-4 text-xs">
+        <span class="eyebrow text-pulse">{post.data.category}</span>
+        <span class="font-mono text-bone-mute">
+          {post.data.date.toISOString().slice(0, 10)}
+        </span>
+        <span class="font-mono text-bone-mute">{post.data.readMinutes} min read</span>
+      </div>
+      <h1 class="mt-6 font-display text-display-md uppercase tracking-tight">
+        {post.data.title}
+      </h1>
+      <p class="mt-4 text-lg text-bone-dim">{post.data.summary}</p>
+
+      {post.data.tags.length > 0 && (
+        <div class="mt-6 flex flex-wrap gap-2">
+          {post.data.tags.map((tag) => (
+            <span class="font-mono text-xs text-bone-mute">#{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="prose-ltm mt-12">
+      <Content />
+    </div>
+
+    <div class="mt-16 border-t border-bone/10 pt-12">
+      <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-8 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h3 class="font-display text-2xl uppercase tracking-tight">Want this in real time?</h3>
+          <p class="mt-2 text-sm text-bone-dim">Discussion happens in the Discord.</p>
+        </div>
+        <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary whitespace-nowrap">
+          Join the Discord
+        </a>
+      </div>
+    </div>
+  </article>
+</Layout>

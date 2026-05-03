@@ -1,0 +1,47 @@
+---
+// TradingView ticker tape — lazy-loaded, dark theme, no JS until in viewport
+---
+
+<section aria-label="Live market ticker" class="border-y border-bone/5 bg-ink-900">
+  <div id="tradingview-ticker" class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    const container = document.getElementById('tradingview-ticker');
+    if (!container) return;
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        obs.disconnect();
+        const script = document.createElement('script');
+        script.src =
+          'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+        script.async = true;
+        script.type = 'text/javascript';
+        script.innerHTML = JSON.stringify({
+          symbols: [
+            { proName: 'FOREXCOM:SPXUSD', title: 'S&P 500' },
+            { proName: 'NASDAQ:QQQ', title: 'Nasdaq 100' },
+            { proName: 'AMEX:IWM', title: 'Russell 2000' },
+            { proName: 'NASDAQ:NVDA', title: 'NVDA' },
+            { proName: 'NASDAQ:TSLA', title: 'TSLA' },
+            { proName: 'NASDAQ:AAPL', title: 'AAPL' },
+            { proName: 'NASDAQ:MSFT', title: 'MSFT' },
+            { proName: 'BITSTAMP:BTCUSD', title: 'BTC' },
+            { proName: 'BITSTAMP:ETHUSD', title: 'ETH' },
+          ],
+          showSymbolLogo: true,
+          colorTheme: 'dark',
+          isTransparent: true,
+          displayMode: 'adaptive',
+          locale: 'en',
+        });
+        container.querySelector('.tradingview-widget-container__widget')?.appendChild(script);
+      });
+    }, { rootMargin: '200px' });
+    observer.observe(container);
+  })();
+</script>

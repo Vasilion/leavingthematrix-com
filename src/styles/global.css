@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Anton&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    @apply bg-black text-bone antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen overflow-x-hidden font-sans;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+
+  ::selection {
+    @apply bg-signal/30 text-bone;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-signal/60 ring-offset-2 ring-offset-black rounded-sm;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md
+           bg-signal px-6 py-3 text-sm font-semibold uppercase tracking-wider text-black
+           transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow
+           active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md
+           border border-signal/40 bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-signal
+           transition-all duration-200 hover:border-signal hover:bg-signal/5
+           hover:-translate-y-0.5 hover:shadow-signal-soft active:translate-y-0;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-md
+           px-4 py-2 text-sm font-medium text-bone-dim
+           transition-colors hover:text-bone;
+  }
+
+  .container-prose {
+    @apply mx-auto w-full max-w-3xl px-6;
+  }
+
+  .container-wide {
+    @apply mx-auto w-full max-w-7xl px-6 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.25em] text-signal/80;
+  }
+
+  .card {
+    @apply relative overflow-hidden rounded-xl border border-bone/10 bg-ink-800/60 p-6
+           backdrop-blur-sm transition-colors;
+  }
+
+  .card-interactive {
+    @apply card hover:border-signal/40 hover:bg-ink-700/60;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-bone/20 to-transparent;
+  }
+
+  .text-gradient-signal {
+    @apply bg-gradient-to-br from-bone via-signal to-pulse bg-clip-text text-transparent;
+  }
+}
+
+/* Scanline overlay for hero */
+.scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 255, 198, 0.03) 0px,
+    rgba(0, 255, 198, 0.03) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Prose tweaks for blog */
+.prose-ltm {
+  @apply prose prose-invert max-w-none
+         prose-headings:font-display prose-headings:tracking-tight
+         prose-h1:text-display-md prose-h2:text-3xl prose-h3:text-2xl
+         prose-a:text-signal prose-a:no-underline hover:prose-a:underline
+         prose-strong:text-bone prose-code:text-signal
+         prose-pre:border prose-pre:border-bone/10 prose-pre:bg-ink-900
+         prose-blockquote:border-signal/40 prose-blockquote:text-bone-dim
+         prose-img:rounded-lg;
+}

@@ -1,0 +1,43 @@
+---
+// Callout for Nova — the trading copilot powering research surfaced on this site.
+---
+
+<section class="border-y border-bone/5 bg-ink-900">
+  <div class="container-wide grid gap-12 py-24 md:grid-cols-2 md:items-center">
+    <div>
+      <p class="eyebrow">Built in public</p>
+      <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+        Powered by <span class="text-signal">Nova</span>.
+      </h2>
+      <p class="mt-6 text-lg text-bone-dim">
+        Nova is the trading copilot we built for our own desk — a screener, a scorer,
+        and an explainer that runs on real fundamentals, real smart-money flows, and a real
+        philosophy: <em class="text-bone">quality × discount × smart-money confirmation.</em>
+      </p>
+      <p class="mt-4 text-bone-dim">
+        Every signal posted in the Discord is shaped by the same engine that picks our own positions.
+        We open-source the thinking behind it — read the Nova dev blog as we ship.
+      </p>
+      <a href="/blog?category=nova-dev" class="btn-secondary mt-8">Read the Nova dev blog</a>
+    </div>
+
+    <div class="relative">
+      <div class="aspect-square rounded-2xl border border-signal/20 bg-gradient-to-br from-signal/5 to-pulse/5 p-8">
+        <div class="grid h-full grid-cols-2 gap-3">
+          {['Quality', 'Discount', 'Smart Money', 'Conviction'].map((label, i) => (
+            <div class="card flex flex-col justify-between" style={`animation-delay: ${i * 0.4}s`}>
+              <p class="eyebrow">Layer {i + 1}</p>
+              <p class="font-display text-3xl uppercase tracking-tight text-bone">{label}</p>
+              <div class="h-1 w-full rounded-full bg-ink-700">
+                <div
+                  class="h-full rounded-full bg-signal"
+                  style={`width: ${[78, 64, 82, 71][i]}%`}
+                ></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

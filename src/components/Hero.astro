@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import banner from '../assets/banner.png';
+import { SITE } from '../lib/site';
+---
+
+<section class="relative isolate overflow-hidden">
+  <!-- Banner background, edge-faded to black -->
+  <div class="absolute inset-0 -z-10">
+    <Image
+      src={banner}
+      alt=""
+      widths={[640, 1024, 1600, 2400]}
+      sizes="100vw"
+      class="h-full w-full object-cover opacity-70"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-black"></div>
+    <div class="absolute inset-0 bg-grid-faint bg-grid opacity-30"></div>
+    <div class="scanlines absolute inset-0"></div>
+  </div>
+
+  <div class="container-wide relative pt-24 pb-32 md:pt-36 md:pb-44">
+    <p class="eyebrow animate-pulse-slow">↳ Investing education · signals · community</p>
+
+    <h1 class="mt-6 font-display uppercase text-display-xl tracking-tight">
+      Leave the noise.<br />
+      <span class="text-gradient-signal">Trade the signal.</span>
+    </h1>
+
+    <p class="mt-8 max-w-2xl text-lg text-bone-dim md:text-xl">
+      A community for traders and investors at every speed — from set-and-forget portfolios
+      to monthly options gambles. Education that goes deep. Signals you can actually act on.
+      Members who'll show their losses, not just their wins.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-4">
+      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary">
+        Join the Discord
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+      <a href="/membership" class="btn-secondary">See what's inside</a>
+    </div>
+
+    <!-- floor stats -->
+    <dl class="mt-20 grid max-w-2xl grid-cols-2 gap-8 sm:grid-cols-3">
+      <div>
+        <dt class="eyebrow">Coverage</dt>
+        <dd class="mt-2 font-display text-2xl text-bone">Stocks · ETFs · Options · Crypto</dd>
+      </div>
+      <div>
+        <dt class="eyebrow">Pace</dt>
+        <dd class="mt-2 font-display text-2xl text-bone">DCA → Day-trade</dd>
+      </div>
+      <div>
+        <dt class="eyebrow">Channel</dt>
+        <dd class="mt-2 font-display text-2xl text-bone">Discord · Live</dd>
+      </div>
+    </dl>
+  </div>
+</section>

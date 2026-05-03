@@ -1,0 +1,69 @@
+---
+const lanes = [
+  {
+    title: 'Education',
+    blurb: 'From DCA to options Greeks. The "I never went to finance school" pipeline.',
+    channels: ['getting-started', 'dollar-cost-averaging', 'set-and-forget-portfolios', 'education', 'misc-content'],
+    accent: 'from-signal/30 to-transparent',
+  },
+  {
+    title: 'Signals',
+    blurb: 'Picks, levels, theses. Long-term to swing to passive-income to crypto.',
+    channels: ['stock-picks-long-term', 'buy-the-dip', 'swing-trades', 'longer-trades', 'market-watch', 'lukes-passive-income-machine', 'crypto'],
+    accent: 'from-pulse/30 to-transparent',
+  },
+  {
+    title: 'Community',
+    blurb: 'Share gains, share losses, ask anything. Real members, real trades.',
+    channels: ['active-trades', 'community-chat', 'your-gains-and-losses', 'market-recap', 'etf-momentum', 'polls', 'help'],
+    accent: 'from-signal/20 to-transparent',
+  },
+  {
+    title: 'Pro Floor',
+    blurb: 'Behind the wall: deeper conviction plays and the riskier rooms.',
+    channels: ['pro-chat', 'options', '200-wma-only-deep-value', 'monthly-option-gamble-all-in', 'degen-trades'],
+    accent: 'from-pulse/40 to-transparent',
+    pro: true,
+  },
+];
+---
+
+<section class="container-wide py-24">
+  <div class="max-w-2xl">
+    <p class="eyebrow">Inside the Discord</p>
+    <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+      Four floors.<br />
+      <span class="text-signal">Same building.</span>
+    </h2>
+    <p class="mt-6 text-lg text-bone-dim">
+      Whether you're trying to retire your spouse from her job or just survive your first iron condor,
+      there's a room with your name on it.
+    </p>
+  </div>
+
+  <div class="mt-16 grid gap-6 md:grid-cols-2">
+    {lanes.map((lane) => (
+      <div class:list={['card relative overflow-hidden', lane.pro && 'border-pulse/30']}>
+        <div class:list={['absolute inset-0 -z-0 bg-gradient-to-br opacity-50', lane.accent]} />
+        <div class="relative z-10">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display text-2xl uppercase tracking-tight text-bone">{lane.title}</h3>
+            {lane.pro && (
+              <span class="rounded-full border border-pulse/40 bg-pulse/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-pulse">
+                Pro
+              </span>
+            )}
+          </div>
+          <p class="mt-2 text-sm text-bone-dim">{lane.blurb}</p>
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {lane.channels.map((channel) => (
+              <li class="rounded-md border border-bone/10 bg-ink-700/60 px-2.5 py-1 font-mono text-xs text-bone-dim">
+                #{channel}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
