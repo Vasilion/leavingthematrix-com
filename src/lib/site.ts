@@ -3,7 +3,7 @@ export const SITE = {
   domain: 'leavingthematrix.com',
   tagline: 'Data-driven investing education and signals.',
   description:
-    'Data-driven investing education and signals. Quality businesses, valuation discount, and smart-money confirmation — the institutional research framework, applied to retail accounts.',
+    'Investing education, market signals, debt-management frameworks, and the long-term discipline that turns markets into a real wealth-building tool. Educational only — never personalized financial advice.',
   discord: {
     invite: 'https://mee6.xyz/en/m/1384673721599397948',
     subscribe: 'https://mee6.xyz/en/m/1384673721599397948?subscribe=1428981437381615616&bundle=1',
@@ -36,13 +36,13 @@ export const PRICING_TIERS = [
     tagline: 'The full education and signals stack.',
     features: [
       'Education library — DCA, set-and-forget portfolios, market mechanics',
+      'Debt-management and long-term planning frameworks',
       'Long-term high-conviction stock picks',
       'Buy-the-dip and swing-trade ideas',
       'ETF momentum and passive-income strategies',
       'Crypto coverage',
       'Market watch and weekly recap',
       'Active community chat',
-      'Member portfolio tracking',
     ],
     cta: 'Join Standard',
     popular: false,
