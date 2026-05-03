@@ -1,6 +1,6 @@
 export const SITE = {
   name: 'Leaving The Matrix',
-  domain: 'leavingthematrix.com',
+  domain: 'leavingthematrix.io',
   tagline: 'Data-driven investing education and signals.',
   description:
     'Investing education, market signals, debt-management frameworks, and the long-term discipline that turns markets into a real wealth-building tool. Educational only — never personalized financial advice.',

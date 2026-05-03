@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://leavingthematrix.com/sitemap-index.xml
+Sitemap: https://leavingthematrix.io/sitemap-index.xml

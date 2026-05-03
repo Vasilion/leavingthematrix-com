@@ -7,7 +7,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://leavingthematrix.com',
+  site: 'https://leavingthematrix.io',
   integrations: [
     tailwind({ applyBaseStyles: false }),
     sitemap(),
