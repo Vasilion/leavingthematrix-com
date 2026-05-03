@@ -13,18 +13,71 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+const canonical = new URL(`/blog/${post.slug}/`, Astro.site).toString();
+const ogImage = new URL('/og-default.png', Astro.site).toString();
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.summary,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: { '@type': 'Person', name: SITE.founder },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    logo: { '@type': 'ImageObject', url: new URL('/android-chrome-512x512.png', Astro.site).toString() },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  image: ogImage,
+  keywords: post.data.tags.join(', '),
+  articleSection: post.data.category,
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: Astro.site?.toString() },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: canonical },
+  ],
+};
 ---
 
-<Layout title={post.data.title} description={post.data.summary}>
+<Layout
+  title={post.data.title}
+  description={post.data.summary}
+  ogType="article"
+  article={{
+    publishedTime: post.data.date.toISOString(),
+    modifiedTime: post.data.date.toISOString(),
+    author: SITE.founder,
+    section: post.data.category,
+    tags: post.data.tags,
+  }}
+  jsonLd={[articleLd, breadcrumbLd]}
+>
   <article class="container-prose py-16 md:py-24">
-    <a href="/blog" class="btn-ghost -ml-3">← All posts</a>
+    <!-- Visible breadcrumb -->
+    <nav class="text-xs text-bone-mute" aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/" class="hover:text-signal">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href="/blog" class="hover:text-signal">Blog</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-bone-dim" aria-current="page">{post.data.title}</li>
+      </ol>
+    </nav>
 
     <header class="mt-8 border-b border-bone/10 pb-8">
       <div class="flex flex-wrap items-center gap-4 text-xs">
         <span class="eyebrow text-pulse">{post.data.category}</span>
-        <span class="font-mono text-bone-mute">
+        <time class="font-mono text-bone-mute" datetime={post.data.date.toISOString()}>
           {post.data.date.toISOString().slice(0, 10)}
-        </span>
+        </time>
         <span class="font-mono text-bone-mute">{post.data.readMinutes} min read</span>
       </div>
       <h1 class="mt-6 font-display text-display-md uppercase tracking-tight">

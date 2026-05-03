@@ -8,72 +8,106 @@ const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href);
 ---
 
-<header class="sticky top-0 z-40 border-b border-bone/5 bg-black/80 backdrop-blur-md">
-  <div class="container-wide flex h-16 items-center justify-between">
-    <a href="/" class="flex items-center gap-3" aria-label={SITE.name}>
+<header class="sticky top-0 z-40 border-b border-bone/10 bg-black/85 backdrop-blur-lg">
+  <!-- Subtle cyan accent bar at very top -->
+  <div class="h-px w-full bg-gradient-to-r from-transparent via-signal/40 to-transparent"></div>
+
+  <div class="container-wide flex h-20 items-center justify-between gap-6 md:h-24">
+    <a href="/" class="group flex items-center gap-3" aria-label={SITE.name}>
       <Image
         src={logo}
         alt={SITE.name}
-        widths={[140, 280]}
-        sizes="140px"
-        class="h-9 w-auto"
+        widths={[200, 320, 480]}
+        sizes="(max-width: 768px) 160px, 200px"
+        class="h-12 w-auto transition-transform duration-300 group-hover:scale-[1.03] md:h-14"
         loading="eager"
       />
-      <span class="sr-only">{SITE.name}</span>
     </a>
 
-    <nav class="hidden items-center gap-8 md:flex" aria-label="Primary">
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
       {NAV_LINKS.map((link) => (
         <a
           href={link.href}
           class:list={[
-            'text-sm font-medium tracking-wide transition-colors',
+            'group relative px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
             isActive(link.href) ? 'text-signal' : 'text-bone-dim hover:text-bone',
           ]}
         >
-          {link.label}
+          <span>{link.label}</span>
+          <span
+            class:list={[
+              'absolute inset-x-4 -bottom-px h-px origin-center scale-x-0 bg-signal transition-transform duration-300',
+              isActive(link.href) ? 'scale-x-100' : 'group-hover:scale-x-100',
+            ]}
+            aria-hidden="true"
+          ></span>
         </a>
       ))}
     </nav>
 
-    <div class="hidden md:block">
-      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary">
+    <div class="hidden md:flex md:items-center md:gap-3">
+      <a
+        href={SITE.discord.subscribe}
+        target="_blank"
+        rel="noopener"
+        class="group relative inline-flex items-center gap-2 rounded-md bg-signal px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow active:translate-y-0"
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
+        </span>
         Join the Discord
+        <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
       </a>
     </div>
 
     <button
       id="mobile-menu-toggle"
-      class="md:hidden text-bone p-2 -mr-2"
+      class="-mr-2 inline-flex h-12 w-12 items-center justify-center rounded-md text-bone hover:bg-ink-700 md:hidden"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
-      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      <svg class="hamburger h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+      <svg class="close hidden h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden border-t border-bone/5 bg-black md:hidden">
-    <nav class="container-wide flex flex-col gap-1 py-4" aria-label="Mobile">
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden border-t border-bone/10 bg-black/95 backdrop-blur-lg md:hidden">
+    <nav class="container-wide flex flex-col gap-1 py-6" aria-label="Mobile">
       {NAV_LINKS.map((link) => (
         <a
           href={link.href}
           class:list={[
-            'rounded-md px-3 py-3 text-base font-medium transition-colors',
-            isActive(link.href) ? 'text-signal bg-signal/5' : 'text-bone-dim hover:text-bone hover:bg-ink-700',
+            'flex items-center justify-between rounded-md px-4 py-4 text-lg font-medium uppercase tracking-wider transition-colors',
+            isActive(link.href)
+              ? 'bg-signal/10 text-signal'
+              : 'text-bone-dim hover:bg-ink-700 hover:text-bone',
           ]}
         >
-          {link.label}
+          <span>{link.label}</span>
+          <svg class="h-4 w-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
       ))}
       <a
         href={SITE.discord.subscribe}
         target="_blank"
         rel="noopener"
-        class="btn-primary mt-2 w-full"
+        class="mt-4 inline-flex items-center justify-center gap-2 rounded-md bg-signal px-6 py-4 text-base font-bold uppercase tracking-wider text-black"
       >
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
+        </span>
         Join the Discord
       </a>
     </nav>
@@ -83,9 +117,14 @@ const isActive = (href: string) =>
 <script>
   const toggle = document.getElementById('mobile-menu-toggle');
   const menu = document.getElementById('mobile-menu');
+  const hamb = toggle?.querySelector('.hamburger');
+  const close = toggle?.querySelector('.close');
+
   toggle?.addEventListener('click', () => {
     const expanded = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!expanded));
     menu?.classList.toggle('hidden');
+    hamb?.classList.toggle('hidden');
+    close?.classList.toggle('hidden');
   });
 </script>
