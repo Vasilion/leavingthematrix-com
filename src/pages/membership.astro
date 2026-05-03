@@ -51,10 +51,9 @@ const faq = [
       {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
     </div>
 
-    <div class="mt-12 rounded-xl border border-warn/20 bg-warn/5 p-6 text-sm text-warn/90">
-      <strong class="font-semibold">Pricing placeholders.</strong> Final tier numbers will replace the "TBD"
-      values shortly. The Discord subscription is live; subscribing now locks in the rate.
-    </div>
+    <p class="mt-12 text-center text-sm text-bone-mute">
+      Both tiers billed monthly through Discord. Cancel anytime in your member dashboard.
+    </p>
   </section>
 
   <section class="container-wide py-24">
@@ -77,8 +76,8 @@ const faq = [
   <section class="container-wide pb-24">
     <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-12 md:flex-row md:items-center md:justify-between">
       <div>
-        <h2 class="font-display text-display-md uppercase tracking-tight">Still on the fence?</h2>
-        <p class="mt-3 text-bone-dim">Lurk in #getting-started for a few days. See if the vibe fits.</p>
+        <h2 class="font-display text-display-md uppercase tracking-tight">Ready when you are.</h2>
+        <p class="mt-3 text-bone-dim">Pick a tier, get the role, you're in.</p>
       </div>
       <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary whitespace-nowrap">
         Join the Discord

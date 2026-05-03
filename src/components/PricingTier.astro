@@ -32,18 +32,8 @@ const { name, price, period, tagline, features, cta, popular = false } = Astro.p
     <h3 class="font-display text-3xl uppercase tracking-tight text-bone">{name}</h3>
     <p class="mt-2 text-sm text-bone-dim">{tagline}</p>
     <div class="mt-6 flex items-baseline gap-1">
-      {price === 'TBD' ? (
-        <>
-          <span class="font-display text-4xl text-bone-mute">$</span>
-          <span class="font-display text-5xl text-bone">TBD</span>
-          <span class="text-sm text-bone-mute">{period}</span>
-        </>
-      ) : (
-        <>
-          <span class="font-display text-4xl text-bone">{price}</span>
-          <span class="text-sm text-bone-mute">{period}</span>
-        </>
-      )}
+      <span class="font-display text-5xl text-bone">{price}</span>
+      <span class="text-sm text-bone-mute">{period}</span>
     </div>
   </header>
 

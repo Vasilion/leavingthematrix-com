@@ -2,11 +2,19 @@
 // TradingView ticker tape — lazy-loaded, dark theme, no JS until in viewport
 ---
 
-<section aria-label="Live market ticker" class="border-y border-bone/5 bg-ink-900">
-  <div id="tradingview-ticker" class="tradingview-widget-container">
+<section aria-label="Live market ticker" class="border-y border-bone/5 bg-black">
+  <div id="tradingview-ticker" class="tradingview-widget-container bg-black">
     <div class="tradingview-widget-container__widget"></div>
   </div>
 </section>
+
+<style>
+  /* Force black background through the TradingView iframe wrapper */
+  #tradingview-ticker iframe {
+    background: #000 !important;
+    color-scheme: dark;
+  }
+</style>
 
 <script is:inline>
   (function () {
@@ -35,9 +43,10 @@
           ],
           showSymbolLogo: true,
           colorTheme: 'dark',
-          isTransparent: true,
+          isTransparent: false,
           displayMode: 'adaptive',
           locale: 'en',
+          backgroundColor: '#000000',
         });
         container.querySelector('.tradingview-widget-container__widget')?.appendChild(script);
       });

@@ -29,7 +29,7 @@ export const BLOG_CATEGORIES = [
 export const PRICING_TIERS = [
   {
     name: 'Standard',
-    price: 'TBD',
+    price: '$30',
     period: '/mo',
     tagline: 'The full education + signals stack.',
     features: [
@@ -47,7 +47,7 @@ export const PRICING_TIERS = [
   },
   {
     name: 'Pro',
-    price: 'TBD',
+    price: '$80',
     period: '/mo',
     tagline: 'Everything in Standard, plus the rooms behind the wall.',
     features: [
