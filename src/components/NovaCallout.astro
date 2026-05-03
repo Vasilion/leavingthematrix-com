@@ -1,43 +1,154 @@
 ---
-// Callout for Nova — the trading copilot powering research surfaced on this site.
+// Explains how Nova actually scores names — pulled from the Nova README
+// (12 signal layers across the Quality x Discount x Smart-money framework,
+// condensed into a single 0–100 Nova Score with 5 zones).
+
+const zones = [
+  { name: 'Selling',       range: '0–33',   color: 'bg-loss',     label: 'text-loss',     desc: 'Smart money likely exiting',   span: 33 },
+  { name: 'Distribution',  range: '33–45',  color: 'bg-warn',     label: 'text-warn',     desc: 'Potential offloading',         span: 12 },
+  { name: 'Neutral',       range: '45–60',  color: 'bg-bone-mute', label: 'text-bone-mute', desc: 'No directional signal',       span: 15 },
+  { name: 'Accumulation',  range: '60–70',  color: 'bg-signal/50', label: 'text-signal/80', desc: 'Institutional interest building', span: 10 },
+  { name: 'Buying',        range: '70–100', color: 'bg-signal',   label: 'text-signal',   desc: 'Smart money accumulating heavily', span: 30 },
+];
+
+const layerGroups = [
+  {
+    title: 'Quality',
+    desc: 'Is this a good business?',
+    layers: [
+      { name: 'fundamental', detail: 'Forward P/E, revenue growth, margins, debt' },
+      { name: 'track_record', detail: 'Weighted return across 3y / 5y / 10y' },
+      { name: 'fund_quality', detail: 'ETF / fund expense ratio (abstains for stocks)' },
+    ],
+  },
+  {
+    title: 'Discount',
+    desc: 'Is it on sale right now?',
+    layers: [
+      { name: 'valuation', detail: "Current P/E vs ticker's own 5-year median" },
+      { name: 'support', detail: 'Proximity to 200-day and 200-week moving averages' },
+    ],
+  },
+  {
+    title: 'Smart Money',
+    desc: 'What are insiders, congress, and 13F filers doing?',
+    layers: [
+      { name: 'insider', detail: 'SEC Form 4 buys/sells over 90d, role-weighted' },
+      { name: 'congress', detail: 'STOCK Act PTRs over 90d, owner-weighted' },
+      { name: 'thirteenf', detail: 'Quarterly 13F filings from tracked funds' },
+      { name: 'flow', detail: 'Options unusual flow + social signal' },
+    ],
+    accent: true,
+  },
+  {
+    title: 'Context',
+    desc: 'What does the tape and macro look like?',
+    layers: [
+      { name: 'technical', detail: 'Trend, momentum, RSI, distance from 52w high/low' },
+      { name: 'regime', detail: 'Macro backdrop — SPY vs SMA200, VIX, sector rotation' },
+      { name: 'catalyst', detail: 'News velocity + sentiment' },
+    ],
+  },
+];
 ---
 
-<section class="border-y border-bone/5 bg-ink-900">
-  <div class="container-wide grid gap-12 py-24 md:grid-cols-2 md:items-center">
-    <div>
-      <p class="eyebrow">Built in public</p>
-      <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
-        Powered by <span class="text-signal">Nova</span>.
-      </h2>
-      <p class="mt-6 text-lg text-bone-dim">
-        Nova is the trading copilot we built for our own desk — a screener, a scorer,
-        and an explainer that runs on real fundamentals, real smart-money flows, and a real
-        philosophy: <em class="text-bone">quality × discount × smart-money confirmation.</em>
-      </p>
-      <p class="mt-4 text-bone-dim">
-        Every signal posted in the Discord is shaped by the same engine that picks our own positions.
-        We open-source the thinking behind it — read the Nova dev blog as we ship.
-      </p>
-      <a href="/blog?category=nova-dev" class="btn-secondary mt-8">Read the Nova dev blog</a>
+<section class="relative isolate border-y border-bone/5 bg-ink-900 overflow-hidden">
+  <div class="absolute inset-0 -z-10 bg-grid-faint bg-grid opacity-20"></div>
+
+  <div class="container-wide py-20 md:py-28">
+    <!-- Heading + intro -->
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-16 lg:items-end">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Built in public</p>
+        <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+          Powered by <span class="text-signal">Nova</span>.
+        </h2>
+        <p class="mt-6 text-lg text-bone-dim md:text-xl">
+          Nova is the trading copilot we built for our own desk — a screener,
+          a scorer, and an explainer that mirrors what billionaires, insiders,
+          and Congress are doing on every name we cover.
+        </p>
+        <p class="mt-4 text-bone-dim">
+          Twelve signals are condensed into a single <strong class="text-bone">Nova Score (0–100)</strong>
+          built around the same lens we use everywhere on this site:
+          <em class="text-bone">quality × discount × smart-money confirmation.</em>
+        </p>
+      </div>
+
+      <div class="lg:col-span-5">
+        <a href="/blog" class="btn-secondary inline-flex">Read the Nova dev blog →</a>
+      </div>
     </div>
 
-    <div class="relative">
-      <div class="aspect-square rounded-2xl border border-signal/20 bg-gradient-to-br from-signal/5 to-pulse/5 p-8">
-        <div class="grid h-full grid-cols-2 gap-3">
-          {['Quality', 'Discount', 'Smart Money', 'Conviction'].map((label, i) => (
-            <div class="card flex flex-col justify-between" style={`animation-delay: ${i * 0.4}s`}>
-              <p class="eyebrow">Layer {i + 1}</p>
-              <p class="font-display text-3xl uppercase tracking-tight text-bone">{label}</p>
-              <div class="h-1 w-full rounded-full bg-ink-700">
-                <div
-                  class="h-full rounded-full bg-signal"
-                  style={`width: ${[78, 64, 82, 71][i]}%`}
-                ></div>
-              </div>
-            </div>
-          ))}
-        </div>
+    <!-- Score zones visualization -->
+    <div class="mt-14 md:mt-16">
+      <div class="flex items-baseline justify-between">
+        <p class="eyebrow">Nova Score zones</p>
+        <p class="font-mono text-xs text-bone-mute">0 → 100</p>
       </div>
+
+      <!-- Zone bar -->
+      <div class="mt-4 flex h-3 w-full overflow-hidden rounded-full border border-bone/10">
+        {zones.map((z) => (
+          <div class:list={['h-full', z.color]} style={`width: ${z.span}%`}></div>
+        ))}
+      </div>
+
+      <!-- Zone labels: 5-up on md+, 2-up on small mobile, scrollable below -->
+      <ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+        {zones.map((z) => (
+          <li class="rounded-md border border-bone/10 bg-black/40 px-3 py-2.5">
+            <div class="flex items-center gap-2">
+              <span class:list={['h-2 w-2 rounded-full', z.color]} aria-hidden="true"></span>
+              <span class:list={['eyebrow', z.label]}>{z.name}</span>
+            </div>
+            <p class="mt-1 font-mono text-xs text-bone-mute">{z.range}</p>
+            <p class="mt-1 text-xs text-bone-dim leading-snug">{z.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Layer breakdown -->
+    <div class="mt-14 md:mt-16">
+      <div class="flex items-baseline justify-between">
+        <p class="eyebrow">12 signal layers</p>
+        <p class="font-mono text-xs text-bone-mute">Quality × Discount × Smart-money</p>
+      </div>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {layerGroups.map((group) => (
+          <div
+            class:list={[
+              'card flex flex-col',
+              group.accent ? 'border-signal/30' : '',
+            ]}
+          >
+            <div>
+              <h3 class="font-display text-2xl uppercase tracking-tight text-bone">
+                {group.title}
+              </h3>
+              <p class="mt-1 text-xs text-bone-mute">{group.desc}</p>
+            </div>
+            <ul class="mt-5 space-y-3 text-sm">
+              {group.layers.map((layer) => (
+                <li>
+                  <code class="font-mono text-xs text-signal">{layer.name}</code>
+                  <p class="mt-0.5 text-xs leading-snug text-bone-dim">{layer.detail}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 text-xs text-bone-mute leading-relaxed">
+        Layers without data <strong class="text-bone-dim">abstain</strong> — they're skipped from the
+        blend, not averaged toward 50. A cross-signal confluence bonus fires when 2+ smart-money
+        layers all read bullish on the same name. The score is descriptive curation,
+        <strong class="text-bone-dim">not price prediction</strong> — it filters the watchlist;
+        you decide what to research.
+      </p>
     </div>
   </div>
 </section>
