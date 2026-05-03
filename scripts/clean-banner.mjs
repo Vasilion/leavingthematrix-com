@@ -14,11 +14,13 @@ import sharp from 'sharp';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BANNER = path.resolve(__dirname, '..', 'src', 'assets', 'banner.png');
 
-// Banner is 1248x832. Sparkle sits in bottom-right around the bear's hindquarters.
-// Target a 200x200 feathered patch centered at roughly (1080, 695).
-const PATCH_SIZE = 220;
-const CENTER_X = 1085;
-const CENTER_Y = 700;
+// Banner is 1248x832. Sparkle is in the bottom-right at (1180, 754) — verified
+// by sampling pixel luminance over the (1000-1248, 600-800) region.
+// 280px patch is generous so the sparkle's diffuse glow doesn't peek through
+// at the feather edge.
+const PATCH_SIZE = 280;
+const CENTER_X = 1180;
+const CENTER_Y = 754;
 
 const overlay = `<svg width="${PATCH_SIZE}" height="${PATCH_SIZE}" xmlns="http://www.w3.org/2000/svg">
   <defs>
