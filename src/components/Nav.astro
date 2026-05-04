@@ -25,24 +25,43 @@ const isActive = (href: string) =>
     </a>
 
     <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
-      {NAV_LINKS.map((link) => (
-        <a
-          href={link.href}
-          class:list={[
-            'group relative px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
-            isActive(link.href) ? 'text-signal' : 'text-bone-dim hover:text-bone',
-          ]}
-        >
-          <span>{link.label}</span>
-          <span
+      {NAV_LINKS.map((link) => {
+        const isComingSoon = 'comingSoon' in link && link.comingSoon;
+        if (isComingSoon) {
+          return (
+            <span
+              aria-disabled="true"
+              title="Coming soon"
+              class="group relative cursor-not-allowed px-4 py-2 text-sm font-medium uppercase tracking-wider text-bone-mute/60"
+            >
+              <span>{link.label}</span>
+              <span class="ml-2 rounded-sm bg-bone/10 px-1.5 py-0.5 text-[9px] font-bold tracking-widest text-bone-dim">
+                SOON
+              </span>
+            </span>
+          );
+        }
+        return (
+          <a
+            href={link.href}
+            target={'external' in link && link.external ? '_blank' : undefined}
+            rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
             class:list={[
-              'absolute inset-x-4 -bottom-px h-px origin-center scale-x-0 bg-signal transition-transform duration-300',
-              isActive(link.href) ? 'scale-x-100' : 'group-hover:scale-x-100',
+              'group relative px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
+              isActive(link.href) ? 'text-signal' : 'text-bone-dim hover:text-bone',
             ]}
-            aria-hidden="true"
-          ></span>
-        </a>
-      ))}
+          >
+            <span>{link.label}{'external' in link && link.external ? ' ↗' : ''}</span>
+            <span
+              class:list={[
+                'absolute inset-x-4 -bottom-px h-px origin-center scale-x-0 bg-signal transition-transform duration-300',
+                isActive(link.href) ? 'scale-x-100' : 'group-hover:scale-x-100',
+              ]}
+              aria-hidden="true"
+            ></span>
+          </a>
+        );
+      })}
     </nav>
 
     <div class="hidden md:flex md:items-center md:gap-3">
@@ -82,22 +101,40 @@ const isActive = (href: string) =>
   <!-- Mobile menu -->
   <div id="mobile-menu" class="hidden border-t border-bone/10 bg-black/95 backdrop-blur-lg md:hidden">
     <nav class="container-wide flex flex-col gap-1 py-6" aria-label="Mobile">
-      {NAV_LINKS.map((link) => (
-        <a
-          href={link.href}
-          class:list={[
-            'flex items-center justify-between rounded-md px-4 py-4 text-lg font-medium uppercase tracking-wider transition-colors',
-            isActive(link.href)
-              ? 'bg-signal/10 text-signal'
-              : 'text-bone-dim hover:bg-ink-700 hover:text-bone',
-          ]}
-        >
-          <span>{link.label}</span>
-          <svg class="h-4 w-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-      ))}
+      {NAV_LINKS.map((link) => {
+        const isComingSoon = 'comingSoon' in link && link.comingSoon;
+        if (isComingSoon) {
+          return (
+            <span
+              aria-disabled="true"
+              class="flex cursor-not-allowed items-center justify-between rounded-md px-4 py-4 text-lg font-medium uppercase tracking-wider text-bone-mute/60"
+            >
+              <span>{link.label}</span>
+              <span class="rounded-sm bg-bone/10 px-2 py-1 text-[10px] font-bold tracking-widest text-bone-dim">
+                SOON
+              </span>
+            </span>
+          );
+        }
+        return (
+          <a
+            href={link.href}
+            target={'external' in link && link.external ? '_blank' : undefined}
+            rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
+            class:list={[
+              'flex items-center justify-between rounded-md px-4 py-4 text-lg font-medium uppercase tracking-wider transition-colors',
+              isActive(link.href)
+                ? 'bg-signal/10 text-signal'
+                : 'text-bone-dim hover:bg-ink-700 hover:text-bone',
+            ]}
+          >
+            <span>{link.label}{'external' in link && link.external ? ' ↗' : ''}</span>
+            <svg class="h-4 w-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        );
+      })}
       <a
         href={SITE.discord.subscribe}
         target="_blank"

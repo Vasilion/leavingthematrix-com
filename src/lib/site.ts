@@ -13,11 +13,25 @@ export const SITE = {
   founder: 'Luke Vasilion',
 } as const;
 
+// TODO(nova-launch): when nova.leavingthematrix.io is deployed on Amplify,
+// flip `comingSoon: true` to false (or remove the field) on:
+//   1. The "Nova Fund" entry in NAV_LINKS below
+//   2. The "Elite" tier in PRICING_TIERS below
+// Both should then become clickable cross-links to the Nova subdomain.
 export const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/membership', label: 'Membership' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
+  // Nova Fund subdomain — opens in same tab. External flag tells the nav
+  // component to render the link with the standard external-link affordance.
+  // Currently locked behind `comingSoon` until nova.leavingthematrix.io ships.
+  {
+    href: 'https://nova.leavingthematrix.io',
+    label: 'Nova Fund',
+    external: true,
+    comingSoon: true,
+  },
 ] as const;
 
 export const BLOG_CATEGORIES = [
@@ -62,5 +76,30 @@ export const PRICING_TIERS = [
     ],
     cta: 'Join Pro',
     popular: true,
+  },
+  // OPEN NAMING QUESTION (banked 2026-05-05 in projects/nova/portfolio-product.md):
+  // Plan-doc framing called the Nova-included tier "LTM Pro" but that name is
+  // already used for the $80 tier above. Going with "Elite" as a third tier
+  // here as the safe non-collision option — Luke can rename / consolidate at
+  // launch time.
+  {
+    name: 'Elite',
+    price: '$99',
+    period: '/mo',
+    tagline: 'Everything in Pro, plus Nova Fund and Luke\'s curated portfolios.',
+    features: [
+      'Everything in Pro',
+      'Nova Fund — live AI-managed portfolio with weekly memos',
+      'Smart Money tab — insider buys, congressional trades, 13F flows',
+      'Luke\'s ETF Momentum portfolio — auto-tracked',
+      'Luke\'s Stock Picks portfolio — auto-tracked',
+      'Sector exposure + market context dashboards',
+      'vs SPY benchmark with dividend reinvestment',
+    ],
+    cta: 'Join Elite',
+    popular: false,
+    href: 'https://nova.leavingthematrix.io/sign-up',
+    external: true,
+    comingSoon: true,
   },
 ] as const;

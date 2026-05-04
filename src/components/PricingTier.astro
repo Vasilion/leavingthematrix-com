@@ -9,9 +9,37 @@ interface Props {
   features: readonly string[];
   cta: string;
   popular?: boolean;
+  /**
+   * Optional CTA destination. Defaults to the LTM Discord subscribe link, but
+   * Nova-included tiers should override to the Nova subdomain so subscribers
+   * land at the right signup flow.
+   */
+  href?: string;
+  external?: boolean;
+  /**
+   * Renders the CTA as a disabled "Coming Soon" button instead of a clickable
+   * link. Used while nova.leavingthematrix.io is pre-launch — flip to false
+   * (or remove) once the Nova subdomain ships.
+   */
+  comingSoon?: boolean;
 }
 
-const { name, price, period, tagline, features, cta, popular = false } = Astro.props;
+const {
+  name,
+  price,
+  period,
+  tagline,
+  features,
+  cta,
+  popular = false,
+  href,
+  external,
+  comingSoon = false,
+} = Astro.props;
+
+const ctaHref = href ?? SITE.discord.subscribe;
+const ctaTarget = external ?? !href ? '_blank' : undefined;
+const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
 ---
 
 <article
@@ -50,12 +78,23 @@ const { name, price, period, tagline, features, cta, popular = false } = Astro.p
 
   <div class="mt-10 flex-1"></div>
 
-  <a
-    href={SITE.discord.subscribe}
-    target="_blank"
-    rel="noopener"
-    class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
-  >
-    {cta}
-  </a>
+  {comingSoon ? (
+    <button
+      type="button"
+      disabled
+      aria-disabled="true"
+      class="mt-6 inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-md border border-bone/15 bg-ink-700/50 px-5 py-3 text-sm font-bold uppercase tracking-wider text-bone-mute/70"
+    >
+      Coming Soon
+    </button>
+  ) : (
+    <a
+      href={ctaHref}
+      target={ctaTarget}
+      rel={ctaRel}
+      class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
+    >
+      {cta}
+    </a>
+  )}
 </article>
