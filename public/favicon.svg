@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="4" fill="#000"/>
-  <!-- Bull silhouette stylized as bold L+M angles -->
-  <path d="M5 9.5L5 22.5L9 22.5L9 16L13 16L13 22.5L17 22.5L17 9.5L13 9.5L13 12.5L9 12.5L9 9.5Z" fill="#00ffc6"/>
-  <path d="M19 9.5L19 22.5L23 22.5L23 14L26 22.5L27.5 22.5L27.5 9.5L24.5 9.5L24.5 17L21.5 9.5Z" fill="#00ffc6"/>
-</svg>

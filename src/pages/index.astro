@@ -4,7 +4,7 @@ import Hero from '../components/Hero.astro';
 import TickerTape from '../components/TickerTape.astro';
 import ChannelGrid from '../components/ChannelGrid.astro';
 import NovaCallout from '../components/NovaCallout.astro';
-import { SITE, PRICING_TIERS } from '../lib/site';
+import { PRICING_TIERS } from '../lib/site';
 import PricingTier from '../components/PricingTier.astro';
 import { getCollection } from 'astro:content';
 
@@ -21,30 +21,29 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
   <NovaCallout />
 
-  <section class="container-wide py-24">
+  <section class="container-wide py-14 md:py-24">
     <div class="max-w-2xl">
       <p class="eyebrow">Membership</p>
-      <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
-        Pick a tier.<br />
-        <span class="text-signal">Get to work.</span>
+      <h2 class="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-5xl md:text-display-lg">
+        Two pills. <span class="text-signal">One choice.</span>
       </h2>
       <p class="mt-6 text-lg text-bone-dim">
-        Both tiers unlock the full education library and signal lanes. Pro adds the gated rooms —
-        options, deep value, and the riskier swings.
+        Stay asleep with the free newsletter, or take the Red Pill and get every signal,
+        every channel, every tool we run on our own desk.
       </p>
     </div>
 
-    <div class="mt-16 grid gap-6 md:grid-cols-2">
+    <div class="mt-10 md:mt-16 grid gap-6 md:grid-cols-2">
       {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
     </div>
 
     <p class="mt-8 text-center text-xs text-bone-mute">
-      Subscriptions billed monthly through Discord. Cancel anytime.
+      Cancel anytime. Educational content only — never personalized financial advice.
     </p>
   </section>
 
   {posts.length > 0 && (
-    <section class="container-wide pb-24">
+    <section class="container-wide pb-14 md:pb-24">
       <div class="flex items-end justify-between">
         <div>
           <p class="eyebrow">From the desk</p>
@@ -53,7 +52,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         <a href="/blog" class="text-sm text-bone-dim hover:text-signal">All posts →</a>
       </div>
 
-      <div class="mt-12 grid gap-6 md:grid-cols-3">
+      <div class="mt-8 md:mt-12 grid gap-6 md:grid-cols-3">
         {posts.map((post) => (
           <a href={`/blog/${post.slug}`} class="card-interactive group">
             <p class="eyebrow text-pulse">{post.data.category}</p>
@@ -70,18 +69,18 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </section>
   )}
 
-  <section class="container-wide pb-24">
+  <section class="container-wide pb-14 md:pb-24">
     <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 bg-gradient-to-br from-ink-800 to-ink-900 p-12 md:flex-row md:items-center md:justify-between">
       <div>
         <h2 class="font-display text-display-md uppercase tracking-tight">
           Ready to leave the matrix?
         </h2>
         <p class="mt-3 text-bone-dim">
-          One Discord. Every lane. The community is already inside.
+          Real research. Smart-money signals. A community that takes the work seriously.
         </p>
       </div>
-      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary whitespace-nowrap">
-        Join the Discord
+      <a href="/membership" class="btn-primary whitespace-nowrap">
+        Leave the Matrix
       </a>
     </div>
   </section>

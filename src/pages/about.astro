@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import headshot from '../assets/headshot.png';
-import { SITE } from '../lib/site';
 
 const career = [
   {
@@ -42,59 +41,294 @@ const career = [
   },
 ];
 
-const credentials = [
-  {
-    label: 'B.S. Information Systems',
-    detail: 'Grand Valley State University · Class of 2017',
-  },
-  {
-    label: 'All-American Sprinter',
-    detail: 'GVSU Track & Field · 60m Dash, Sprint Relays · GLIAC All-Conference · MVP',
-  },
-  {
-    label: '2021 District 14 Motocross State Champion',
-    detail: 'Vet Sport Open · 9 wins · 26 podium finishes',
-  },
-];
 ---
 
 <Layout
   title="About"
-  description="Luke Vasilion runs Leaving The Matrix. Senior software engineer building for space missions, founder of Unyx Web Solutions, and the author of every signal posted in the Discord."
+  description="Leaving The Matrix is a data-driven investing community — institutional research framework applied to retail accounts. Powered by Nova, the trading copilot we built for our own desk."
 >
+  <!-- LEAD: what LTM is -->
   <section class="border-b border-bone/5">
-    <div class="container-wide pt-24 pb-16">
-      <div class="grid gap-12 lg:grid-cols-5 lg:gap-16">
+    <div class="container-wide pt-14 pb-10 md:pt-24 md:pb-16">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-7">
+          <p class="eyebrow">About Leaving The Matrix</p>
+          <h1 class="mt-4 font-display text-display-xl uppercase tracking-tight">
+            A data-driven<br />
+            <span class="text-signal">investing community.</span>
+          </h1>
+          <p class="mt-8 text-xl text-bone-dim">
+            We teach the institutional research framework — quality, valuation discount,
+            smart-money confirmation — and apply it to retail accounts. Education that
+            goes deep, signals you can actually follow, and the tools we use on our own
+            desk.
+          </p>
+
+          <div class="prose-ltm mt-10">
+            <p>
+              Most "stock-pick" services fall into one of two camps: hype machines that
+              vanish when a trade goes wrong, or expensive black-box subscriptions that
+              teach you nothing about how the call was made. We built something
+              different.
+            </p>
+            <p>
+              <strong>Leaving The Matrix</strong> is a community that operates the way
+              an engineering team operates — every decision documented, every thesis
+              written down, every closed position reviewed honestly including the
+              losers. Members range from beginners learning DCA to advanced traders
+              running options strategies. The marketing anchors on the disciplined,
+              research-grade end because that is the lens we run.
+            </p>
+            <p>
+              Markets are only one piece of the picture. The community covers the
+              unsexy work too — frameworks for managing debt, thinking long-term, and
+              the discipline that separates investors from gamblers. <strong>Educational
+              content only.</strong> We're not financial advisers; we don't make
+              personalized recommendations. We share how we think and what we do. You
+              decide what fits your situation.
+            </p>
+          </div>
+        </div>
+
+        <aside class="lg:col-span-5">
+          <div class="sticky top-28 space-y-4">
+            <div class="card border-signal/30 bg-ink-800">
+              <p class="eyebrow text-signal">What we do</p>
+              <ul class="mt-6 space-y-4 text-sm text-bone-dim">
+                <li class="flex items-start gap-3">
+                  <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                  <span><strong class="text-bone">Investing education</strong> — frameworks, mental models, the long-term discipline.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                  <span><strong class="text-bone">Smart-money signals</strong> — every name our desk is watching, with the thesis attached.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                  <span><strong class="text-bone">Active community</strong> — real positions, real conversations, no hype.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                  <span><strong class="text-bone">Nova tools</strong> — the trading copilot we built for ourselves, included with Red Pill.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <p class="eyebrow">Compliance</p>
+              <p class="mt-3 text-sm text-bone-dim">
+                Educational content only. Never personalized financial advice. We share
+                frameworks and what we do — you decide what fits your situation.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- The framework -->
+  <section class="border-b border-bone/5 bg-ink-900">
+    <div class="container-wide py-14 md:py-24">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">The framework</p>
+          <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">
+            Quality.<br />
+            Discount.<br />
+            <span class="text-signal">Smart-money.</span>
+          </h2>
+          <p class="mt-6 text-bone-dim">
+            One disciplined lens applied to every name we cover. The same framework
+            Nova uses to score every ticker on the watchlist.
+          </p>
+        </div>
+
+        <div class="lg:col-span-7">
+          <ul class="space-y-4">
+            <li class="card">
+              <p class="eyebrow">Quality</p>
+              <h3 class="mt-2 font-display text-xl tracking-tight text-bone">Is this a good business?</h3>
+              <p class="mt-2 text-sm text-bone-dim">
+                Forward P/E, revenue growth, margins, debt, weighted return across 3y / 5y / 10y.
+                ETF expense ratios where applicable.
+              </p>
+            </li>
+            <li class="card">
+              <p class="eyebrow">Discount</p>
+              <h3 class="mt-2 font-display text-xl tracking-tight text-bone">Is it on sale right now?</h3>
+              <p class="mt-2 text-sm text-bone-dim">
+                Current P/E vs the ticker's own 5-year median. Proximity to the 200-day
+                and 200-week moving averages.
+              </p>
+            </li>
+            <li class="card border-signal/30">
+              <p class="eyebrow text-signal">Smart-money</p>
+              <h3 class="mt-2 font-display text-xl tracking-tight text-bone">What are insiders, congress, and 13F filers doing?</h3>
+              <p class="mt-2 text-sm text-bone-dim">
+                SEC Form 4 buys and sells, role-weighted. STOCK Act PTRs from Congress.
+                Quarterly 13F filings from tracked funds. Options unusual flow.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Powered by Nova -->
+  <section class="border-b border-bone/5">
+    <div class="container-wide py-14 md:py-24">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <p class="eyebrow">Powered by Nova</p>
+          <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">
+            The trading copilot we built for our own desk.
+          </h2>
+          <p class="mt-6 text-bone-dim">
+            Nova is a screener, a scorer, and an explainer that mirrors what billionaires,
+            insiders, and Congress are doing on every name we cover. Twelve signals
+            condensed into a single Nova Score (0–100), built on the same lens we use
+            everywhere on this site.
+          </p>
+          <p class="mt-4 text-bone-dim">
+            Red Pill members get Nova Fund (a live AI-managed portfolio with weekly
+            memos), the Smart Money dashboard (insider buys, congressional trades,
+            13F flows), Luke's auto-tracked portfolios, sector exposure, and a vs SPY
+            benchmark with dividend reinvestment.
+          </p>
+          <a href="/blog" class="btn-secondary mt-8 inline-flex">Read the Nova dev blog →</a>
+        </div>
+        <div>
+          <div class="card border-signal/20 bg-ink-800">
+            <p class="eyebrow">Nova Score zones</p>
+            <ul class="mt-6 space-y-2 font-mono text-sm">
+              <li class="flex items-baseline justify-between">
+                <span class="text-loss">● Selling</span>
+                <span class="text-bone-mute">0–33</span>
+              </li>
+              <li class="flex items-baseline justify-between">
+                <span class="text-warn">● Distribution</span>
+                <span class="text-bone-mute">33–45</span>
+              </li>
+              <li class="flex items-baseline justify-between">
+                <span class="text-bone-mute">● Neutral</span>
+                <span class="text-bone-mute">45–60</span>
+              </li>
+              <li class="flex items-baseline justify-between">
+                <span class="text-signal/80">● Accumulation</span>
+                <span class="text-bone-mute">60–70</span>
+              </li>
+              <li class="flex items-baseline justify-between">
+                <span class="text-signal">● Buying</span>
+                <span class="text-bone-mute">70–100</span>
+              </li>
+            </ul>
+            <p class="mt-6 text-xs text-bone-mute leading-relaxed">
+              Layers without data <strong class="text-bone-dim">abstain</strong>. The
+              score is descriptive curation — <strong class="text-bone-dim">not price
+              prediction</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engineering rigor -->
+  <section class="border-b border-bone/5 bg-ink-900">
+    <div class="container-wide py-14 md:py-24">
+      <div class="max-w-3xl">
+        <p class="eyebrow">Engineering rigor, applied to markets</p>
+        <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">
+          Why this works.
+        </h2>
+        <div class="prose-ltm mt-8">
+          <p>
+            Nova exists because we wanted research-grade tooling for our own desk —
+            something that mirrored institutional process: data sourced from the SEC,
+            FINRA, congressional disclosures, and 13F filings, scored consistently, and
+            explained in plain English. No black box, no vibe-trading.
+          </p>
+          <p>
+            Every position we open inside the community gets a written thesis. Every
+            position we close — winner or loser — gets reviewed honestly. The framework
+            is the same one Nova uses to score every name. The discipline shows up in
+            the receipts.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder section — kept below the fold per Luke's directive -->
+  <section class="border-b border-bone/5">
+    <div class="container-wide pt-14 pb-10 md:pt-24 md:pb-16">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-5 lg:gap-16">
         <div class="lg:col-span-3">
           <p class="eyebrow">About the founder</p>
-          <h1 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+          <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
             Luke Vasilion
-          </h1>
+          </h2>
           <p class="mt-4 text-xl text-bone-dim">
             Senior software engineer. Founder. Lifelong markets student.
           </p>
 
           <div class="prose-ltm mt-10">
             <p>
-              I'm a software engineer with more than a decade building products that matter.
-              Right now I'm at <strong>a.i. solutions</strong>, working on the frontend for
-              FreeFlyer — astrodynamics software powering missions like the International Space
-              Station, the James Webb Space Telescope, NASA's Artemis program, and the Lunar
-              Gateway. Before that I led
-              front-end work at <strong>Salamander Technologies</strong> (a platform used by
-              1.2 million daily users, including first responders), built a legislation
-              processing system from sprint zero for the <strong>State of Michigan Senate</strong>,
-              and shipped products at <strong>General Motors</strong> and <strong>Allstate</strong>.
+              I'm a software engineer with more than a decade building products that
+              matter. Right now I'm at <strong>a.i. solutions</strong>, working on the
+              frontend for FreeFlyer — astrodynamics software powering missions like the
+              International Space Station, the James Webb Space Telescope, NASA's Artemis
+              program, and the Lunar Gateway. Before that I led front-end work at
+              <strong>Salamander Technologies</strong> (a platform used by 1.2 million
+              daily users, including first responders), built a legislation processing
+              system from sprint zero for the <strong>State of Michigan Senate</strong>,
+              and shipped products at <strong>General Motors</strong> and
+              <strong>Allstate</strong>.
             </p>
             <p>
-              Outside of the day job, I run <strong>Unyx Web Solutions</strong> — custom web
-              development and hosting for 25+ clients. I'm building <strong>Nova</strong>, a
-              private trading copilot that powers the research surfaced inside this Discord.
-              And before any of that, I was an All-American sprinter at Grand Valley State and
-              a 2021 Michigan District 14 motocross state champion. The competitive instinct
-              and the engineering rigor end up in the same place: working systems that hold up
-              under pressure.
+              Outside of the day job, I run
+              <a href="https://unyxwebsolutions.com" target="_blank" rel="noopener" class="text-signal underline decoration-signal/40 underline-offset-4 hover:decoration-signal">Unyx Web Solutions</a>
+              — custom web development and hosting for 25+ clients. I'm building
+              <strong>Nova</strong>, the trading copilot that powers the research
+              surfaced inside Leaving The Matrix. And before any of that, I was an
+              All-American sprinter at Grand Valley State and a 2021 Michigan District 14
+              motocross state champion. The competitive instinct and the engineering
+              rigor end up in the same place: working systems that hold up under
+              pressure.
             </p>
+          </div>
+
+          <!-- Elsewhere on the web -->
+          <div class="mt-10">
+            <p class="eyebrow">Elsewhere on the web</p>
+            <ul class="mt-4 flex flex-wrap gap-3">
+              <li>
+                <a
+                  href="https://unyxwebsolutions.com"
+                  target="_blank"
+                  rel="noopener"
+                  class="group inline-flex items-center gap-2 rounded-full border border-bone/15 bg-ink-800/60 px-4 py-2 text-sm text-bone-dim transition-colors hover:border-signal/40 hover:text-signal"
+                >
+                  <span class="font-mono text-xs text-bone-mute group-hover:text-signal">↗</span>
+                  Unyx Web Solutions
+                  <span class="text-xs text-bone-mute">— agency</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.unycross.com"
+                  target="_blank"
+                  rel="noopener"
+                  class="group inline-flex items-center gap-2 rounded-full border border-bone/15 bg-ink-800/60 px-4 py-2 text-sm text-bone-dim transition-colors hover:border-signal/40 hover:text-signal"
+                >
+                  <span class="font-mono text-xs text-bone-mute group-hover:text-signal">↗</span>
+                  unycross.com
+                  <span class="text-xs text-bone-mute">— personal</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -114,43 +348,9 @@ const credentials = [
     </div>
   </section>
 
-  <section class="container-wide py-24">
-    <div class="max-w-3xl">
-      <p class="eyebrow">Why Leaving The Matrix exists</p>
-      <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">
-        Engineering rigor, applied to markets.
-      </h2>
-      <div class="prose-ltm mt-8">
-        <p>
-          Most "stock-pick" services fall into one of two camps: hype machines that vanish when
-          a trade goes wrong, or expensive black-box subscriptions that teach you nothing about
-          how the call was made. I've never been able to stand either.
-        </p>
-        <p>
-          What I built instead is a community that operates the way I operate at work — every
-          decision documented, every thesis written down, every closed position reviewed
-          honestly including the losers. Education for members who want to actually understand
-          markets, not just receive tickers. The framework is layered:
-          <strong>quality × discount × smart-money confirmation</strong>, with technicals as
-          context. Same lens Nova uses to score every name.
-        </p>
-        <p>
-          And markets are only one piece of the picture. The community covers the unsexy work
-          too — frameworks for managing debt, thinking long-term, and the discipline that
-          separates investors from gamblers. <strong>Educational content only.</strong> I'm not
-          a financial adviser; I don't give personalized recommendations. I share how I think
-          and what I do — you decide what fits your situation.
-        </p>
-        <p class="text-bone-mute italic">
-          Note: this section will get sharpened once Luke and I lock the LTM-specific
-          positioning copy — placeholder framing for now.
-        </p>
-      </div>
-    </div>
-  </section>
-
+  <!-- Career timeline -->
   <section class="border-y border-bone/5 bg-ink-900">
-    <div class="container-wide py-24">
+    <div class="container-wide py-14 md:py-24">
       <p class="eyebrow">Career timeline</p>
       <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">Where I've built.</h2>
 
@@ -174,28 +374,17 @@ const credentials = [
     </div>
   </section>
 
-  <section class="container-wide py-24">
-    <p class="eyebrow">Background</p>
-    <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">Education & competition.</h2>
-
-    <div class="mt-12 grid gap-6 md:grid-cols-3">
-      {credentials.map((c) => (
-        <div class="card">
-          <p class="font-display text-xl tracking-tight text-bone">{c.label}</p>
-          <p class="mt-2 text-sm text-bone-dim">{c.detail}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section class="container-wide pb-24">
+  <!-- Final CTA -->
+  <section class="container-wide pt-24 pb-24">
     <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-12 md:flex-row md:items-center md:justify-between">
       <div>
         <h2 class="font-display text-display-md uppercase tracking-tight">Come trade with us.</h2>
-        <p class="mt-3 text-bone-dim">All the work above ends up inside the Discord, every day.</p>
+        <p class="mt-3 text-bone-dim">
+          All the work above ends up inside the community, every day.
+        </p>
       </div>
-      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary whitespace-nowrap">
-        Join the Discord
+      <a href="/membership" class="btn-primary whitespace-nowrap">
+        Leave the Matrix
       </a>
     </div>
   </section>

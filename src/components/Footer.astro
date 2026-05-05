@@ -9,8 +9,8 @@ const year = new Date().getFullYear();
     <div class="md:col-span-2">
       <p class="font-display text-2xl tracking-tight text-bone">{SITE.name}</p>
       <p class="mt-3 max-w-md text-sm text-bone-mute">{SITE.tagline}</p>
-      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-secondary mt-6">
-        Join on Discord
+      <a href="/membership" class="btn-secondary mt-6">
+        Leave the Matrix
       </a>
     </div>
 
@@ -19,6 +19,7 @@ const year = new Date().getFullYear();
       <ul class="mt-4 space-y-2 text-sm text-bone-dim">
         <li><a href="/" class="hover:text-signal">Home</a></li>
         <li><a href="/membership" class="hover:text-signal">Membership</a></li>
+        <li><a href="/portfolios" class="hover:text-signal">Portfolios</a></li>
         <li><a href="/blog" class="hover:text-signal">Blog</a></li>
         <li><a href="/about" class="hover:text-signal">About</a></li>
       </ul>
@@ -42,7 +43,7 @@ const year = new Date().getFullYear();
         <a href="/legal/disclaimer" class="text-bone-dim hover:text-signal">full disclaimer</a>.
       </p>
       <p>
-        &copy; {year} <a href="https://www.unycross.com" target="_blank" rel="noopener" class="hover:text-signal">{SITE.parentCompany}</a>
+        &copy; {year} <a href="https://unyxwebsolutions.com" target="_blank" rel="noopener" class="hover:text-signal">UnyX</a>
       </p>
     </div>
   </div>

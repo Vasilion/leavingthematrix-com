@@ -1,12 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PricingTier from '../components/PricingTier.astro';
-import { PRICING_TIERS, SITE } from '../lib/site';
+import PerformanceProof from '../components/PerformanceProof.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { PRICING_TIERS } from '../lib/site';
 
 const faq = [
   {
-    q: 'How does billing work?',
-    a: 'Subscriptions are managed through Discord via mee6. You pay there, your role on the server unlocks the gated channels automatically. Cancel anytime in your mee6 dashboard.',
+    q: 'What do I actually get?',
+    a: 'Investing education and smart-money signals. The framework — quality, valuation discount, smart-money confirmation — applied to every name our desk is watching. Plus the community where the conversation happens, plus the Nova tools we use ourselves.',
+  },
+  {
+    q: 'Is this financial advice?',
+    a: "No. Everything is for educational and informational purposes only. We share frameworks and what we do — we don't make personalized recommendations and we're not your financial adviser. You're responsible for your own decisions. See the full disclaimer.",
+  },
+  {
+    q: 'How does Red Pill work?',
+    a: 'You sign up here through Stripe, you get the Pro role in our community automatically, and you land in the members area where Nova lives. Cancel anytime in your billing dashboard.',
+  },
+  {
+    q: 'When does Red Pill open up?',
+    a: 'Membership opens alongside Nova. Drop your email on the sign-up page and you will be the first to know.',
+  },
+  {
+    q: 'What is the Blue Pill newsletter?',
+    a: 'A free weekly read on what the smart money is doing — a taste of the framework Nova runs every day. Educational content only. Launching with Nova.',
   },
   {
     q: 'Are signals real-time?',
@@ -14,57 +32,147 @@ const faq = [
   },
   {
     q: 'Do you teach options?',
-    a: 'Yes — as a tool for income and disciplined risk-defined ideas, not for gambling. The education library covers covered calls, credit spreads, iron condors, and the wheel. Pro members get higher-conviction options ideas with a full thesis attached.',
+    a: 'Yes — as a tool for income and disciplined risk-defined ideas, not for gambling. The education library covers covered calls, credit spreads, iron condors, and the wheel. Red Pill members get higher-conviction options ideas with a full thesis attached.',
   },
   {
-    q: 'What if I\'m a complete beginner?',
-    a: 'Start in #getting-started and #dollar-cost-averaging. The community is friendly to first-timers — there\'s a real path from "I just opened a brokerage" to "I\'m running a covered-call ladder."',
+    q: "What if I'm a complete beginner?",
+    a: 'Start in the Education pillar — DCA, set-and-forget portfolios, market mechanics. The community is friendly to first-timers. There is a real path from "I just opened a brokerage" to "I am running a covered-call ladder."',
   },
   {
     q: 'Do you cover anything beyond markets?',
-    a: "Yes. The education library covers debt-management frameworks, long-term planning thinking, and the disciplined habits that turn investing returns into actual wealth. It's all educational content — frameworks for thinking, not personalized financial advice.",
+    a: 'Yes. The education library covers debt-management frameworks, long-term planning thinking, and the disciplined habits that turn investing returns into actual wealth. It is all educational content — frameworks for thinking, not personalized financial advice.',
   },
   {
-    q: 'Is this financial advice?',
-    a: "No. Everything is for educational and informational purposes only. We share frameworks and what we do; we don't make personalized recommendations and we're not your financial adviser. You're responsible for your own decisions. See the full disclaimer.",
+    q: 'I am already a member through Discord. What changes?',
+    a: 'Nothing for now. Existing Standard and Pro subscribers keep their current access uninterrupted. Any migration to the new model will be communicated directly with plenty of notice.',
   },
 ];
 ---
 
 <Layout
   title="Membership"
-  description="Two tiers. Real signals. Education from DCA to options Greeks. Subscriptions handled through the Discord."
+  description="Two tiers. Blue Pill — free newsletter. Red Pill — $99/mo full access. Investing education, smart-money signals, and the Nova tools we use on our own desk."
 >
   <section class="border-b border-bone/5">
-    <div class="container-wide py-24">
-      <p class="eyebrow">Membership</p>
-      <h1 class="mt-4 font-display text-display-xl uppercase tracking-tight">
-        Two tiers. <br />
-        <span class="text-signal">Zero gatekeeping.</span>
-      </h1>
-      <p class="mt-6 max-w-2xl text-lg text-bone-dim">
-        Standard delivers the full education library and the core signal lanes —
-        long-term picks, dip buys, ETF momentum, passive-income strategies. Pro adds
-        higher-conviction research and direct access to Luke.
-      </p>
+    <div class="container-wide py-14 md:py-24">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16 lg:items-center">
+        <div class="lg:col-span-7">
+          <p class="eyebrow">Membership</p>
+          <h1 class="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-5xl md:text-display-xl">
+            Two pills. <span class="text-signal">One choice.</span>
+          </h1>
+          <p class="mt-6 text-lg text-bone-dim">
+            Blue Pill keeps you informed with a weekly newsletter — a taste of the
+            framework and the names on our radar. Red Pill is the whole thing: every
+            signal, the full education library, the community, and the Nova tools we
+            run on our own desk.
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a href="#pricing" class="btn-primary">
+              See the tiers
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+            <a href="#faq" class="btn-secondary">FAQ</a>
+          </div>
+        </div>
+
+        <aside class="lg:col-span-5">
+          <div class="card border-signal/30 bg-ink-800">
+            <p class="eyebrow text-signal">What Red Pill includes</p>
+            <ul class="mt-6 space-y-4 text-sm text-bone-dim">
+              <li class="flex items-start gap-3">
+                <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                <span><strong class="text-bone">Full education library</strong> — DCA to options Greeks, debt frameworks, long-term planning.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                <span><strong class="text-bone">Every signal lane</strong> — long-term picks, dip buys, swing trades, ETF momentum, crypto, options.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                <span><strong class="text-bone">Pro community</strong> — Pro role in Discord, deep-value research, 1-on-1 portfolio review.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
+                <span><strong class="text-bone">Nova tools</strong> — Nova Fund, Smart Money tab, Luke's auto-tracked portfolios, vs SPY benchmark.</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <section class="container-wide py-24">
+  <section id="pricing" class="container-wide py-14 md:py-24 scroll-mt-24">
     <div class="grid gap-6 md:grid-cols-2">
       {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
     </div>
 
     <p class="mt-12 text-center text-sm text-bone-mute">
-      Both tiers billed monthly through Discord. Cancel anytime in your member dashboard.
+      Cancel anytime. Educational content only — never personalized financial advice.
     </p>
   </section>
 
-  <section class="container-wide py-24">
+  <PerformanceProof />
+
+  <section class="border-y border-bone/5 bg-ink-900">
+    <div class="container-wide py-14 md:py-24">
+      <p class="eyebrow">What you get</p>
+      <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+        The full picture.
+      </h2>
+      <p class="mt-4 max-w-2xl text-bone-dim">
+        Red Pill is built for members who want to actually understand markets, not just
+        receive tickers. Four pillars, one disciplined framework.
+      </p>
+
+      <div class="mt-8 md:mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div class="card">
+          <p class="eyebrow">Education</p>
+          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">Frameworks, not tickers.</h3>
+          <p class="mt-3 text-sm text-bone-dim">
+            DCA. Set-and-forget portfolios. Options mechanics. Debt management.
+            Long-term planning. The unsexy work that compounds.
+          </p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Smart-money signals</p>
+          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">Every name we watch.</h3>
+          <p class="mt-3 text-sm text-bone-dim">
+            Long-term picks, swing trades, dip buys, ETF momentum, passive-income
+            strategies, crypto, deep-value research, options ideas with full thesis.
+          </p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Community</p>
+          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">Real conversations.</h3>
+          <p class="mt-3 text-sm text-bone-dim">
+            Pro role in the Discord. Active chat, weekly recap, gains and losses, polls,
+            and a direct line to Luke for trade questions. 1-on-1 portfolio review.
+          </p>
+        </div>
+        <div class="card border-signal/30">
+          <p class="eyebrow text-signal">Nova tools</p>
+          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">Our desk, your dashboard.</h3>
+          <p class="mt-3 text-sm text-bone-dim">
+            Nova Fund (live AI-managed portfolio + weekly memos). Smart Money tab.
+            Luke's portfolios auto-tracked. Sector exposure. vs SPY benchmark.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <section class="container-wide py-14 md:py-24">
     <p class="eyebrow">FAQ</p>
     <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">Common questions</h2>
 
-    <div class="mt-12 grid gap-4">
+    <div class="mt-8 md:mt-12 grid gap-4">
       {faq.map((item) => (
         <details class="card group">
           <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
@@ -81,10 +189,10 @@ const faq = [
     <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-12 md:flex-row md:items-center md:justify-between">
       <div>
         <h2 class="font-display text-display-md uppercase tracking-tight">Ready when you are.</h2>
-        <p class="mt-3 text-bone-dim">Pick a tier, get the role, you're in.</p>
+        <p class="mt-3 text-bone-dim">Pick a pill and you're in.</p>
       </div>
-      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-primary whitespace-nowrap">
-        Join the Discord
+      <a href="#pricing" class="btn-primary whitespace-nowrap">
+        See the tiers
       </a>
     </div>
   </section>

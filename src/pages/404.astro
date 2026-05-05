@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { SITE } from '../lib/site';
 ---
 
 <Layout title="404 — Lost in the noise" description="The page you're looking for doesn't exist." noindex>
@@ -11,14 +10,14 @@ import { SITE } from '../lib/site';
     </h1>
     <p class="mt-6 max-w-xl text-lg text-bone-dim">
       That route doesn't exist — or it used to and we moved it. Try the home page,
-      check the blog, or jump straight into the Discord.
+      check the blog, or take the Red Pill.
     </p>
 
     <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
       <a href="/" class="btn-primary">Back home</a>
       <a href="/blog" class="btn-secondary">Read the blog</a>
-      <a href={SITE.discord.subscribe} target="_blank" rel="noopener" class="btn-ghost">
-        Join the Discord →
+      <a href="/membership" class="btn-ghost">
+        Leave the Matrix →
       </a>
     </div>
 

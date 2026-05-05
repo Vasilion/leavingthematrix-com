@@ -1,0 +1,586 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const novaSteps = [
+  {
+    n: '01',
+    title: 'Universe scan',
+    desc: 'Every name on the watchlist gets scored daily across twelve signal layers — quality, discount, smart-money, context.',
+  },
+  {
+    n: '02',
+    title: 'Zone gating',
+    desc: 'Picks come from Accumulation (60–70) and Buying (70–100) zones only. Selling and Distribution names are filtered out.',
+  },
+  {
+    n: '03',
+    title: 'Confluence bonus',
+    desc: 'Score boost when two or more smart-money layers (insider / congress / 13F / flow) all read bullish on the same name.',
+  },
+  {
+    n: '04',
+    title: 'Sector-aware sizing',
+    desc: 'Allocator caps any single sector to prevent the portfolio from concentrating into one theme.',
+  },
+  {
+    n: '05',
+    title: 'Entry + thesis',
+    desc: 'Every position is paired with a written thesis. Reasoning is published in the weekly memo.',
+  },
+  {
+    n: '06',
+    title: 'Exit',
+    desc: "Score drift below threshold triggers re-evaluation. Closed positions get reviewed honestly — including losers.",
+  },
+];
+
+const etfSteps = [
+  {
+    n: '01',
+    title: 'Universe scan',
+    desc: '1,000+ liquid US-listed ETFs across equities, bonds, commodities, and alternative asset classes.',
+  },
+  {
+    n: '02',
+    title: 'Multi-factor ranking',
+    desc: 'Each ETF ranked on a blend of trend, momentum, volatility, and risk-adjusted return.',
+  },
+  {
+    n: '03',
+    title: 'Top-100 filter',
+    desc: 'Narrow to genuine leadership candidates. Names stuck in prolonged downtrends are dropped.',
+  },
+  {
+    n: '04',
+    title: 'Correlation gate',
+    desc: 'Filter out ETFs that move in lockstep with each other to avoid hidden concentration.',
+  },
+  {
+    n: '05',
+    title: 'Top-10 selection',
+    desc: 'Equal-weighted at 10% of account value. Diversified, but each winner is free to drive performance.',
+  },
+  {
+    n: '06',
+    title: 'Monthly rebalance',
+    desc: "First trading day of the month. Cut weakness, hold winners. When nothing clears the threshold, cash is the position.",
+  },
+];
+
+const stockSteps = [
+  {
+    n: '01',
+    title: 'Top-down macro scan',
+    desc: 'Identify the strongest markets, sectors, and themes driving current conditions.',
+  },
+  {
+    n: '02',
+    title: 'Custom screening',
+    desc: 'Proprietary screens pull from 4,300+ instruments across NYSE, AMEX, and NASDAQ. Output: a tight shortlist.',
+  },
+  {
+    n: '03',
+    title: 'Deep fundamental research',
+    desc: 'Financials, growth, valuation, and qualified analyst takes. Trim the shortlist to candidates that hold up.',
+  },
+  {
+    n: '04',
+    title: 'Technical & indicator timing',
+    desc: 'Custom fundamental and technical indicators identify the optimal entry timing.',
+  },
+  {
+    n: '05',
+    title: 'Portfolio fit + final pick',
+    desc: "Sector exposure and risk balance considered. One pick per week makes the cut.",
+  },
+];
+
+const stockReturnsBuckets = [
+  { range: '20–40%', label: 'Small to moderate losses', sub: 'Cut quickly. Trailing stop fires.', tone: 'loss' },
+  { range: '20–40%', label: 'Small to moderate wins', sub: 'Consistent, smaller returns.', tone: 'neutral' },
+  { range: '40–100%', label: 'Big winners', sub: 'The real bulk drivers.', tone: 'signal' },
+  { range: '100%+', label: 'Outliers', sub: 'Where the strategy actually compounds.', tone: 'signalStrong' },
+];
+
+const stockWeekly = [
+  {
+    when: 'Monday',
+    what: 'Luke buys',
+    desc: '$550 invested in a real-money account at a random time. Entry price posted to open positions.',
+  },
+  {
+    when: '1st of month',
+    what: 'Performance report',
+    desc: 'Monthly update on portfolio performance, position commentary, and market outlook.',
+  },
+  {
+    when: 'When triggered',
+    what: 'Exit alerts',
+    desc: 'Sell signal posted the day before exit. Custom trailing stop indicator determines exits.',
+  },
+];
+
+function toneClass(t: string) {
+  switch (t) {
+    case 'loss':
+      return 'text-loss';
+    case 'signal':
+      return 'text-signal';
+    case 'signalStrong':
+      return 'text-signal';
+    default:
+      return 'text-bone';
+  }
+}
+---
+
+<Layout
+  title="Portfolios"
+  description="Three published portfolios — Nova Fund, ETF Momentum, and Stock Picks. Three different strategies. One disciplined framework. Educational only."
+>
+  <!-- Hero -->
+  <section class="border-b border-bone/5">
+    <div class="container-wide py-14 md:py-24">
+      <div class="max-w-3xl">
+        <p class="eyebrow">Portfolios</p>
+        <h1 class="mt-4 font-display text-display-xl uppercase tracking-tight">
+          Three strategies.<br />
+          <span class="text-signal">One framework.</span>
+        </h1>
+        <p class="mt-6 text-lg text-bone-dim">
+          Each portfolio runs a different lens — AI-curated picks, systematic ETF
+          momentum, and high-conviction small caps. All three share the same
+          discipline: every position has a written thesis, every closed position gets
+          reviewed honestly, every miss is documented.
+        </p>
+      </div>
+
+      <!-- Anchor sub-nav -->
+      <ul class="mt-12 grid gap-4 md:grid-cols-3">
+        <li>
+          <a href="#nova-fund" class="card-interactive block">
+            <p class="eyebrow">01</p>
+            <p class="mt-2 font-display text-xl tracking-tight text-bone">Nova Fund</p>
+            <p class="mt-1 text-xs text-bone-mute">AI-curated · Quality × Discount × Smart-money</p>
+          </a>
+        </li>
+        <li>
+          <a href="#etf-momentum" class="card-interactive block">
+            <p class="eyebrow">02</p>
+            <p class="mt-2 font-display text-xl tracking-tight text-bone">ETF Momentum</p>
+            <p class="mt-1 text-xs text-bone-mute">Systematic · 1,000+ ETF universe · monthly</p>
+          </a>
+        </li>
+        <li>
+          <a href="#stock-picks" class="card-interactive block">
+            <p class="eyebrow">03</p>
+            <p class="mt-2 font-display text-xl tracking-tight text-bone">Stock Picks</p>
+            <p class="mt-1 text-xs text-bone-mute">High-growth small caps · public ledger</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== NOVA FUND ========== -->
+  <section id="nova-fund" class="scroll-mt-24 border-b border-bone/5 bg-ink-900">
+    <div class="container-wide py-14 md:py-24">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="eyebrow text-signal">Portfolio 01</p>
+          <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">Nova Fund</h2>
+          <p class="mt-4 text-xl text-bone-dim">
+            AI-curated. Quality × discount × smart-money. Twelve signals, one score.
+          </p>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="prose-ltm">
+            <p>
+              Nova Fund is a live, AI-curated portfolio managed inside Nova — the
+              trading copilot we built for our own desk. Every position is selected
+              through the same lens applied everywhere on this site:
+              <strong>quality × discount × smart-money confirmation</strong>, condensed
+              into a single 0–100 Nova Score across twelve signal layers.
+            </p>
+            <p>
+              Twelve signals. Five score zones — Selling, Distribution, Neutral,
+              Accumulation, Buying. Layers without data <strong>abstain</strong>:
+              they're skipped from the blend, not averaged toward 50. A confluence
+              bonus fires when multiple smart-money layers read bullish on the same
+              name. Every pick is paired with a written thesis.
+            </p>
+            <p>
+              Cash flows are managed deterministically. Dividends are reinvested
+              automatically at the next ex-date close (DRIP). The sector-aware
+              allocator prevents concentration into any one theme. Positions are
+              reviewed in the weekly memo with reasoning published — every entry,
+              every exit, every miss.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key facts -->
+      <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div class="card">
+          <p class="eyebrow">Framework</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Quality × Discount × Smart-money</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Score</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">0–100 · 12 layers · 5 zones</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Cadence</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Weekly memo · daily rebalance</p>
+        </div>
+        <div class="card border-signal/30">
+          <p class="eyebrow text-signal">Cash flows</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">DRIP · sector-aware sizing</p>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="mt-10 md:mt-16">
+        <div class="pl-5 md:pl-6">
+          <p class="eyebrow">How it works</p>
+          <h3 class="mt-2 font-display text-display-md uppercase tracking-tight">From watchlist to position.</h3>
+        </div>
+        <ol class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {novaSteps.map((s) => (
+            <li class="card flex gap-4">
+              <span class="font-mono text-sm text-signal">{s.n}</span>
+              <div>
+                <p class="font-display text-lg tracking-tight text-bone">{s.title}</p>
+                <p class="mt-2 text-sm text-bone-dim">{s.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ETF MOMENTUM ========== -->
+  <section id="etf-momentum" class="scroll-mt-24 border-b border-bone/5">
+    <div class="container-wide py-14 md:py-24">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="eyebrow text-signal">Portfolio 02</p>
+          <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">ETF Momentum</h2>
+          <p class="mt-4 text-xl text-bone-dim">
+            Markets reward discipline. No predictions, no gut calls, no headlines.
+          </p>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="prose-ltm">
+            <p>
+              The ETF Momentum portfolio runs on one principle: markets reward
+              discipline. A systematic, rules-based process screens the strongest
+              names out of <strong>1,000+ liquid US-listed ETFs</strong> across
+              equities, bonds, commodities, and alternative asset classes.
+            </p>
+            <p>
+              Every month, each ETF is ranked on a blend of trend, momentum,
+              volatility, and risk-adjusted return. The portfolio tilts toward
+              genuine leadership and avoids names stuck in prolonged downtrends.
+            </p>
+            <p>
+              The top 10 ETFs are pulled from the top-100 ranked list. Positions are
+              equally weighted at 10% of account value — diversified, with each winner
+              free to drive performance. Correlation filters drop ETFs that move in
+              lockstep, which would create hidden concentration. Result: exposure to
+              several distinct market themes at once.
+            </p>
+            <p>
+              Rebalance is monthly, on the first trading day. Responsive enough to
+              react when leadership rotates, slow enough to avoid churn. Average hold
+              runs <strong>two to five months</strong>. When nothing in the universe
+              clears the system's threshold, <strong>cash is the position</strong>.
+              Discipline above exposure.
+            </p>
+            <p>
+              Dividends are retained and reinvested at the next rebalance. Luke
+              contributes $1,000/month to the strategy — DCA layered on top of
+              momentum. The strategy adapts to whatever cycle the market is in:
+              compound over time, avoid overtrading, overconcentration, and
+              fad-chasing.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key facts -->
+      <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div class="card">
+          <p class="eyebrow">Universe</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">1,000+ US-listed ETFs</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Holdings</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">10 ETFs · equal-weight</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Rebalance</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Monthly · 1st trading day</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Hold period</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">2–5 months avg</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Asset classes</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Equities · bonds · commodities · alts</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Risk control</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Cash position when threshold not met</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Correlation</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Lockstep filter prevents concentration</p>
+        </div>
+        <div class="card border-signal/30">
+          <p class="eyebrow text-signal">DCA layer</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">$1,000/mo contribution</p>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="mt-10 md:mt-16">
+        <div class="pl-5 md:pl-6">
+          <p class="eyebrow">The process</p>
+          <h3 class="mt-2 font-display text-display-md uppercase tracking-tight">Six steps. Once a month.</h3>
+        </div>
+        <ol class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {etfSteps.map((s) => (
+            <li class="card flex gap-4">
+              <span class="font-mono text-sm text-signal">{s.n}</span>
+              <div>
+                <p class="font-display text-lg tracking-tight text-bone">{s.title}</p>
+                <p class="mt-2 text-sm text-bone-dim">{s.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== STOCK PICKS ========== -->
+  <section id="stock-picks" class="scroll-mt-24 border-b border-bone/5 bg-ink-900">
+    <div class="container-wide py-14 md:py-24">
+      <div class="grid gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="eyebrow text-signal">Portfolio 03</p>
+          <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">Stock Picks</h2>
+          <p class="mt-4 text-xl text-bone-dim">
+            High-growth small caps. Disciplined process. Real money. Public ledger.
+          </p>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="prose-ltm">
+            <p>
+              The Stock Picks portfolio is the high-conviction lane. <strong>High-growth
+              small caps with outlier potential</strong> — a high-risk, high-reward
+              strategy executed with the same discipline as everything else: documented
+              thesis, custom trailing stop, real money on the line.
+            </p>
+            <p>
+              Picks come through a five-step funnel. Top-down macro scan identifies the
+              strongest markets and themes. A custom screen — proprietary models pulling
+              from <strong>4,300+ instruments</strong> across NYSE, AMEX, and NASDAQ —
+              narrows that to a shortlist. Deep fundamental research trims further:
+              financials, growth, valuation, qualified analyst takes. Technical and
+              indicator analysis identifies the optimal entry timing. The final cut
+              considers portfolio fit and current sector exposure. <strong>One pick per
+              week.</strong>
+            </p>
+            <p>
+              The portfolio runs <strong>30–40 positions</strong> on average — fewer
+              during downturns, more during strength. Average hold is around four
+              months but ranges from two weeks to two years. Losers cut fast on a
+              custom trailing stop (price closes below, sell alert issued, exit next
+              day). Winners run.
+            </p>
+            <p>
+              Returns follow a <strong>trend-following distribution</strong>: many
+              small outcomes, a few big winners that drive the bulk of returns. A
+              30–40% drawdown should be expected at some point over 10 years —
+              that's normal. The portfolio is built to withstand prolonged downturns
+              through diversification across asset classes, geographies (via ADRs),
+              and by only investing in what's growing. Short-term volatility is the
+              price paid for long-term outperformance.
+            </p>
+            <p>
+              <strong>Reinvestment engine:</strong> on the first trading day of each
+              month, proceeds from closed positions and dividends are redistributed
+              equally across all open picks. Compounding by design. Minimum 10 open
+              positions to prevent over-concentration. Minimum 5% cash reserve to
+              avoid churn from tiny reinvestments.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- The Public Challenge -->
+      <div class="mt-10 md:mt-16">
+        <div class="card border-signal/30 bg-ink-800">
+          <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div class="max-w-2xl">
+              <p class="eyebrow text-signal">The Public Challenge</p>
+              <h3 class="mt-3 font-display text-display-md uppercase tracking-tight">$500 to $1M.</h3>
+              <p class="mt-4 text-bone-dim">
+                A 10-year mission to grow a real-money portfolio from $500 to
+                $1,000,000 — full transparency, weekly picks, every trade documented.
+                Luke contributes $550/week, increasing 10% every year.
+              </p>
+            </div>
+            <ul class="grid grid-cols-3 gap-4">
+              <li class="text-center">
+                <p class="font-display text-2xl tracking-tight text-bone">$550</p>
+                <p class="mt-1 text-[10px] uppercase tracking-widest text-bone-mute">/wk invested</p>
+              </li>
+              <li class="text-center">
+                <p class="font-display text-2xl tracking-tight text-bone">10y</p>
+                <p class="mt-1 text-[10px] uppercase tracking-widest text-bone-mute">Jun 2024 → Jun 2034</p>
+              </li>
+              <li class="text-center">
+                <p class="font-display text-2xl tracking-tight text-signal">~17.8%</p>
+                <p class="mt-1 text-[10px] uppercase tracking-widest text-bone-mute">target CAGR</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key facts -->
+      <div class="mt-10 md:mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div class="card">
+          <p class="eyebrow">Universe</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">4,300+ NYSE / AMEX / NASDAQ</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Holdings</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">30–40 positions</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Hold period</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">~4mo avg · 2 weeks – 2 years</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Exit</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Custom trailing stop</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Style</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">High-growth small caps</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Reinvestment</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">Monthly · equal-weight redistribution</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Min positions</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">10 open · 5% cash reserve</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Filters</p>
+          <p class="mt-2 font-display text-lg tracking-tight text-bone">$25M cap · $2 share · long only</p>
+        </div>
+      </div>
+
+      <!-- How picks are chosen -->
+      <div class="mt-10 md:mt-16">
+        <div class="pl-5 md:pl-6">
+          <p class="eyebrow">How picks are chosen</p>
+          <h3 class="mt-2 font-display text-display-md uppercase tracking-tight">Five-step funnel.</h3>
+        </div>
+        <ol class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {stockSteps.map((s) => (
+            <li class="card flex gap-4">
+              <span class="font-mono text-sm text-signal">{s.n}</span>
+              <div>
+                <p class="font-display text-lg tracking-tight text-bone">{s.title}</p>
+                <p class="mt-2 text-sm text-bone-dim">{s.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <!-- Return distribution -->
+      <div class="mt-10 md:mt-16">
+        <div class="pl-5 md:pl-6">
+          <p class="eyebrow">What to expect</p>
+          <h3 class="mt-2 font-display text-display-md uppercase tracking-tight">Trend-following distribution.</h3>
+          <p class="mt-4 max-w-2xl text-bone-dim">
+            Many small outcomes. A few big winners that drive the bulk of returns. The
+            tail is where the strategy actually compounds.
+          </p>
+        </div>
+        <ul class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {stockReturnsBuckets.map((b) => (
+            <li class="card">
+              <p class={['font-mono text-2xl', toneClass(b.tone)].join(' ')}>{b.range}</p>
+              <p class="mt-2 font-display text-lg tracking-tight text-bone">{b.label}</p>
+              <p class="mt-2 text-xs text-bone-mute">{b.sub}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Weekly cycle -->
+      <div class="mt-10 md:mt-16">
+        <div class="pl-5 md:pl-6">
+          <p class="eyebrow">The weekly cycle</p>
+          <h3 class="mt-2 font-display text-display-md uppercase tracking-tight">From entry to exit.</h3>
+        </div>
+        <ul class="mt-10 grid gap-4 md:grid-cols-3">
+          {stockWeekly.map((w) => (
+            <li class="card">
+              <p class="eyebrow text-signal">{w.when}</p>
+              <p class="mt-3 font-display text-lg tracking-tight text-bone">{w.what}</p>
+              <p class="mt-2 text-sm text-bone-dim">{w.desc}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Drawdown caveat -->
+      <div class="mt-10 md:mt-16">
+        <div class="card border-loss/30 bg-loss/5">
+          <p class="eyebrow text-loss">Drawdowns are part of the plan</p>
+          <p class="mt-3 text-bone-dim">
+            A 30–40% drawdown should be expected at some point over a 10-year horizon
+            — that's normal. The portfolio is built to withstand prolonged downturns
+            through diversification across asset classes, geographies, and by only
+            investing in what's growing. Short-term volatility is the price paid for
+            long-term outperformance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="container-wide py-14 md:py-24">
+    <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-12 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h2 class="font-display text-display-md uppercase tracking-tight">Want them all?</h2>
+        <p class="mt-3 text-bone-dim">
+          Red Pill includes Nova Fund, ETF Momentum, and Stock Picks — auto-tracked
+          inside the members area, with weekly memos and full thesis on every entry.
+        </p>
+      </div>
+      <a href="/membership" class="btn-primary whitespace-nowrap">
+        See membership
+      </a>
+    </div>
+  </section>
+
+  <p class="container-wide pb-24 text-center text-xs text-bone-mute">
+    Educational content only. Past performance does not indicate future results.
+    Trading involves substantial risk of loss.
+  </p>
+</Layout>

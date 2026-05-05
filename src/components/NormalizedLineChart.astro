@@ -1,0 +1,180 @@
+---
+// Renders two normalized series (portfolio + benchmark) as overlaid SVG lines.
+// Both series are normalized to 100 at the first data point so they share a
+// y-baseline. Pure SVG — no chart-library dependency. Server-rendered.
+//
+// Series shape: array of { date: ISO-string, value: number }. Value units don't
+// matter (price, $, indexed) — we normalize internally.
+
+interface Series {
+  label: string;
+  color: 'signal' | 'bone-dim';
+  points: { date: string; value: number }[];
+}
+
+interface Props {
+  portfolio: Series;
+  benchmark: Series;
+  /** Optional caption shown below the chart. */
+  caption?: string;
+}
+
+const { portfolio, benchmark, caption } = Astro.props;
+
+// --- Layout ---
+const W = 800;
+const H = 280;
+const PAD_L = 48;
+const PAD_R = 16;
+const PAD_T = 16;
+const PAD_B = 32;
+
+const innerW = W - PAD_L - PAD_R;
+const innerH = H - PAD_T - PAD_B;
+
+// --- Normalize each series to start at 100 ---
+function normalize(points: { date: string; value: number }[]) {
+  if (points.length === 0) return [];
+  const base = points[0].value;
+  return points.map((p) => ({ date: p.date, value: (p.value / base) * 100 }));
+}
+
+const port = normalize(portfolio.points);
+const bench = normalize(benchmark.points);
+
+// --- Find global min/max for shared scale ---
+const all = [...port, ...bench];
+const minV = Math.min(...all.map((p) => p.value));
+const maxV = Math.max(...all.map((p) => p.value));
+const range = Math.max(maxV - minV, 0.01);
+
+// 5% headroom top + bottom
+const yMin = minV - range * 0.05;
+const yMax = maxV + range * 0.05;
+const yRange = yMax - yMin;
+
+const xMin = 0;
+const xMax = Math.max(port.length - 1, bench.length - 1, 1);
+
+function toX(i: number) {
+  return PAD_L + (i / xMax) * innerW;
+}
+function toY(v: number) {
+  return PAD_T + ((yMax - v) / yRange) * innerH;
+}
+
+function pathFor(points: { value: number }[]) {
+  if (points.length === 0) return '';
+  return points
+    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${toX(i).toFixed(1)} ${toY(p.value).toFixed(1)}`)
+    .join(' ');
+}
+
+const portPath = pathFor(port);
+const benchPath = pathFor(bench);
+
+// --- Y-axis gridlines at 100 baseline + chart bounds ---
+const baselineY = toY(100);
+
+// Final values (to label end of each line)
+const portFinal = port.length ? port[port.length - 1].value : 100;
+const benchFinal = bench.length ? bench[bench.length - 1].value : 100;
+
+// Date labels (start / end)
+const startLabel = port[0]?.date ?? '';
+const endLabel = port[port.length - 1]?.date ?? '';
+
+const fmtDate = (iso: string) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+};
+
+// Color tokens
+const colorClass = (c: 'signal' | 'bone-dim') =>
+  c === 'signal' ? 'stroke-signal' : 'stroke-bone-mute';
+const fillClass = (c: 'signal' | 'bone-dim') =>
+  c === 'signal' ? 'fill-signal' : 'fill-bone-mute';
+---
+
+<figure class="space-y-3">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label={`${portfolio.label} vs ${benchmark.label}, normalized to 100 at start`}
+    class="w-full"
+  >
+    <!-- Gridlines -->
+    <line
+      x1={PAD_L}
+      y1={baselineY}
+      x2={W - PAD_R}
+      y2={baselineY}
+      class="stroke-bone/15"
+      stroke-dasharray="3 4"
+      stroke-width="1"
+    />
+    <text x={PAD_L - 6} y={baselineY + 3} text-anchor="end" class="fill-bone-mute text-[10px] font-mono">100</text>
+
+    <!-- Top + bottom bound labels -->
+    <text x={PAD_L - 6} y={PAD_T + 8} text-anchor="end" class="fill-bone-mute text-[10px] font-mono">{yMax.toFixed(0)}</text>
+    <text x={PAD_L - 6} y={H - PAD_B - 4} text-anchor="end" class="fill-bone-mute text-[10px] font-mono">{yMin.toFixed(0)}</text>
+
+    <!-- Benchmark line (drawn first, behind) -->
+    <path
+      d={benchPath}
+      fill="none"
+      class={colorClass(benchmark.color)}
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-dasharray="4 4"
+    />
+    <!-- Portfolio line (on top) -->
+    <path
+      d={portPath}
+      fill="none"
+      class={colorClass(portfolio.color)}
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <!-- End-of-line dots -->
+    <circle
+      cx={toX(bench.length - 1)}
+      cy={toY(benchFinal)}
+      r="3"
+      class={fillClass(benchmark.color)}
+    />
+    <circle
+      cx={toX(port.length - 1)}
+      cy={toY(portFinal)}
+      r="4"
+      class={fillClass(portfolio.color)}
+    />
+
+    <!-- X-axis labels -->
+    <text x={PAD_L} y={H - 8} text-anchor="start" class="fill-bone-mute text-[10px] font-mono">{fmtDate(startLabel)}</text>
+    <text x={W - PAD_R} y={H - 8} text-anchor="end" class="fill-bone-mute text-[10px] font-mono">{fmtDate(endLabel)}</text>
+  </svg>
+
+  <!-- Legend -->
+  <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
+    <span class="flex items-center gap-2">
+      <span class={`inline-block h-0.5 w-6 ${portfolio.color === 'signal' ? 'bg-signal' : 'bg-bone-mute'}`}></span>
+      <span class="text-bone">{portfolio.label}</span>
+      <span class={`font-mono ${portfolio.color === 'signal' ? 'text-signal' : 'text-bone-dim'}`}>
+        +{(portFinal - 100).toFixed(1)}%
+      </span>
+    </span>
+    <span class="flex items-center gap-2">
+      <span class={`inline-block h-0.5 w-6 ${benchmark.color === 'signal' ? 'bg-signal' : 'bg-bone-mute'}`} style="border-top: 1px dashed currentColor;"></span>
+      <span class="text-bone-dim">{benchmark.label}</span>
+      <span class="font-mono text-bone-mute">+{(benchFinal - 100).toFixed(1)}%</span>
+    </span>
+  </div>
+
+  {caption && <figcaption class="text-xs text-bone-mute">{caption}</figcaption>}
+</figure>

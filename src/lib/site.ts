@@ -1,9 +1,12 @@
 export const SITE = {
   name: 'Leaving The Matrix',
   domain: 'leavingthematrix.io',
-  tagline: 'Data-driven investing education and signals.',
+  tagline: 'Investing education and smart-money signals.',
   description:
-    'Investing education, market signals, debt-management frameworks, and the long-term discipline that turns markets into a real wealth-building tool. Educational only — never personalized financial advice.',
+    'Investing education and smart-money signals — quality businesses, valuation discount, institutional flow. Educational only — never personalized financial advice.',
+  // Discord links remain referenced for the existing Mee6 subscriber base
+  // (Standard $30 / Pro $80) until the Stripe + role-bot migration ships.
+  // Public-facing CTAs no longer point here — site flow is /membership.
   discord: {
     invite: 'https://mee6.xyz/en/m/1384673721599397948',
     subscribe: 'https://mee6.xyz/en/m/1384673721599397948?subscribe=1428981437381615616&bundle=1',
@@ -14,24 +17,14 @@ export const SITE = {
 } as const;
 
 // TODO(nova-launch): when nova.leavingthematrix.io is deployed on Amplify,
-// flip `comingSoon: true` to false (or remove the field) on:
-//   1. The "Nova Fund" entry in NAV_LINKS below
-//   2. The "Elite" tier in PRICING_TIERS below
-// Both should then become clickable cross-links to the Nova subdomain.
+// flip the Red Pill `comingSoon: true` to false in PRICING_TIERS below — its
+// CTA points at the Stripe checkout flow on the Nova subdomain.
 export const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/membership', label: 'Membership' },
+  { href: '/portfolios', label: 'Portfolios' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
-  // Nova Fund subdomain — opens in same tab. External flag tells the nav
-  // component to render the link with the standard external-link affordance.
-  // Currently locked behind `comingSoon` until nova.leavingthematrix.io ships.
-  {
-    href: 'https://nova.leavingthematrix.io',
-    label: 'Nova Fund',
-    external: true,
-    comingSoon: true,
-  },
 ] as const;
 
 export const BLOG_CATEGORIES = [
@@ -42,64 +35,57 @@ export const BLOG_CATEGORIES = [
   { id: 'announcements', label: 'Announcements', description: 'Updates from the desk.' },
 ] as const;
 
+// PRICING — collapsed to two tiers 2026-05-05.
+// Blue Pill = Free (newsletter, launching with Nova).
+// Red Pill = $99/mo full access (Discord Pro + Nova Fund + portfolios).
+//
+// MIGRATION TODO: existing Mee6 Standard ($30) / Pro ($80) subscribers need a
+// migration plan before public launch. Options under consideration:
+//   - Grandfather forever (keep Mee6 billing for current subs)
+//   - Sunset window (e.g. 6mo) then forced migration to Stripe
+//   - One-time loyalty discount on Red Pill for existing subs
+// Decision pending; do not surface old Standard/Pro pricing publicly.
+//
+// STRIPE TODO: when Stripe + Discord-role-bot is wired, flip the Red Pill
+// `comingSoon` flag and point `href` at the Stripe checkout.
 export const PRICING_TIERS = [
   {
-    name: 'Standard',
-    price: '$30',
-    period: '/mo',
-    tagline: 'The full education and signals stack.',
+    name: 'Blue Pill',
+    price: 'Free',
+    period: '',
+    tagline: 'Stay asleep, but keep an eye open.',
     features: [
-      'Education library — DCA, set-and-forget portfolios, market mechanics',
-      'Debt-management and long-term planning frameworks',
-      'Long-term high-conviction stock picks',
-      'Buy-the-dip and swing-trade ideas',
-      'ETF momentum and passive-income strategies',
-      'Crypto coverage',
-      'Market watch and weekly recap',
-      'Active community chat',
+      'Weekly newsletter — what the smart money is doing',
+      'A taste of the framework Nova runs every day',
+      'Highlight ideas surfaced by the desk',
+      'Educational content only — never personalized advice',
     ],
-    cta: 'Join Standard',
+    cta: 'Get the Newsletter',
     popular: false,
+    href: '/membership',
+    comingSoon: true,
   },
   {
-    name: 'Pro',
-    price: '$80',
+    name: 'Red Pill',
+    price: '$149',
     period: '/mo',
-    tagline: 'Everything in Standard, plus higher-conviction research and direct access.',
+    tagline: 'Full access. The framework, the signals, the community, the tools.',
     features: [
-      'Everything in Standard',
-      'Pro-chat access',
-      'Deep-value research — names trading near 200-week support',
+      'Full education library — DCA to options Greeks, debt frameworks, long-term planning',
+      'Every signal lane — long-term picks, dip buys, swing trades, ETF momentum, crypto',
+      'Pro role in the Discord community',
       'Higher-conviction options ideas with full thesis',
-      '1-on-1 portfolio review with Luke',
-      'Direct line for trade questions',
-    ],
-    cta: 'Join Pro',
-    popular: true,
-  },
-  // OPEN NAMING QUESTION (banked 2026-05-05 in projects/nova/portfolio-product.md):
-  // Plan-doc framing called the Nova-included tier "LTM Pro" but that name is
-  // already used for the $80 tier above. Going with "Elite" as a third tier
-  // here as the safe non-collision option — Luke can rename / consolidate at
-  // launch time.
-  {
-    name: 'Elite',
-    price: '$99',
-    period: '/mo',
-    tagline: 'Everything in Pro, plus Nova Fund and Luke\'s curated portfolios.',
-    features: [
-      'Everything in Pro',
+      'Deep-value research — names trading near 200-week support',
       'Nova Fund — live AI-managed portfolio with weekly memos',
       'Smart Money tab — insider buys, congressional trades, 13F flows',
-      'Luke\'s ETF Momentum portfolio — auto-tracked',
-      'Luke\'s Stock Picks portfolio — auto-tracked',
+      "Luke's ETF Momentum + Stock Picks portfolios — auto-tracked",
       'Sector exposure + market context dashboards',
       'vs SPY benchmark with dividend reinvestment',
+      'Direct line for trade questions, 1-on-1 portfolio review',
     ],
-    cta: 'Join Elite',
-    popular: false,
-    href: 'https://nova.leavingthematrix.io/sign-up',
-    external: true,
+    cta: 'Take the Red Pill',
+    popular: true,
+    href: '/membership',
     comingSoon: true,
   },
 ] as const;

@@ -1,0 +1,181 @@
+---
+import NormalizedLineChart from './NormalizedLineChart.astro';
+
+// PLACEHOLDER DATA — visual proof on /membership.
+//
+// TODO(perf-wire): replace these stubbed series with a fetch from the
+// apps/web members area. Suggested endpoint:
+//   GET /api/performance/public
+// returning:
+//   {
+//     etfMomentum: { twr, annualized, series: [{ date, value }] },
+//     stockPicks:   { twr, annualized, series: [{ date, value }] },
+//     spy:          { series: [{ date, value }] },
+//     iwm:          { series: [{ date, value }] },
+//     updatedAt: ISOString
+//   }
+//
+// Data is sourced from the clickcapital_portfolios Neon table + Yahoo
+// historicals for SPY/IWM benchmarks. Cache the response weekly so the
+// LTM site can fetch at build time (Astro static).
+//
+// Until then: the shapes below are illustrative — adjust ETF / stock
+// monthly values to roughly mirror Luke's actual track record before
+// going public, OR leave as placeholders if you prefer the no-numbers
+// approach (just trim the visible final-% labels on the chart).
+
+// Generate 13 monthly points (12-month window) ending today.
+function monthSeries(monthlyMultipliers: number[]): { date: string; value: number }[] {
+  const out: { date: string; value: number }[] = [];
+  const now = new Date();
+  let v = 100;
+  for (let i = monthlyMultipliers.length - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    v = v * monthlyMultipliers[monthlyMultipliers.length - 1 - i];
+    out.push({ date: d.toISOString().slice(0, 10), value: v });
+  }
+  return out;
+}
+
+// Stub: ETF Momentum compounds ~2.7%/mo on average (~+38% over 12mo)
+const etfMomentum = monthSeries([
+  1.0, 1.025, 1.018, 1.032, 1.04, 1.022, 1.035, 1.028, 1.041, 1.026, 1.033, 1.029, 1.031,
+]);
+// Stub: SPY ~+15% over the same window
+const spy = monthSeries([
+  1.0, 1.012, 1.008, 1.015, 1.018, 1.005, 1.012, 1.014, 1.018, 1.01, 1.013, 1.011, 1.014,
+]);
+
+// Stub: Stock Picks ~+52% over 12mo (small-cap-leaning, more volatile)
+const stockPicks = monthSeries([
+  1.0, 1.04, 1.022, 1.048, 1.018, 1.055, 1.02, 1.045, 1.038, 1.052, 1.022, 1.048, 1.04,
+]);
+// Stub: IWM ~+8% over the same window
+const iwm = monthSeries([
+  1.0, 1.008, 1.005, 1.01, 1.012, 0.998, 1.008, 1.006, 1.012, 1.005, 1.008, 1.005, 1.011,
+]);
+
+// Helpers — final / annualized off the stub
+function finalReturn(series: { value: number }[]): number {
+  if (series.length === 0) return 0;
+  return (series[series.length - 1].value / series[0].value - 1) * 100;
+}
+function annualized(series: { date: string; value: number }[]): number {
+  if (series.length < 2) return 0;
+  const startDate = new Date(series[0].date).getTime();
+  const endDate = new Date(series[series.length - 1].date).getTime();
+  const years = (endDate - startDate) / (365.25 * 24 * 3600 * 1000);
+  if (years <= 0) return 0;
+  const total = series[series.length - 1].value / series[0].value;
+  return (Math.pow(total, 1 / years) - 1) * 100;
+}
+
+const etfTwr = finalReturn(etfMomentum);
+const etfAnn = annualized(etfMomentum);
+const spxTwr = finalReturn(spy);
+const stockTwr = finalReturn(stockPicks);
+const stockAnn = annualized(stockPicks);
+const iwmTwr = finalReturn(iwm);
+---
+
+<section class="border-y border-bone/5 bg-ink-900">
+  <div class="container-wide py-14 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Track record</p>
+      <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+        The framework <span class="text-signal">works</span>.
+      </h2>
+      <p class="mt-6 text-bone-dim">
+        Two of our published portfolios, normalized against the index they should be
+        benchmarked against. ETF Momentum vs SPY. Stock Picks vs IWM (small-caps).
+        Past performance does not indicate future results — but the framework
+        shows up in the chart.
+      </p>
+    </div>
+
+    <div class="mt-8 md:mt-12 grid gap-6 lg:grid-cols-2">
+      <!-- ETF Momentum vs SPY -->
+      <article class="card bg-ink-800">
+        <div class="flex items-baseline justify-between gap-4">
+          <div>
+            <p class="eyebrow text-signal">ETF Momentum</p>
+            <h3 class="mt-2 font-display text-2xl uppercase tracking-tight text-bone">
+              Momentum-screened ETFs
+            </h3>
+          </div>
+          <div class="text-right">
+            <p class="font-mono text-3xl text-signal">+{etfAnn.toFixed(0)}%</p>
+            <p class="text-[10px] uppercase tracking-widest text-bone-mute">annualized</p>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <NormalizedLineChart
+            portfolio={{ label: 'ETF Momentum', color: 'signal', points: etfMomentum }}
+            benchmark={{ label: 'SPY', color: 'bone-dim', points: spy }}
+            caption="Last 12 months · normalized to 100"
+          />
+        </div>
+
+        <div class="mt-6 grid grid-cols-3 gap-3 border-t border-bone/10 pt-6 text-sm">
+          <div>
+            <p class="font-mono text-xs text-bone-mute">TWR</p>
+            <p class="mt-1 font-display text-lg text-bone">+{etfTwr.toFixed(1)}%</p>
+          </div>
+          <div>
+            <p class="font-mono text-xs text-bone-mute">vs SPY</p>
+            <p class="mt-1 font-display text-lg text-signal">+{(etfTwr - spxTwr).toFixed(1)}%</p>
+          </div>
+          <div>
+            <p class="font-mono text-xs text-bone-mute">SPY TWR</p>
+            <p class="mt-1 font-display text-lg text-bone-dim">+{spxTwr.toFixed(1)}%</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Stock Picks vs IWM -->
+      <article class="card bg-ink-800">
+        <div class="flex items-baseline justify-between gap-4">
+          <div>
+            <p class="eyebrow text-signal">Stock Picks</p>
+            <h3 class="mt-2 font-display text-2xl uppercase tracking-tight text-bone">
+              High-conviction names
+            </h3>
+          </div>
+          <div class="text-right">
+            <p class="font-mono text-3xl text-signal">+{stockAnn.toFixed(0)}%</p>
+            <p class="text-[10px] uppercase tracking-widest text-bone-mute">annualized</p>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <NormalizedLineChart
+            portfolio={{ label: 'Stock Picks', color: 'signal', points: stockPicks }}
+            benchmark={{ label: 'IWM', color: 'bone-dim', points: iwm }}
+            caption="Last 12 months · normalized to 100 · benchmarked vs small-cap index"
+          />
+        </div>
+
+        <div class="mt-6 grid grid-cols-3 gap-3 border-t border-bone/10 pt-6 text-sm">
+          <div>
+            <p class="font-mono text-xs text-bone-mute">TWR</p>
+            <p class="mt-1 font-display text-lg text-bone">+{stockTwr.toFixed(1)}%</p>
+          </div>
+          <div>
+            <p class="font-mono text-xs text-bone-mute">vs IWM</p>
+            <p class="mt-1 font-display text-lg text-signal">+{(stockTwr - iwmTwr).toFixed(1)}%</p>
+          </div>
+          <div>
+            <p class="font-mono text-xs text-bone-mute">IWM TWR</p>
+            <p class="mt-1 font-display text-lg text-bone-dim">+{iwmTwr.toFixed(1)}%</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <p class="mt-10 text-center text-xs text-bone-mute">
+      Educational content only. Past performance does not indicate future results.
+      Trading involves substantial risk of loss.
+    </p>
+  </div>
+</section>

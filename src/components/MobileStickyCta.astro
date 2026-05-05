@@ -1,0 +1,38 @@
+---
+// Mobile-only sticky bottom CTA bar. Always visible on mobile so the primary
+// conversion action is reachable from any page without scrolling. Hidden on
+// desktop because the Nav header already exposes a persistent CTA there.
+//
+// Hidden when the mobile menu is open (the menu has its own CTA at the
+// bottom). Hidden on /membership (user is already on the conversion page).
+---
+
+<div
+  id="mobile-cta"
+  class="fixed inset-x-0 bottom-0 z-30 border-t border-bone/10 bg-black/90 px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] backdrop-blur md:hidden"
+  data-suppress-on="/membership"
+>
+  <a
+    href="/membership"
+    class="flex w-full items-center justify-center gap-2 rounded-md bg-signal px-5 py-3.5 text-sm font-bold uppercase tracking-wider text-black shadow-signal-glow"
+  >
+    <span class="relative flex h-2 w-2">
+      <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
+      <span class="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
+    </span>
+    Leave the Matrix
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+    </svg>
+  </a>
+</div>
+
+<script>
+  const bar = document.getElementById('mobile-cta');
+  if (bar) {
+    const suppress = bar.dataset.suppressOn?.split(',').map((s) => s.trim()) ?? [];
+    if (suppress.includes(window.location.pathname.replace(/\/$/, '') || '/')) {
+      bar.classList.add('hidden');
+    }
+  }
+</script>

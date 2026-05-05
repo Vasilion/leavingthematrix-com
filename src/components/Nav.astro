@@ -66,16 +66,14 @@ const isActive = (href: string) =>
 
     <div class="hidden md:flex md:items-center md:gap-3">
       <a
-        href={SITE.discord.subscribe}
-        target="_blank"
-        rel="noopener"
+        href="/membership"
         class="group relative inline-flex items-center gap-2 rounded-md bg-signal px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow active:translate-y-0"
       >
         <span class="relative flex h-2 w-2">
           <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
           <span class="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
         </span>
-        Join the Discord
+        Leave the Matrix
         <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
@@ -98,70 +96,135 @@ const isActive = (href: string) =>
     </button>
   </div>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden border-t border-bone/10 bg-black/95 backdrop-blur-lg md:hidden">
-    <nav class="container-wide flex flex-col gap-1 py-6" aria-label="Mobile">
-      {NAV_LINKS.map((link) => {
-        const isComingSoon = 'comingSoon' in link && link.comingSoon;
-        if (isComingSoon) {
+  <!-- Mobile menu — fullscreen overlay. Display controlled via inline style
+       so JS-driven open/close beats any class-level display rules. The
+       `md:!hidden` class keeps it hidden on desktop with !important. -->
+  <div
+    id="mobile-menu"
+    class="fixed inset-0 z-50 h-screen flex-col bg-black md:!hidden"
+    style="display: none;"
+  >
+    <!-- Top bar with logo + close -->
+    <div class="flex shrink-0 items-center justify-between border-b border-bone/10 bg-black px-4 py-5">
+      <a href="/" class="flex items-center" aria-label={SITE.name}>
+        <Image
+          src={logo}
+          alt={SITE.name}
+          widths={[160, 240]}
+          sizes="160px"
+          class="h-12 w-auto"
+        />
+      </a>
+      <button
+        id="mobile-menu-close"
+        class="inline-flex h-12 w-12 items-center justify-center rounded-md text-bone hover:bg-ink-700"
+        aria-label="Close menu"
+      >
+        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Subtle accent line -->
+    <div class="h-px w-full shrink-0 bg-gradient-to-r from-transparent via-signal/40 to-transparent"></div>
+
+    <!-- Nav links — flex-1 fills the middle, scrolls if needed -->
+    <nav class="min-h-0 flex-1 overflow-y-auto bg-black px-4 py-6" aria-label="Mobile">
+      <ul class="flex flex-col gap-2">
+        {NAV_LINKS.map((link) => {
+          const isComingSoon = 'comingSoon' in link && link.comingSoon;
+          if (isComingSoon) {
+            return (
+              <li>
+                <span
+                  aria-disabled="true"
+                  class="flex cursor-not-allowed items-center justify-between rounded-md px-4 py-5 text-2xl font-display uppercase tracking-wider text-bone-mute/60"
+                >
+                  <span>{link.label}</span>
+                  <span class="rounded-sm bg-bone/10 px-2 py-1 text-[10px] font-bold tracking-widest text-bone-dim">
+                    SOON
+                  </span>
+                </span>
+              </li>
+            );
+          }
           return (
-            <span
-              aria-disabled="true"
-              class="flex cursor-not-allowed items-center justify-between rounded-md px-4 py-4 text-lg font-medium uppercase tracking-wider text-bone-mute/60"
-            >
-              <span>{link.label}</span>
-              <span class="rounded-sm bg-bone/10 px-2 py-1 text-[10px] font-bold tracking-widest text-bone-dim">
-                SOON
-              </span>
-            </span>
+            <li>
+              <a
+                href={link.href}
+                target={'external' in link && link.external ? '_blank' : undefined}
+                rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
+                class:list={[
+                  'flex items-center justify-between rounded-md px-4 py-5 text-2xl font-display uppercase tracking-wider transition-colors',
+                  isActive(link.href)
+                    ? 'bg-signal/10 text-signal'
+                    : 'text-bone-dim hover:bg-ink-700 hover:text-bone',
+                ]}
+              >
+                <span>{link.label}{'external' in link && link.external ? ' ↗' : ''}</span>
+                <svg class="h-5 w-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </li>
           );
-        }
-        return (
-          <a
-            href={link.href}
-            target={'external' in link && link.external ? '_blank' : undefined}
-            rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
-            class:list={[
-              'flex items-center justify-between rounded-md px-4 py-4 text-lg font-medium uppercase tracking-wider transition-colors',
-              isActive(link.href)
-                ? 'bg-signal/10 text-signal'
-                : 'text-bone-dim hover:bg-ink-700 hover:text-bone',
-            ]}
-          >
-            <span>{link.label}{'external' in link && link.external ? ' ↗' : ''}</span>
-            <svg class="h-4 w-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        );
-      })}
+        })}
+      </ul>
+    </nav>
+
+    <!-- Bottom CTA -->
+    <div class="shrink-0 border-t border-bone/10 bg-black p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
       <a
-        href={SITE.discord.subscribe}
-        target="_blank"
-        rel="noopener"
-        class="mt-4 inline-flex items-center justify-center gap-2 rounded-md bg-signal px-6 py-4 text-base font-bold uppercase tracking-wider text-black"
+        href="/membership"
+        class="flex w-full items-center justify-center gap-2 rounded-md bg-signal px-6 py-4 text-base font-bold uppercase tracking-wider text-black"
       >
         <span class="relative flex h-2 w-2">
           <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
           <span class="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
         </span>
-        Join the Discord
+        Leave the Matrix
       </a>
-    </nav>
+    </div>
   </div>
 </header>
 
 <script>
   const toggle = document.getElementById('mobile-menu-toggle');
-  const menu = document.getElementById('mobile-menu');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const menu = document.getElementById('mobile-menu') as HTMLElement | null;
   const hamb = toggle?.querySelector('.hamburger');
-  const close = toggle?.querySelector('.close');
+  const closeIcon = toggle?.querySelector('.close');
+
+  function openMenu() {
+    toggle?.setAttribute('aria-expanded', 'true');
+    if (menu) menu.style.display = 'flex';
+    hamb?.classList.add('hidden');
+    closeIcon?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    toggle?.setAttribute('aria-expanded', 'false');
+    if (menu) menu.style.display = 'none';
+    hamb?.classList.remove('hidden');
+    closeIcon?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
 
   toggle?.addEventListener('click', () => {
     const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    menu?.classList.toggle('hidden');
-    hamb?.classList.toggle('hidden');
-    close?.classList.toggle('hidden');
+    if (expanded) closeMenu();
+    else openMenu();
+  });
+  closeBtn?.addEventListener('click', closeMenu);
+
+  menu?.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => closeMenu());
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+    }
   });
 </script>

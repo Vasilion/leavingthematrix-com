@@ -38,9 +38,11 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       fontSize: {
-        'display-xl': ['clamp(3rem, 10vw, 7.5rem)', { lineHeight: '0.9', letterSpacing: '-0.02em' }],
-        'display-lg': ['clamp(2.25rem, 6vw, 4.5rem)', { lineHeight: '0.95', letterSpacing: '-0.01em' }],
-        'display-md': ['clamp(1.75rem, 4vw, 3rem)', { lineHeight: '1.05' }],
+        // Mobile minimums bumped so headlines fill more of narrow viewports.
+        // Caps unchanged so desktop sizing is preserved.
+        'display-xl': ['clamp(3.5rem, 12vw, 7.5rem)', { lineHeight: '0.9', letterSpacing: '-0.02em' }],
+        'display-lg': ['clamp(2.75rem, 8vw, 4.5rem)', { lineHeight: '0.95', letterSpacing: '-0.01em' }],
+        'display-md': ['clamp(2.25rem, 6vw, 3rem)', { lineHeight: '1.05' }],
       },
       boxShadow: {
         'signal-glow': '0 0 40px rgba(0, 255, 198, 0.35)',

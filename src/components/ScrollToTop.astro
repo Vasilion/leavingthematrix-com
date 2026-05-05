@@ -1,0 +1,36 @@
+---
+// Floating scroll-to-top button — bottom-right.
+// Hidden until the page has scrolled > 400px. Vanilla JS, no deps.
+// Positioned to clear the mobile sticky CTA bar (bottom-20 on mobile).
+---
+
+<button
+  id="scroll-top"
+  type="button"
+  aria-label="Scroll to top"
+  class="fixed right-4 bottom-24 z-30 hidden h-11 w-11 items-center justify-center rounded-full border border-bone/15 bg-ink-800/90 text-bone-dim shadow-lg backdrop-blur transition-all hover:border-signal/40 hover:text-signal md:bottom-6"
+>
+  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+  </svg>
+</button>
+
+<script>
+  const btn = document.getElementById('scroll-top');
+  if (btn) {
+    const update = () => {
+      if (window.scrollY > 400) {
+        btn.classList.remove('hidden');
+        btn.classList.add('flex');
+      } else {
+        btn.classList.add('hidden');
+        btn.classList.remove('flex');
+      }
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>

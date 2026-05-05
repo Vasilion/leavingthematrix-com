@@ -1,57 +1,62 @@
 ---
+// Four pillars of what's inside the community. The literal Discord channel
+// names are illustrative — channel topology is being reworked alongside the
+// Stripe + role-bot launch. Keep the framing about *what we deliver* (education,
+// signals, community, tools), not the channel SKUs.
 const lanes = [
   {
     title: 'Education',
     blurb:
-      'The fundamentals — DCA, set-and-forget portfolios, options mechanics, market structure, debt-management frameworks, and the long-term discipline that turns markets into a wealth-building tool.',
-    channels: [
-      'getting-started',
-      'dollar-cost-averaging',
-      'set-and-forget-portfolios',
-      'education',
-      'misc-content',
+      'The fundamentals — DCA, set-and-forget portfolios, options mechanics, market structure, debt-management frameworks, and the long-term discipline that turns markets into a real wealth-building tool.',
+    items: [
+      'Getting started',
+      'Dollar-cost averaging',
+      'Set-and-forget portfolios',
+      'Options education',
+      'Debt + long-term frameworks',
     ],
     accent: 'from-signal/30 to-transparent',
   },
   {
-    title: 'Signals',
+    title: 'Smart-money Signals',
     blurb:
-      'Picks, levels, theses. Long-term high-conviction names, swing setups, dip buys, ETF momentum, passive-income strategies, and crypto.',
-    channels: [
-      'stock-picks-long-term',
-      'buy-the-dip',
-      'swing-trades',
-      'longer-trades',
-      'market-watch',
-      'lukes-passive-income-machine',
-      'crypto',
+      'Every name our desk is watching. Long-term high-conviction picks, swing setups, dip buys, ETF momentum, passive-income strategies, options ideas with full thesis, deep-value research.',
+    items: [
+      'Long-term stock picks',
+      'Buy-the-dip',
+      'Swing trades',
+      'ETF momentum',
+      'Passive income',
+      'Crypto coverage',
+      'Options + deep-value research',
     ],
     accent: 'from-pulse/30 to-transparent',
   },
   {
     title: 'Community',
     blurb:
-      'Where members share gains, share losses, and ask anything. Real positions, real conversations, no hype.',
-    channels: [
-      'active-trades',
-      'community-chat',
-      'your-gains-and-losses',
-      'market-recap',
-      'etf-momentum',
-      'polls',
-      'help',
+      'Where members share gains, share losses, and ask anything. Real positions, real conversations, no hype. Active chat, weekly recap, and direct line for questions.',
+    items: [
+      'Community chat',
+      'Gains and losses',
+      'Market recap',
+      'Polls + help',
+      'Direct line for questions',
+      '1-on-1 portfolio review',
     ],
     accent: 'from-signal/20 to-transparent',
   },
   {
-    title: 'Pro Floor',
+    title: 'Nova Tools',
     blurb:
-      'Higher-conviction research and direct access. Deep-value names trading near 200-week support, options ideas with full thesis, and 1-on-1 review.',
-    channels: [
-      'pro-chat',
-      'options',
-      '200-wma-only-deep-value',
-      'stock-picks-portfolio',
+      'The trading copilot we built for our own desk — now included with Red Pill. Live AI-managed Nova Fund, smart-money dashboards, sector exposure, vs SPY benchmark, weekly memos.',
+    items: [
+      'Nova Fund — live portfolio',
+      'Weekly memos',
+      'Smart Money tab',
+      "Luke's portfolios — auto-tracked",
+      'Sector + market context',
+      'vs SPY benchmark',
     ],
     accent: 'from-pulse/40 to-transparent',
     pro: true,
@@ -59,37 +64,38 @@ const lanes = [
 ];
 ---
 
-<section class="container-wide py-24">
+<section class="container-wide py-14 md:py-24">
   <div class="max-w-2xl">
-    <p class="eyebrow">Inside the Discord</p>
+    <p class="eyebrow">What's inside</p>
     <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
-      Four floors.<br />
+      Four pillars.<br />
       <span class="text-signal">Same framework.</span>
     </h2>
     <p class="mt-6 text-lg text-bone-dim">
-      Every lane runs on the same disciplined research framework. Whether you're starting with
-      a Roth IRA or sizing positions like a fund manager, there's a room with your name on it.
+      Education that goes deep, signals you can actually follow, a community that takes
+      the work seriously, and the same tools we use on our own desk. Every layer runs on
+      one disciplined research framework.
     </p>
   </div>
 
-  <div class="mt-16 grid gap-6 md:grid-cols-2">
+  <div class="mt-10 md:mt-16 grid gap-6 md:grid-cols-2">
     {lanes.map((lane) => (
-      <div class:list={['card relative overflow-hidden', lane.pro && 'border-pulse/30']}>
+      <div class:list={['card relative overflow-hidden', lane.pro && 'border-signal/40']}>
         <div class:list={['absolute inset-0 -z-0 bg-gradient-to-br opacity-50', lane.accent]} />
         <div class="relative z-10">
           <div class="flex items-center justify-between">
             <h3 class="font-display text-2xl uppercase tracking-tight text-bone">{lane.title}</h3>
             {lane.pro && (
-              <span class="rounded-full border border-pulse/40 bg-pulse/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-pulse">
-                Pro
+              <span class="rounded-full border border-signal/40 bg-signal/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-signal">
+                Built by us
               </span>
             )}
           </div>
           <p class="mt-2 text-sm text-bone-dim">{lane.blurb}</p>
           <ul class="mt-6 flex flex-wrap gap-2">
-            {lane.channels.map((channel) => (
+            {lane.items.map((item) => (
               <li class="rounded-md border border-bone/10 bg-ink-700/60 px-2.5 py-1 font-mono text-xs text-bone-dim">
-                #{channel}
+                {item}
               </li>
             ))}
           </ul>

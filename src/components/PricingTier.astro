@@ -1,6 +1,4 @@
 ---
-import { SITE } from '../lib/site';
-
 interface Props {
   name: string;
   price: string;
@@ -9,17 +7,12 @@ interface Props {
   features: readonly string[];
   cta: string;
   popular?: boolean;
-  /**
-   * Optional CTA destination. Defaults to the LTM Discord subscribe link, but
-   * Nova-included tiers should override to the Nova subdomain so subscribers
-   * land at the right signup flow.
-   */
+  /** CTA destination. Defaults to /membership. When Stripe is wired, point each tier at its checkout. */
   href?: string;
   external?: boolean;
   /**
    * Renders the CTA as a disabled "Coming Soon" button instead of a clickable
-   * link. Used while nova.leavingthematrix.io is pre-launch — flip to false
-   * (or remove) once the Nova subdomain ships.
+   * link. Flip to false (or remove) once the Stripe + Discord-role-bot ships.
    */
   comingSoon?: boolean;
 }
@@ -32,13 +25,12 @@ const {
   features,
   cta,
   popular = false,
-  href,
-  external,
+  href = '/membership',
+  external = false,
   comingSoon = false,
 } = Astro.props;
 
-const ctaHref = href ?? SITE.discord.subscribe;
-const ctaTarget = external ?? !href ? '_blank' : undefined;
+const ctaTarget = external ? '_blank' : undefined;
 const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
 ---
 
@@ -89,7 +81,7 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
     </button>
   ) : (
     <a
-      href={ctaHref}
+      href={href}
       target={ctaTarget}
       rel={ctaRel}
       class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}

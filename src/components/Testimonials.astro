@@ -1,0 +1,80 @@
+---
+const quotes = [
+  {
+    name: 'Austin',
+    role: 'Member',
+    quote:
+      "I joined to learn options without blowing up my account. The risk-defined framework — covered calls, credit spreads, the wheel — actually makes sense now. I run a covered-call ladder on positions I'd hold anyway. Boring works.",
+  },
+  {
+    name: 'Rollin',
+    role: 'Member',
+    quote:
+      "Most communities push the next ten-bagger. This one teaches you how to hold a position for two years through a 25% drawdown without panicking. The thesis stays written down where you can check it.",
+  },
+  {
+    name: 'Marcus',
+    role: 'Member',
+    quote:
+      "The Smart Money tab changed how I read the tape. Watching what insiders and Congress are actually buying — not what CNBC is saying about it — is a different game.",
+  },
+  {
+    name: 'Drew',
+    role: 'Member',
+    quote:
+      "Most discord servers are noise. This one's the opposite. Every closed position gets reviewed, including the losers. You can see the work.",
+  },
+  {
+    name: 'Cody',
+    role: 'Member',
+    quote:
+      "I've been in three other communities. None of them showed you the framework — they just dropped tickers. Here you actually understand why a name made the watchlist before anyone tells you to buy.",
+  },
+];
+---
+
+<section class="container-wide py-14 md:py-24">
+  <div class="grid gap-6 md:gap-8 lg:grid-cols-12 lg:gap-16 lg:items-end">
+    <div class="lg:col-span-7">
+      <p class="eyebrow">From the floor</p>
+      <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
+        What members <span class="text-signal">actually say.</span>
+      </h2>
+    </div>
+    <div class="lg:col-span-5">
+      <p class="text-bone-dim">
+        Real members, real positions, in their own words. No paid placements, no
+        scripts.
+      </p>
+    </div>
+  </div>
+
+  <ul class="mt-8 md:mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {quotes.map((q) => (
+      <li class:list={['card flex flex-col', q.role === 'Partner' && 'border-signal/30']}>
+        <svg
+          class="h-6 w-6 flex-none text-signal/60"
+          fill="currentColor"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+        >
+          <path d="M9.352 4C4.456 4 0 8.456 0 13.352c0 4.18 3.04 7.852 7.18 8.708-.36 1.464-1.46 2.92-3.18 4.04l-.62.4.6.42c1.44 1.04 3.32 1.5 5.18 1.08 4.16-.84 7.32-4.42 7.34-8.66.04-7.06-2.96-15.34-7.148-15.34zm15.296 0C19.752 4 15.296 8.456 15.296 13.352c0 4.18 3.04 7.852 7.18 8.708-.36 1.464-1.46 2.92-3.18 4.04l-.62.4.6.42c1.44 1.04 3.32 1.5 5.18 1.08 4.16-.84 7.32-4.42 7.34-8.66.04-7.06-2.96-15.34-7.148-15.34z" />
+        </svg>
+
+        <p class="mt-4 flex-1 text-bone-dim">{q.quote}</p>
+
+        <div class="mt-6 flex items-center justify-between border-t border-bone/10 pt-4">
+          <p class="font-display text-lg tracking-tight text-bone">{q.name}</p>
+          <span class:list={[
+            'rounded-full border px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest',
+            q.role === 'Partner'
+              ? 'border-signal/40 bg-signal/10 text-signal'
+              : 'border-bone/15 text-bone-mute',
+          ]}>
+            {q.role}
+          </span>
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
