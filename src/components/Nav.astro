@@ -64,78 +64,77 @@ const isActive = (href: string) =>
       })}
     </nav>
 
-    <div class="hidden md:flex md:items-center md:gap-3">
-      <!-- Auth: signed-out state. Phase 2 (live auth-state mirror) will toggle
-           data-auth-state on the parent so signed-in users see the user pill
-           below instead. Default = signed-out so the buttons render statically
-           on first paint with no flicker. -->
-      <div id="ltm-auth" data-auth-state="signed-out" class="flex items-center gap-3">
-        <div data-auth-when="signed-out" class="flex items-center gap-3">
-          <a
-            href="https://nova.leavingthematrix.io/sign-in"
-            class="font-mono text-[12px] uppercase tracking-[0.1em] text-bone-dim transition-colors hover:text-bone"
-          >
-            Sign in
-          </a>
-          <a
-            href="https://nova.leavingthematrix.io/sign-up"
-            class="inline-flex items-center rounded-md border border-signal/60 px-4 py-2 text-sm font-bold uppercase tracking-wider text-signal transition-colors hover:bg-signal/10"
-          >
-            Sign up
-          </a>
-        </div>
+    <!-- Desktop right-side group. data-auth-state lives on this wrapper so the
+         auth-state mirror script can toggle ALL signed-out children (Sign in,
+         Sign up, Leave the Matrix CTA) and the signed-in child (user pill +
+         dropdown) in one pass. Default = signed-out so first paint is correct
+         with no flicker before the /api/auth-status fetch resolves. -->
+    <div id="ltm-auth" data-auth-state="signed-out" class="hidden md:flex md:items-center md:gap-3">
+      <div data-auth-when="signed-out" class="flex items-center gap-3">
+        <a
+          href="https://nova.leavingthematrix.io/sign-in"
+          class="font-mono text-[12px] uppercase tracking-[0.1em] text-bone-dim transition-colors hover:text-bone"
+        >
+          Sign in
+        </a>
+        <a
+          href="https://nova.leavingthematrix.io/sign-up"
+          class="inline-flex items-center rounded-md border border-signal/60 px-4 py-2 text-sm font-bold uppercase tracking-wider text-signal transition-colors hover:bg-signal/10"
+        >
+          Sign up
+        </a>
+      </div>
 
-        <!-- Auth: signed-in state. Hidden on first paint via inline display:none
-             so it doesn't flash before the auth-status fetch resolves. JS will
-             flip data-auth-state="signed-in" + populate email/tier values, and
-             wire the dropdown toggle. -->
+      <!-- Signed-in user pill + dropdown. Hidden on first paint. -->
+      <div
+        data-auth-when="signed-in"
+        class="relative"
+        style="display: none;"
+      >
+        <button
+          type="button"
+          id="ltm-user-toggle"
+          class="flex items-center gap-2.5 rounded-full border border-bone/15 bg-ink-900/60 py-1 pl-1 pr-3 transition-colors hover:border-signal/40 hover:bg-ink-800/60"
+          aria-haspopup="menu"
+          aria-expanded="false"
+        >
+          <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
+          <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" class="text-bone-mute" aria-hidden="true">
+            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
         <div
-          data-auth-when="signed-in"
-          class="relative"
+          id="ltm-user-menu"
+          role="menu"
+          class="absolute right-0 top-[calc(100%+8px)] z-50 w-64 overflow-hidden rounded-xl border border-bone/15 bg-ink-900/95 shadow-2xl shadow-signal/10 backdrop-blur-md"
           style="display: none;"
         >
-          <button
-            type="button"
-            id="ltm-user-toggle"
-            class="flex items-center gap-2.5 rounded-full border border-bone/15 bg-ink-900/60 py-1 pl-1 pr-3 transition-colors hover:border-signal/40 hover:bg-ink-800/60"
-            aria-haspopup="menu"
-            aria-expanded="false"
-          >
-            <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
-            <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" class="text-bone-mute" aria-hidden="true">
-              <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-          </button>
-          <div
-            id="ltm-user-menu"
-            role="menu"
-            class="absolute right-0 top-[calc(100%+8px)] z-50 w-64 overflow-hidden rounded-xl border border-bone/15 bg-ink-900/95 shadow-2xl shadow-signal/10 backdrop-blur-md"
-            style="display: none;"
-          >
-            <div class="flex flex-col gap-1 border-b border-bone/10 px-4 py-3">
-              <span class="font-mono text-[9px] uppercase tracking-[0.18em] text-bone-mute">Signed in as</span>
-              <span data-auth-email class="truncate text-[13px] font-semibold text-bone">Member</span>
-              <div class="mt-1 flex items-center gap-2">
-                <span data-auth-tier-badge class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
-                <span class="font-mono text-[10px] text-bone-mute">tier</span>
-              </div>
+          <div class="flex flex-col gap-1 border-b border-bone/10 px-4 py-3">
+            <span class="font-mono text-[9px] uppercase tracking-[0.18em] text-bone-mute">Signed in as</span>
+            <span data-auth-email class="truncate text-[13px] font-semibold text-bone">Member</span>
+            <div class="mt-1 flex items-center gap-2">
+              <span data-auth-tier-badge class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+              <span class="font-mono text-[10px] text-bone-mute">tier</span>
             </div>
-            <a
-              href="https://nova.leavingthematrix.io/macro"
-              role="menuitem"
-              class="flex w-full items-center gap-2 px-4 py-3 text-left font-mono text-[11px] uppercase tracking-[0.14em] text-bone-dim transition-colors hover:bg-ink-800 hover:text-signal"
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M3 7l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              Go to Members Area
-            </a>
           </div>
+          <a
+            href="https://nova.leavingthematrix.io/macro"
+            role="menuitem"
+            class="flex w-full items-center gap-2 px-4 py-3 text-left font-mono text-[11px] uppercase tracking-[0.14em] text-bone-dim transition-colors hover:bg-ink-800 hover:text-signal"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3 7l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Go to Members Area
+          </a>
         </div>
       </div>
 
+      <!-- Leave the Matrix CTA — only shown to signed-out visitors. Members
+           don't need to "Leave the Matrix" again; the user pill replaces it. -->
       <a
+        data-auth-when="signed-out"
         href="/membership"
         class="group relative inline-flex items-center gap-2 rounded-md bg-signal px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow active:translate-y-0"
       >
@@ -243,11 +242,13 @@ const isActive = (href: string) =>
       </ul>
     </nav>
 
-    <!-- Bottom CTA -->
-    <div class="shrink-0 border-t border-bone/10 bg-black p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
-      <div id="ltm-auth-mobile" data-auth-state="signed-out" class="mb-3">
-        <!-- Signed-out: Sign in + Sign up split row -->
-        <div data-auth-when="signed-out" class="grid grid-cols-2 gap-3">
+    <!-- Bottom CTA. data-auth-state on the wrapper so the entire signed-out
+         block (Sign in, Sign up, Leave the Matrix) collapses into the single
+         Members Area pill when the user is signed in. -->
+    <div id="ltm-auth-mobile" data-auth-state="signed-out" class="shrink-0 border-t border-bone/10 bg-black p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+      <!-- Signed-out: Sign in + Sign up split row, then Leave the Matrix CTA -->
+      <div data-auth-when="signed-out" class="flex flex-col gap-3">
+        <div class="grid grid-cols-2 gap-3">
           <a
             href="https://nova.leavingthematrix.io/sign-in"
             class="flex items-center justify-center rounded-md border border-bone/20 px-4 py-3 text-sm font-bold uppercase tracking-wider text-bone-dim transition-colors hover:text-bone"
@@ -261,27 +262,27 @@ const isActive = (href: string) =>
             Sign up
           </a>
         </div>
-        <!-- Signed-in: Members area pill -->
         <a
-          data-auth-when="signed-in"
-          href="https://nova.leavingthematrix.io/macro"
-          class="flex w-full items-center justify-center gap-3 rounded-md border border-signal/40 bg-ink-900/60 px-4 py-3 text-sm font-bold uppercase tracking-wider text-bone transition-colors hover:bg-ink-800/60"
-          style="display: none;"
+          href="/membership"
+          class="flex w-full items-center justify-center gap-2 rounded-md bg-signal px-6 py-4 text-base font-bold uppercase tracking-wider text-black"
         >
-          <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
-          <span>Members Area</span>
-          <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
+          </span>
+          Leave the Matrix
         </a>
       </div>
+      <!-- Signed-in: single Members Area pill replaces everything above -->
       <a
-        href="/membership"
-        class="flex w-full items-center justify-center gap-2 rounded-md bg-signal px-6 py-4 text-base font-bold uppercase tracking-wider text-black"
+        data-auth-when="signed-in"
+        href="https://nova.leavingthematrix.io/macro"
+        class="flex w-full items-center justify-center gap-3 rounded-md border border-signal/40 bg-ink-900/60 px-4 py-3 text-sm font-bold uppercase tracking-wider text-bone transition-colors hover:bg-ink-800/60"
+        style="display: none;"
       >
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-black"></span>
-        </span>
-        Leave the Matrix
+        <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
+        <span>Members Area</span>
+        <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
       </a>
     </div>
   </div>
