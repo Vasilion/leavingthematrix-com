@@ -65,6 +65,41 @@ const isActive = (href: string) =>
     </nav>
 
     <div class="hidden md:flex md:items-center md:gap-3">
+      <!-- Auth: signed-out state. Phase 2 (live auth-state mirror) will toggle
+           data-auth-state on the parent so signed-in users see the user pill
+           below instead. Default = signed-out so the buttons render statically
+           on first paint with no flicker. -->
+      <div id="ltm-auth" data-auth-state="signed-out" class="flex items-center gap-3">
+        <div data-auth-when="signed-out" class="flex items-center gap-3">
+          <a
+            href="https://nova.leavingthematrix.io/sign-in"
+            class="font-mono text-[12px] uppercase tracking-[0.1em] text-bone-dim transition-colors hover:text-bone"
+          >
+            Sign in
+          </a>
+          <a
+            href="https://nova.leavingthematrix.io/sign-up"
+            class="inline-flex items-center rounded-md border border-signal/60 px-4 py-2 text-sm font-bold uppercase tracking-wider text-signal transition-colors hover:bg-signal/10"
+          >
+            Sign up
+          </a>
+        </div>
+
+        <!-- Auth: signed-in state. Hidden on first paint via inline display:none
+             so it doesn't flash before the auth-status fetch resolves. JS will
+             flip data-auth-state="signed-in" + populate the email/tier values. -->
+        <a
+          data-auth-when="signed-in"
+          href="https://nova.leavingthematrix.io/macro"
+          class="group inline-flex items-center gap-2.5 rounded-full border border-bone/15 bg-ink-900/60 py-1 pl-1 pr-3 transition-colors hover:border-signal/40 hover:bg-ink-800/60"
+          style="display: none;"
+        >
+          <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
+          <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-bone-dim group-hover:text-bone">Members area</span>
+        </a>
+      </div>
+
       <a
         href="/membership"
         class="group relative inline-flex items-center gap-2 rounded-md bg-signal px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow active:translate-y-0"
@@ -175,6 +210,34 @@ const isActive = (href: string) =>
 
     <!-- Bottom CTA -->
     <div class="shrink-0 border-t border-bone/10 bg-black p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+      <div id="ltm-auth-mobile" data-auth-state="signed-out" class="mb-3">
+        <!-- Signed-out: Sign in + Sign up split row -->
+        <div data-auth-when="signed-out" class="grid grid-cols-2 gap-3">
+          <a
+            href="https://nova.leavingthematrix.io/sign-in"
+            class="flex items-center justify-center rounded-md border border-bone/20 px-4 py-3 text-sm font-bold uppercase tracking-wider text-bone-dim transition-colors hover:text-bone"
+          >
+            Sign in
+          </a>
+          <a
+            href="https://nova.leavingthematrix.io/sign-up"
+            class="flex items-center justify-center rounded-md border border-signal/60 px-4 py-3 text-sm font-bold uppercase tracking-wider text-signal transition-colors hover:bg-signal/10"
+          >
+            Sign up
+          </a>
+        </div>
+        <!-- Signed-in: Members area pill -->
+        <a
+          data-auth-when="signed-in"
+          href="https://nova.leavingthematrix.io/macro"
+          class="flex w-full items-center justify-center gap-3 rounded-md border border-signal/40 bg-ink-900/60 px-4 py-3 text-sm font-bold uppercase tracking-wider text-bone transition-colors hover:bg-ink-800/60"
+          style="display: none;"
+        >
+          <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
+          <span>Members Area</span>
+          <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+        </a>
+      </div>
       <a
         href="/membership"
         class="flex w-full items-center justify-center gap-2 rounded-md bg-signal px-6 py-4 text-base font-bold uppercase tracking-wider text-black"
