@@ -87,17 +87,52 @@ const isActive = (href: string) =>
 
         <!-- Auth: signed-in state. Hidden on first paint via inline display:none
              so it doesn't flash before the auth-status fetch resolves. JS will
-             flip data-auth-state="signed-in" + populate the email/tier values. -->
-        <a
+             flip data-auth-state="signed-in" + populate email/tier values, and
+             wire the dropdown toggle. -->
+        <div
           data-auth-when="signed-in"
-          href="https://nova.leavingthematrix.io/macro"
-          class="group inline-flex items-center gap-2.5 rounded-full border border-bone/15 bg-ink-900/60 py-1 pl-1 pr-3 transition-colors hover:border-signal/40 hover:bg-ink-800/60"
+          class="relative"
           style="display: none;"
         >
-          <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
-          <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
-          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-bone-dim group-hover:text-bone">Members area</span>
-        </a>
+          <button
+            type="button"
+            id="ltm-user-toggle"
+            class="flex items-center gap-2.5 rounded-full border border-bone/15 bg-ink-900/60 py-1 pl-1 pr-3 transition-colors hover:border-signal/40 hover:bg-ink-800/60"
+            aria-haspopup="menu"
+            aria-expanded="false"
+          >
+            <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
+            <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" class="text-bone-mute" aria-hidden="true">
+              <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          </button>
+          <div
+            id="ltm-user-menu"
+            role="menu"
+            class="absolute right-0 top-[calc(100%+8px)] z-50 w-64 overflow-hidden rounded-xl border border-bone/15 bg-ink-900/95 shadow-2xl shadow-signal/10 backdrop-blur-md"
+            style="display: none;"
+          >
+            <div class="flex flex-col gap-1 border-b border-bone/10 px-4 py-3">
+              <span class="font-mono text-[9px] uppercase tracking-[0.18em] text-bone-mute">Signed in as</span>
+              <span data-auth-email class="truncate text-[13px] font-semibold text-bone">Member</span>
+              <div class="mt-1 flex items-center gap-2">
+                <span data-auth-tier-badge class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+                <span class="font-mono text-[10px] text-bone-mute">tier</span>
+              </div>
+            </div>
+            <a
+              href="https://nova.leavingthematrix.io/macro"
+              role="menuitem"
+              class="flex w-full items-center gap-2 px-4 py-3 text-left font-mono text-[11px] uppercase tracking-[0.14em] text-bone-dim transition-colors hover:bg-ink-800 hover:text-signal"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M3 7l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Go to Members Area
+            </a>
+          </div>
+        </div>
       </div>
 
       <a
@@ -290,4 +325,112 @@ const isActive = (href: string) =>
       closeMenu();
     }
   });
+
+  // ============================================================================
+  // Auth-state mirror — fetch sign-in status from nova.leavingthematrix.io and
+  // swap the header chrome between signed-out (Sign in / Sign up) and signed-in
+  // (user pill + Members Area dropdown). Cookie is set on nova.leavingthematrix.io
+  // by Clerk; same-site fetch with credentials sends it.
+  // ============================================================================
+
+  const AUTH_STATUS_URL = 'https://nova.leavingthematrix.io/api/auth-status';
+
+  type AuthStatus = {
+    signedIn: boolean;
+    email?: string | null;
+    tier?: 'free' | 'pro' | 'elite' | null;
+  };
+
+  function applyAuthState(status: AuthStatus) {
+    const wrappers = document.querySelectorAll<HTMLElement>('[data-auth-state]');
+    const state = status.signedIn ? 'signed-in' : 'signed-out';
+
+    wrappers.forEach((wrapper) => {
+      wrapper.dataset.authState = state;
+      // Toggle visibility on each [data-auth-when] child via inline style so we
+      // beat any class-level rules and avoid Tailwind JIT issues.
+      wrapper.querySelectorAll<HTMLElement>('[data-auth-when]').forEach((el) => {
+        const wantState = el.dataset.authWhen;
+        const visible = wantState === state;
+        // Desktop pill is inline-flex / relative; mobile is grid / flex. Reset
+        // by removing inline style entirely so the class-defined display wins.
+        if (visible) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    });
+
+    if (status.signedIn) {
+      const email = status.email ?? '';
+      const tier = (status.tier ?? 'free').toUpperCase();
+      const tierLabel =
+        tier === 'PRO' ? 'PRO' : tier === 'ELITE' ? 'ELITE' : 'MEMBER';
+      const initial = email
+        ? email.charAt(0).toUpperCase()
+        : 'M';
+
+      document
+        .querySelectorAll<HTMLElement>('[data-auth-initial]')
+        .forEach((el) => {
+          el.textContent = initial;
+        });
+      document
+        .querySelectorAll<HTMLElement>('[data-auth-tier]')
+        .forEach((el) => {
+          el.textContent = tierLabel;
+        });
+      document
+        .querySelectorAll<HTMLElement>('[data-auth-tier-badge]')
+        .forEach((el) => {
+          el.textContent = tierLabel;
+        });
+      document
+        .querySelectorAll<HTMLElement>('[data-auth-email]')
+        .forEach((el) => {
+          el.textContent = email || 'Member';
+        });
+    }
+  }
+
+  // Wire the desktop user-pill dropdown. Toggle visibility on click, close on
+  // outside click + Escape. (Mobile signed-in path is just a direct link; no
+  // dropdown needed since the menu is already a full-screen overlay.)
+  const userToggle = document.getElementById('ltm-user-toggle');
+  const userMenu = document.getElementById('ltm-user-menu');
+  function closeUserMenu() {
+    if (userMenu) userMenu.style.display = 'none';
+    userToggle?.setAttribute('aria-expanded', 'false');
+  }
+  function openUserMenu() {
+    if (userMenu) userMenu.style.display = 'block';
+    userToggle?.setAttribute('aria-expanded', 'true');
+  }
+  userToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const expanded = userToggle.getAttribute('aria-expanded') === 'true';
+    if (expanded) closeUserMenu();
+    else openUserMenu();
+  });
+  document.addEventListener('click', (e) => {
+    if (!userMenu || userMenu.style.display === 'none') return;
+    const target = e.target as Node;
+    if (userMenu.contains(target) || userToggle?.contains(target)) return;
+    closeUserMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeUserMenu();
+  });
+
+  // Kick off the auth-status fetch. Failures (network, CORS, Clerk down) are
+  // silently treated as signed-out so the static buttons still render.
+  fetch(AUTH_STATUS_URL, {
+    method: 'GET',
+    credentials: 'include',
+    headers: { Accept: 'application/json' },
+  })
+    .then((res) => (res.ok ? (res.json() as Promise<AuthStatus>) : { signedIn: false }))
+    .then((status) => applyAuthState(status))
+    .catch(() => applyAuthState({ signedIn: false }));
 </script>
