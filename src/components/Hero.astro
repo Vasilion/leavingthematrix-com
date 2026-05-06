@@ -1,6 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-import banner from '../assets/banner.png';
+// Hero video: services overview on YouTube. Using youtube-nocookie embed
+// for privacy mode (doesn't drop tracking cookies until playback starts)
+// and lazy loading so the iframe doesn't block first paint above the fold
+// on mobile.
+const YOUTUBE_VIDEO_ID = 'yBiS8hJzGbs';
 ---
 
 <section class="relative isolate overflow-hidden bg-black">
@@ -44,23 +47,25 @@ import banner from '../assets/banner.png';
         </div>
       </div>
 
-      <!-- Banner column (visual mark) — second on mobile, right side on desktop -->
+      <!-- Video column — services overview. Second on mobile, right side on desktop -->
       <div class="order-2 lg:order-2 lg:col-span-7">
         <div class="relative">
-          <!-- Soft radial glow behind the banner -->
+          <!-- Soft radial glow behind the video -->
           <div
             class="pointer-events-none absolute -inset-12 -z-10 bg-signal/[0.08] blur-[80px]"
             aria-hidden="true"
           ></div>
-          <Image
-            src={banner}
-            alt="Leaving The Matrix"
-            widths={[480, 720, 960, 1248]}
-            sizes="(max-width: 1024px) 95vw, 720px"
-            class="h-auto w-full"
-            loading="eager"
-            fetchpriority="high"
-          />
+          <div class="relative aspect-video w-full overflow-hidden rounded-lg border border-bone/10 bg-black shadow-2xl shadow-signal/10">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?rel=0&modestbranding=1`}
+              title="Leaving The Matrix — services overview"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              class="absolute inset-0 h-full w-full"
+            ></iframe>
+          </div>
         </div>
       </div>
     </div>
