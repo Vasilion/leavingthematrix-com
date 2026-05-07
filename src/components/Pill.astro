@@ -1,0 +1,22 @@
+---
+// Inline-colored "Blue Pill" / "Red Pill" label. Just the word "Blue" or
+// "Red" gets the color; "Pill" stays in the surrounding text color so it
+// reads as a normal phrase.
+//
+// Usage: <Pill color="blue" /> renders → <span class="text-sky-400">Blue</span> Pill
+//        <Pill color="red"  /> renders → <span class="text-red-400">Red</span> Pill
+
+interface Props {
+  color: 'blue' | 'red';
+  /** Inline-block by default. Set false for plain inline rendering inside
+   *  paragraphs where wrapping mid-phrase is fine. */
+  noWrap?: boolean;
+}
+
+const { color, noWrap = false } = Astro.props;
+const wordClass = color === 'blue' ? 'text-sky-400' : 'text-red-400';
+const wordText = color === 'blue' ? 'Blue' : 'Red';
+const wrapperClass = noWrap ? 'whitespace-nowrap' : '';
+---
+
+<span class={wrapperClass}><span class={wordClass}>{wordText}</span> Pill</span>

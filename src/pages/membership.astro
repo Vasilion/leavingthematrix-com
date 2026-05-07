@@ -3,7 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import PricingTier from '../components/PricingTier.astro';
 import PerformanceProof from '../components/PerformanceProof.astro';
 import Testimonials from '../components/Testimonials.astro';
+import Pill from '../components/Pill.astro';
 import { PRICING_TIERS } from '../lib/site';
+
+// FAQ q/a are HTML strings — embedded spans color "Blue"/"Red" inside the
+// "Blue Pill" / "Red Pill" tier names. Rendered via set:html below.
+const PILL_BLUE = '<span class="text-sky-400">Blue</span> Pill';
+const PILL_RED = '<span class="text-red-400">Red</span> Pill';
 
 const faq = [
   {
@@ -15,15 +21,15 @@ const faq = [
     a: "No. Everything is for educational and informational purposes only. We share frameworks and what we do — we don't make personalized recommendations and we're not your financial adviser. You're responsible for your own decisions. See the full disclaimer.",
   },
   {
-    q: 'How does Red Pill work?',
+    q: `How does ${PILL_RED} work?`,
     a: 'You sign up here through Stripe, you get the Pro role in our community automatically, and you land in the members area where Nova lives. Cancel anytime in your billing dashboard.',
   },
   {
-    q: 'When does Red Pill open up?',
+    q: `When does ${PILL_RED} open up?`,
     a: "We're currently in sandbox-testing mode — sign up with the test card on the pricing card and you get full access for free during beta. Real billing flips on alongside Nova's public launch; beta testers stay free until then.",
   },
   {
-    q: 'What is the Blue Pill newsletter?',
+    q: `What is the ${PILL_BLUE} newsletter?`,
     a: 'A free weekly read on what the smart money is doing — a taste of the framework Nova runs every day. Educational content only. Launching with Nova.',
   },
   {
@@ -32,7 +38,7 @@ const faq = [
   },
   {
     q: 'Do you teach options?',
-    a: 'Yes — as a tool for income and disciplined risk-defined ideas, not for gambling. The education library covers covered calls, credit spreads, iron condors, and the wheel. Red Pill members get higher-conviction options ideas with a full thesis attached.',
+    a: `Yes — as a tool for income and disciplined risk-defined ideas, not for gambling. The education library covers covered calls, credit spreads, iron condors, and the wheel. ${PILL_RED} members get higher-conviction options ideas with a full thesis attached.`,
   },
   {
     q: "What if I'm a complete beginner?",
@@ -62,10 +68,11 @@ const faq = [
             Two pills. <span class="text-signal">One choice.</span>
           </h1>
           <p class="mt-6 text-lg text-bone-dim">
-            Blue Pill keeps you informed with a weekly newsletter — a taste of the
-            framework and the names on our radar. Red Pill is the whole thing: every
-            signal, the full education library, the community, and the Nova tools we
-            run on our own desk.
+            <Pill color="blue" /> keeps you informed with a weekly newsletter — a
+            taste of the framework and the names on our radar.
+            <Pill color="red" /> is the whole thing: every signal, the full
+            education library, the community, and the Nova tools we run on our
+            own desk.
           </p>
 
           <div class="mt-8 flex flex-wrap items-center gap-4">
@@ -81,7 +88,7 @@ const faq = [
 
         <aside class="lg:col-span-5">
           <div class="card border-signal/30 bg-ink-800">
-            <p class="eyebrow text-signal">What Red Pill includes</p>
+            <p class="eyebrow text-signal">What <Pill color="red" /> includes</p>
             <ul class="mt-6 space-y-4 text-sm text-bone-dim">
               <li class="flex items-start gap-3">
                 <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
@@ -158,8 +165,8 @@ const faq = [
         The full picture.
       </h2>
       <p class="mt-4 max-w-2xl text-bone-dim">
-        Red Pill is built for members who want to actually understand markets, not just
-        receive tickers. Four pillars, one disciplined framework.
+        <Pill color="red" /> is built for members who want to actually understand
+        markets, not just receive tickers. Four pillars, one disciplined framework.
       </p>
 
       <div class="mt-8 md:mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -209,10 +216,10 @@ const faq = [
       {faq.map((item) => (
         <details class="card group">
           <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
-            <span class="font-display text-xl tracking-tight text-bone">{item.q}</span>
+            <span class="font-display text-xl tracking-tight text-bone" set:html={item.q}></span>
             <span class="text-signal transition-transform group-open:rotate-45">+</span>
           </summary>
-          <p class="mt-4 text-bone-dim">{item.a}</p>
+          <p class="mt-4 text-bone-dim" set:html={item.a}></p>
         </details>
       ))}
     </div>

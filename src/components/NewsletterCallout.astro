@@ -1,0 +1,73 @@
+---
+// Reusable newsletter-signup callout — wraps NewsletterSignup with framing
+// copy. Used across the site (home, blog list, blog post end, about end,
+// 404). Variant decides density:
+//   card   — full vertical card with eyebrow + headline + description + form
+//   inline — minimal horizontal block, mostly for tight spaces (footer)
+//
+// Each placement passes its own `source` so we can slice signup origin in
+// the database (newsletter_subscribers.source).
+
+import NewsletterSignup from './NewsletterSignup.astro';
+
+interface Props {
+  variant?: 'card' | 'inline';
+  eyebrow?: string;
+  headline?: string;
+  description?: string;
+  source: string;
+  /** Optional id suffix to disambiguate multiple instances on the same page. */
+  id?: string;
+  /** When true (default), wraps the card in a content container with vertical
+   *  padding so it sits cleanly between page sections. Set false if the parent
+   *  already provides spacing/container. */
+  framed?: boolean;
+}
+
+const {
+  variant = 'card',
+  eyebrow = 'Free Your Mind · Free newsletter',
+  headline = 'Read what we read, weekly.',
+  description = 'Education-first investing. One full ticker analysis through our Quality × Discount × Smart-money lens, plus the framework lessons that compound. No hype, no day-trading, no spam.',
+  source,
+  id = 'callout',
+  framed = true,
+} = Astro.props;
+
+const formId = `nl-${source.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${id}`;
+---
+
+{variant === 'card' && framed && (
+  <section class="container-wide py-16 md:py-24">
+    <div class="mx-auto max-w-3xl rounded-2xl border border-bone/10 bg-ink-800/60 p-8 md:p-12">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 class="mt-3 font-display text-3xl uppercase leading-tight tracking-tight text-bone md:text-4xl">{headline}</h2>
+      <p class="mt-4 max-w-prose text-base text-bone-dim">{description}</p>
+      <div class="mt-6 max-w-xl">
+        <NewsletterSignup source={source} id={formId} />
+      </div>
+    </div>
+  </section>
+)}
+
+{variant === 'card' && !framed && (
+  <div class="rounded-2xl border border-bone/10 bg-ink-800/60 p-8 md:p-12">
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 class="mt-3 font-display text-3xl uppercase leading-tight tracking-tight text-bone md:text-4xl">{headline}</h2>
+    <p class="mt-4 max-w-prose text-base text-bone-dim">{description}</p>
+    <div class="mt-6 max-w-xl">
+      <NewsletterSignup source={source} id={formId} />
+    </div>
+  </div>
+)}
+
+{variant === 'inline' && (
+  <div>
+    <p class="eyebrow">{eyebrow}</p>
+    <p class="mt-2 text-sm font-semibold text-bone">{headline}</p>
+    <p class="mt-1 text-xs text-bone-mute">{description}</p>
+    <div class="mt-3">
+      <NewsletterSignup source={source} id={formId} />
+    </div>
+  </div>
+)}

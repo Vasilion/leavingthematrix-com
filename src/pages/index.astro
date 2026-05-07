@@ -4,6 +4,8 @@ import Hero from '../components/Hero.astro';
 import TickerTape from '../components/TickerTape.astro';
 import ChannelGrid from '../components/ChannelGrid.astro';
 import NovaCallout from '../components/NovaCallout.astro';
+import NewsletterCallout from '../components/NewsletterCallout.astro';
+import Pill from '../components/Pill.astro';
 import { PRICING_TIERS } from '../lib/site';
 import PricingTier from '../components/PricingTier.astro';
 import { getCollection } from 'astro:content';
@@ -28,8 +30,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         Two pills. <span class="text-signal">One choice.</span>
       </h2>
       <p class="mt-6 text-lg text-bone-dim">
-        Stay asleep with the free newsletter, or take the Red Pill and get every signal,
-        every channel, every tool we run on our own desk.
+        Stay asleep with the free newsletter, or take the <Pill color="red" />
+        and get every signal, every channel, every tool we run on our own desk.
       </p>
     </div>
 
@@ -68,6 +70,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
       </div>
     </section>
   )}
+
+  <NewsletterCallout
+    source="home"
+    eyebrow="Free Your Mind · Free weekly newsletter"
+    headline="Not ready to commit? Read with us first."
+    description="Each week we send one full ticker through the Quality × Discount × Smart-money lens, plus the framework lessons that compound. No hype, no day-trading, no spam. Cancel any time."
+  />
 
   <section class="container-wide pb-14 md:pb-24">
     <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 bg-gradient-to-br from-ink-800 to-ink-900 p-12 md:flex-row md:items-center md:justify-between">

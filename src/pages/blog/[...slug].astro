@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { SITE } from '../../lib/site';
+import NewsletterCallout from '../../components/NewsletterCallout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -99,6 +100,17 @@ const breadcrumbLd = {
     </div>
 
     <div class="mt-16 border-t border-bone/10 pt-12">
+      <NewsletterCallout
+        source="blog-post"
+        framed={false}
+        eyebrow="Free Your Mind · Free weekly newsletter"
+        headline="Liked this? Get the next one in your inbox."
+        description="One full ticker through the framework + the lesson behind it, every week. Unsubscribe in one click."
+        id={post.slug}
+      />
+    </div>
+
+    <div class="mt-12 border-t border-bone/10 pt-12">
       <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-8 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 class="font-display text-2xl uppercase tracking-tight">Want this in real time?</h3>

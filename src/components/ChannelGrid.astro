@@ -49,7 +49,7 @@ const lanes = [
   {
     title: 'Nova Tools',
     blurb:
-      'The trading copilot we built for our own desk — now included with Red Pill. Live AI-managed Nova Fund, smart-money dashboards, sector exposure, vs SPY benchmark, weekly memos.',
+      'The trading copilot we built for our own desk — now included with <span class="text-red-400">Red</span> Pill. Live AI-managed Nova Fund, smart-money dashboards, sector exposure, vs SPY benchmark, weekly memos.',
     items: [
       'Nova Fund — live portfolio',
       'Weekly memos',
@@ -91,7 +91,7 @@ const lanes = [
               </span>
             )}
           </div>
-          <p class="mt-2 text-sm text-bone-dim">{lane.blurb}</p>
+          <p class="mt-2 text-sm text-bone-dim" set:html={lane.blurb}></p>
           <ul class="mt-6 flex flex-wrap gap-2">
             {lane.items.map((item) => (
               <li class="rounded-md border border-bone/10 bg-ink-700/60 px-2.5 py-1 font-mono text-xs text-bone-dim">

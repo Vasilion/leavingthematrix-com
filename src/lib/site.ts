@@ -47,7 +47,10 @@ export const BLOG_CATEGORIES = [
 // Decision pending; do not surface old Standard/Pro pricing publicly.
 export const PRICING_TIERS = [
   {
-    name: 'Blue Pill',
+    // Tier name renders as HTML — "Blue" gets the blue word color, "Pill"
+    // stays in surrounding bone color. PricingTier.astro renders this with
+    // set:html so the span survives.
+    name: '<span class="text-sky-400">Blue</span> Pill',
     price: 'Free',
     period: '',
     tagline: "Free Your Mind — our weekly read on quality investing.",
@@ -65,7 +68,7 @@ export const PRICING_TIERS = [
     newsletterSource: 'membership-blue-pill',
   },
   {
-    name: 'Red Pill',
+    name: '<span class="text-red-400">Red</span> Pill',
     price: '$149',
     period: '/mo',
     tagline: 'Full access. The framework, the signals, the community, the tools.',

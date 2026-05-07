@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Pill from '../components/Pill.astro';
 ---
 
 <Layout title="404 — Lost in the noise" description="The page you're looking for doesn't exist." noindex>
@@ -10,7 +11,7 @@ import Layout from '../layouts/Layout.astro';
     </h1>
     <p class="mt-6 max-w-xl text-lg text-bone-dim">
       That route doesn't exist — or it used to and we moved it. Try the home page,
-      check the blog, or take the Red Pill.
+      check the blog, or take the <Pill color="red" />.
     </p>
 
     <div class="mt-10 flex flex-wrap items-center justify-center gap-4">

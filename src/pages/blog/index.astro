@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { BLOG_CATEGORIES } from '../../lib/site';
+import NewsletterCallout from '../../components/NewsletterCallout.astro';
 
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => +b.data.date - +a.data.date
@@ -76,4 +77,12 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
       </ul>
     )}
   </section>
+
+  <NewsletterCallout
+    source="blog-index"
+    eyebrow="Free Your Mind · Free weekly newsletter"
+    headline="Get the next one in your inbox."
+    description="One full ticker through the framework, plus the lesson behind it — every week. No hype, no spam, unsubscribe in one click."
+    id="blog-list"
+  />
 </Layout>

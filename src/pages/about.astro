@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import headshot from '../assets/headshot.png';
+import Pill from '../components/Pill.astro';
+import NewsletterCallout from '../components/NewsletterCallout.astro';
 
 const career = [
   {
@@ -109,7 +111,7 @@ const career = [
                 </li>
                 <li class="flex items-start gap-3">
                   <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
-                  <span><strong class="text-bone">Nova tools</strong> — the trading copilot we built for ourselves, included with Red Pill.</span>
+                  <span><strong class="text-bone">Nova tools</strong> — the trading copilot we built for ourselves, included with <Pill color="red" />.</span>
                 </li>
               </ul>
             </div>
@@ -192,10 +194,11 @@ const career = [
             everywhere on this site.
           </p>
           <p class="mt-4 text-bone-dim">
-            Red Pill members get Nova Fund (a live AI-managed portfolio with weekly
-            memos), the Smart Money dashboard (insider buys, congressional trades,
-            13F flows), Luke's auto-tracked portfolios, sector exposure, and a vs SPY
-            benchmark with dividend reinvestment.
+            <Pill color="red" /> members get Nova Fund (a live AI-managed
+            portfolio with weekly memos), the Smart Money dashboard (insider
+            buys, congressional trades, 13F flows), Luke's auto-tracked
+            portfolios, sector exposure, and a vs SPY benchmark with dividend
+            reinvestment.
           </p>
           <a href="/blog" class="btn-secondary mt-8 inline-flex">Read the Nova dev blog →</a>
         </div>
@@ -374,8 +377,15 @@ const career = [
     </div>
   </section>
 
+  <NewsletterCallout
+    source="about"
+    eyebrow="Free Your Mind · Free weekly newsletter"
+    headline="Want to see the work, weekly?"
+    description="The free newsletter is where the framework gets applied to a real ticker every issue. Read along — no commitment, no spam, unsubscribe in one click."
+  />
+
   <!-- Final CTA -->
-  <section class="container-wide pt-24 pb-24">
+  <section class="container-wide pt-8 pb-24">
     <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-12 md:flex-row md:items-center md:justify-between">
       <div>
         <h2 class="font-display text-display-md uppercase tracking-tight">Come trade with us.</h2>
