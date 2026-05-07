@@ -1,4 +1,6 @@
 ---
+import NewsletterSignup from './NewsletterSignup.astro';
+
 interface Props {
   name: string;
   price: string;
@@ -15,6 +17,14 @@ interface Props {
    * link. Flip to false (or remove) once the Stripe + Discord-role-bot ships.
    */
   comingSoon?: boolean;
+  /**
+   * Renders an inline email-input form ("The Long Lens" newsletter capture)
+   * instead of a CTA button. Used by the Blue Pill tier — it's a free
+   * newsletter signup, not a paid checkout flow.
+   */
+  newsletterSignup?: boolean;
+  /** Tier name for analytics on the newsletter form, e.g. "membership-blue-pill". */
+  newsletterSource?: string;
 }
 
 const {
@@ -28,6 +38,8 @@ const {
   href = '/membership',
   external = false,
   comingSoon = false,
+  newsletterSignup = false,
+  newsletterSource,
 } = Astro.props;
 
 const ctaTarget = external ? '_blank' : undefined;
@@ -70,7 +82,12 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
 
   <div class="mt-10 flex-1"></div>
 
-  {comingSoon ? (
+  {newsletterSignup ? (
+    <NewsletterSignup
+      source={newsletterSource ?? `tier-${name.toLowerCase().replace(/\s+/g, '-')}`}
+      id={`tier-signup-${name.toLowerCase().replace(/\s+/g, '-')}`}
+    />
+  ) : comingSoon ? (
     <button
       type="button"
       disabled

@@ -36,8 +36,8 @@ export const BLOG_CATEGORIES = [
 ] as const;
 
 // PRICING — collapsed to two tiers 2026-05-05.
-// Blue Pill = Free (newsletter, launching with Nova).
-// Red Pill = $99/mo full access (Discord Pro + Nova Fund + portfolios).
+// Blue Pill = Free (newsletter — "The Long Lens", weekly).
+// Red Pill = $149/mo full access (Discord Pro + Nova Fund + portfolios).
 //
 // MIGRATION TODO: existing Mee6 Standard ($30) / Pro ($80) subscribers need a
 // migration plan before public launch. Options under consideration:
@@ -45,25 +45,24 @@ export const BLOG_CATEGORIES = [
 //   - Sunset window (e.g. 6mo) then forced migration to Stripe
 //   - One-time loyalty discount on Red Pill for existing subs
 // Decision pending; do not surface old Standard/Pro pricing publicly.
-//
-// STRIPE TODO: when Stripe + Discord-role-bot is wired, flip the Red Pill
-// `comingSoon` flag and point `href` at the Stripe checkout.
 export const PRICING_TIERS = [
   {
     name: 'Blue Pill',
     price: 'Free',
     period: '',
-    tagline: 'Stay asleep, but keep an eye open.',
+    tagline: "The Long Lens — our weekly read on quality investing.",
     features: [
-      'Weekly newsletter — what the smart money is doing',
-      'A taste of the framework Nova runs every day',
-      'Highlight ideas surfaced by the desk',
+      'Weekly newsletter delivered to your inbox',
+      'One full ticker analysis per issue, applying the framework',
+      'Lessons that compound — debt-aware investing, valuation, position sizing',
+      'Macro snapshot + smart-money pulse for context',
       'Educational content only — never personalized advice',
     ],
-    cta: 'Get the Newsletter',
+    cta: 'Subscribe', // unused when newsletterSignup=true; kept for type compat
     popular: false,
     href: '/membership',
-    comingSoon: true,
+    newsletterSignup: true,
+    newsletterSource: 'membership-blue-pill',
   },
   {
     name: 'Red Pill',

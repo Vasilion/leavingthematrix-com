@@ -1,0 +1,129 @@
+---
+// Inline email-capture form for "The Long Lens" newsletter. Used in place
+// of the Blue Pill tier's CTA button on /membership and /. Posts to the
+// Nova subdomain's /api/newsletter/subscribe endpoint (same registrable
+// domain, CORS-allowed).
+//
+// States:
+//   idle      — input + submit button visible
+//   loading   — submit button disabled, "Sending..." label
+//   confirm   — input replaced with confirmation copy + email icon
+//   error     — input still visible, error message above
+//
+// Each state managed via inline display: style mutations from the script
+// block at the bottom (same pattern as Nav.astro's auth-state mirror —
+// reliably beats Tailwind class-level rules and avoids JIT scanner misses).
+
+interface Props {
+  /** Anchor for analytics — distinguishes "membership-blue-pill" from
+   *  "homepage-cta" etc. Sent as `source` in the API payload. */
+  source?: string;
+  /** Optional id suffix so multiple instances on the same page don't
+   *  collide on element IDs. */
+  id?: string;
+}
+
+const { source = 'ltm', id = 'newsletter-signup' } = Astro.props;
+const SUBSCRIBE_URL = 'https://nova.leavingthematrix.io/api/newsletter/subscribe';
+---
+
+<form
+  id={id}
+  data-source={source}
+  data-endpoint={SUBSCRIBE_URL}
+  class="newsletter-form mt-6 flex w-full flex-col gap-2"
+  novalidate
+>
+  <div class="newsletter-row flex w-full flex-col gap-2 sm:flex-row">
+    <label for={`${id}-email`} class="sr-only">Email address</label>
+    <input
+      id={`${id}-email`}
+      type="email"
+      name="email"
+      placeholder="you@email.com"
+      autocomplete="email"
+      required
+      class="newsletter-input flex-1 rounded-md border border-bone/15 bg-ink-900/60 px-4 py-3 text-sm text-bone placeholder:text-bone-mute focus:border-signal/60 focus:outline-none"
+    />
+    <button
+      type="submit"
+      class="newsletter-submit inline-flex items-center justify-center gap-2 rounded-md bg-signal px-5 py-3 text-sm font-bold uppercase tracking-wider text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow disabled:translate-y-0 disabled:cursor-wait disabled:opacity-60"
+    >
+      <span class="newsletter-submit-label">Subscribe</span>
+    </button>
+  </div>
+
+  <p class="newsletter-error hidden text-xs text-loss" role="alert" aria-live="polite"></p>
+
+  <p class="newsletter-helper text-[11px] text-bone-mute">
+    Free, weekly. Unsubscribe in one click. We never share your email.
+  </p>
+
+  <div class="newsletter-confirm hidden" role="status">
+    <div class="rounded-md border border-signal/40 bg-signal/5 px-4 py-4 text-sm text-bone">
+      <strong class="block text-signal">Check your inbox</strong>
+      <span class="mt-1 block text-bone-dim">
+        We sent a confirmation link to <span class="newsletter-confirm-email font-mono"></span>. Click it to start receiving The Long Lens.
+      </span>
+    </div>
+  </div>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.newsletter-form').forEach((form) => {
+    const endpoint = form.dataset.endpoint!;
+    const source = form.dataset.source ?? 'ltm';
+    const input = form.querySelector<HTMLInputElement>('input[name="email"]')!;
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const submitLabel = form.querySelector<HTMLSpanElement>('.newsletter-submit-label')!;
+    const errorEl = form.querySelector<HTMLParagraphElement>('.newsletter-error')!;
+    const helperEl = form.querySelector<HTMLParagraphElement>('.newsletter-helper')!;
+    const confirmEl = form.querySelector<HTMLDivElement>('.newsletter-confirm')!;
+    const confirmEmailEl = form.querySelector<HTMLSpanElement>('.newsletter-confirm-email')!;
+    const inputRow = form.querySelector<HTMLDivElement>('.newsletter-row')!;
+
+    function showError(msg: string) {
+      errorEl.textContent = msg;
+      errorEl.classList.remove('hidden');
+    }
+    function clearError() {
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearError();
+      const email = input.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('Please enter a valid email address.');
+        input.focus();
+        return;
+      }
+      submit.disabled = true;
+      input.disabled = true;
+      submitLabel.textContent = 'Sending…';
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source }),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => null);
+          throw new Error(body?.error ?? `Subscription failed (HTTP ${res.status}).`);
+        }
+        // Success — swap UI to confirmation state.
+        inputRow.style.display = 'none';
+        helperEl.style.display = 'none';
+        confirmEmailEl.textContent = email;
+        confirmEl.classList.remove('hidden');
+      } catch (err) {
+        showError(err instanceof Error ? err.message : 'Could not subscribe. Try again.');
+        submit.disabled = false;
+        input.disabled = false;
+        submitLabel.textContent = 'Subscribe';
+      }
+    });
+  });
+</script>
