@@ -25,8 +25,8 @@ const faq = [
     a: 'You sign up here through Stripe, you get the Pro role in our community automatically, and you land in the members area where Nova lives. Cancel anytime in your billing dashboard.',
   },
   {
-    q: `When does ${PILL_RED} open up?`,
-    a: "We're currently in sandbox-testing mode — sign up with the test card on the pricing card and you get full access for free during beta. Real billing flips on alongside Nova's public launch; beta testers stay free until then.",
+    q: `How does cancellation work?`,
+    a: 'Cancel anytime in your account settings. Your access continues until the end of the current billing period — no prorated refunds, no questions asked. You can reactivate any time before the period ends.',
   },
   {
     q: `What is the ${PILL_BLUE} newsletter?`,
@@ -114,39 +114,6 @@ const faq = [
   </section>
 
   <section id="pricing" class="container-wide py-14 md:py-24 scroll-mt-24">
-    {/* Sandbox testing banner — present while Stripe is in test mode. Remove
-        when switching Vercel to live keys (and update Red Pill CTA in site.ts). */}
-    <div class="mb-8 rounded-2xl border border-signal/40 bg-signal/5 p-6 md:p-8">
-      <p class="eyebrow text-signal">Beta tester mode</p>
-      <h3 class="mt-3 font-display text-2xl uppercase tracking-tight text-bone md:text-3xl">
-        Members area is in <span class="text-signal">sandbox testing</span>
-      </h3>
-      <p class="mt-4 max-w-2xl text-sm text-bone-dim md:text-base">
-        Help us validate the full sign-up flow before public launch. Click
-        <strong class="text-bone">"Help Me Test For Free!"</strong> below — at the
-        Stripe checkout step, use these test card details. No real money will
-        be charged, and you get full access to the members area during beta.
-      </p>
-      <div class="mt-5 grid gap-1.5 font-mono text-[13px] md:text-sm">
-        <div class="flex items-baseline gap-3">
-          <span class="w-12 text-bone-mute">Card</span>
-          <span class="text-bone">4242 4242 4242 4242</span>
-        </div>
-        <div class="flex items-baseline gap-3">
-          <span class="w-12 text-bone-mute">Date</span>
-          <span class="text-bone">09 / 40</span>
-        </div>
-        <div class="flex items-baseline gap-3">
-          <span class="w-12 text-bone-mute">CVC</span>
-          <span class="text-bone">999</span>
-        </div>
-      </div>
-      <p class="mt-5 text-xs text-bone-mute">
-        Real billing flips on once we&rsquo;re out of beta — you&rsquo;ll be
-        the first to know.
-      </p>
-    </div>
-
     <div class="grid gap-6 md:grid-cols-2">
       {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
     </div>

@@ -85,12 +85,7 @@ export const PRICING_TIERS = [
       'vs SPY benchmark with dividend reinvestment',
       'Direct line for trade questions, 1-on-1 portfolio review',
     ],
-    // Sandbox testing mode: button is live and routes to Nova sign-up, but
-    // Vercel still has Stripe TEST keys so no real cards are charged. Beta
-    // testers help us validate the full flow before flipping to live keys.
-    // To go fully live: change CTA back to "Take the Red Pill" + swap
-    // Vercel Stripe env to live keys.
-    cta: 'Help Me Test For Free!',
+    cta: 'Take the Red Pill',
     popular: true,
     href: 'https://nova.leavingthematrix.io/sign-up',
     comingSoon: false,
