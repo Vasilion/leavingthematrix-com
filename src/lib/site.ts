@@ -93,6 +93,8 @@ export const PRICING_TIERS = [
     href: 'https://nova.leavingthematrix.io/sign-up?plan=monthly',
     annualHref: 'https://nova.leavingthematrix.io/sign-up?plan=annual',
     membersHref: 'https://nova.leavingthematrix.io/macro',
+    upgradeHref: 'https://nova.leavingthematrix.io/checkout?plan=monthly',
+    annualUpgradeHref: 'https://nova.leavingthematrix.io/checkout?plan=annual',
     comingSoon: false,
   },
 ] as const;

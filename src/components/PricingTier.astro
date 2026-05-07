@@ -32,13 +32,17 @@ interface Props {
   /** Tier name for analytics on the newsletter form, e.g. "membership-blue-pill". */
   newsletterSource?: string;
   /**
-   * When set, the card swaps its CTA to a "Go to Members Area" link if the
-   * visitor is already signed in (cross-subdomain auth-state mirror in Nav.astro
-   * toggles [data-auth-when] children). The Monthly/Annual toggle hides too —
-   * a signed-in member already chose. Original CTA + toggle still render for
-   * signed-out visitors.
+   * When set, the card swaps its CTA based on auth state via the cross-subdomain
+   * mirror in Nav.astro. Three states:
+   *  - signed-out → original CTA + Monthly/Annual toggle (default)
+   *  - signed-in & free → "Upgrade to Red Pill" → upgradeHref(s) + toggle
+   *  - signed-in & paid → "Go to Members Area" → membersHref (no toggle)
+   * Set membersHref to enable. Provide upgradeHref/annualUpgradeHref for the
+   * free-tier upgrade flow (typically /checkout?plan=monthly|annual).
    */
   membersHref?: string;
+  upgradeHref?: string;
+  annualUpgradeHref?: string;
 }
 
 const {
@@ -59,6 +63,8 @@ const {
   newsletterSignup = false,
   newsletterSource,
   membersHref,
+  upgradeHref,
+  annualUpgradeHref,
 } = Astro.props;
 
 const hasAnnualToggle = Boolean(annualPrice && annualPeriod && annualHref);
@@ -93,7 +99,7 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
       <div
         class="mt-5 inline-flex items-center gap-1 rounded-full border border-bone/15 bg-ink-700/60 p-1 text-[11px] font-mono uppercase tracking-[0.14em]"
         data-billing-toggle={tierKey}
-        data-auth-when={membersHref ? 'signed-out' : undefined}
+        data-auth-when={membersHref ? 'signed-out,signed-in-free' : undefined}
         role="tablist"
         aria-label="Billing period"
       >
@@ -183,10 +189,26 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
       >
         {cta}
       </a>
+      {membersHref && upgradeHref && (
+        <a
+          href={upgradeHref}
+          data-tier-cta={tierKey}
+          data-monthly-href={upgradeHref}
+          data-annual-href={annualUpgradeHref}
+          data-auth-when="signed-in-free"
+          style="display: none;"
+          class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
+        >
+          Upgrade to Red Pill
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      )}
       {membersHref && (
         <a
           href={membersHref}
-          data-auth-when="signed-in"
+          data-auth-when="signed-in-paid"
           style="display: none;"
           class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
         >
@@ -207,7 +229,9 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
       const buttons = toggle.querySelectorAll('[data-billing-period]');
       const priceEl = document.querySelector(`[data-tier-price="${tierKey}"]`);
       const periodEl = document.querySelector(`[data-tier-period="${tierKey}"]`);
-      const ctaEl = document.querySelector(`[data-tier-cta="${tierKey}"]`);
+      // Multiple CTAs may carry data-tier-cta (signed-out signup CTA + signed-in-free
+      // upgrade CTA). Only one is visible at a time per auth state, but href swaps on all.
+      const ctaEls = document.querySelectorAll(`[data-tier-cta="${tierKey}"]`);
 
       const setPeriod = (period) => {
         const isAnnual = period === 'annual';
@@ -238,10 +262,10 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
         if (periodEl) {
           periodEl.textContent = isAnnual ? periodEl.dataset.annualPeriod : periodEl.dataset.monthlyPeriod;
         }
-        if (ctaEl) {
+        ctaEls.forEach((ctaEl) => {
           const next = isAnnual ? ctaEl.dataset.annualHref : ctaEl.dataset.monthlyHref;
           if (next) ctaEl.setAttribute('href', next);
-        }
+        });
       };
 
       buttons.forEach((b) => {

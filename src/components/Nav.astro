@@ -361,16 +361,29 @@ const isActive = (href: string) =>
   function applyAuthState(status: AuthStatus) {
     const wrappers = document.querySelectorAll<HTMLElement>('[data-auth-state]');
     const state = status.signedIn ? 'signed-in' : 'signed-out';
+    // Granular state lets the membership page distinguish free vs paid members:
+    // a signed-in free user should see "Upgrade", a paid user "Members Area".
+    const tier = (status.tier ?? 'free').toLowerCase();
+    const granularState = !status.signedIn
+      ? 'signed-out'
+      : tier === 'pro' || tier === 'elite'
+      ? 'signed-in-paid'
+      : 'signed-in-free';
 
     wrappers.forEach((wrapper) => {
       wrapper.dataset.authState = state;
       // Toggle visibility on each [data-auth-when] child via inline style so we
-      // beat any class-level rules and avoid Tailwind JIT issues.
+      // beat any class-level rules and avoid Tailwind JIT issues. data-auth-when
+      // accepts a comma-separated list — element is visible if any token matches
+      // the current state. 'signed-in' is an umbrella for both -free and -paid.
       wrapper.querySelectorAll<HTMLElement>('[data-auth-when]').forEach((el) => {
-        const wantState = el.dataset.authWhen;
-        const visible = wantState === state;
-        // Desktop pill is inline-flex / relative; mobile is grid / flex. Reset
-        // by removing inline style entirely so the class-defined display wins.
+        const wantStates = (el.dataset.authWhen ?? '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        const visible =
+          wantStates.includes(granularState) ||
+          (status.signedIn && wantStates.includes('signed-in'));
         if (visible) {
           el.style.display = '';
         } else {
