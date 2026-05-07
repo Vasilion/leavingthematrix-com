@@ -36,7 +36,7 @@ export const BLOG_CATEGORIES = [
 ] as const;
 
 // PRICING — collapsed to two tiers 2026-05-05.
-// Blue Pill = Free (newsletter — "The Long Lens", weekly).
+// Blue Pill = Free (newsletter — "Free Your Mind", weekly).
 // Red Pill = $149/mo full access (Discord Pro + Nova Fund + portfolios).
 //
 // MIGRATION TODO: existing Mee6 Standard ($30) / Pro ($80) subscribers need a
@@ -50,7 +50,7 @@ export const PRICING_TIERS = [
     name: 'Blue Pill',
     price: 'Free',
     period: '',
-    tagline: "The Long Lens — our weekly read on quality investing.",
+    tagline: "Free Your Mind — our weekly read on quality investing.",
     features: [
       'Weekly newsletter delivered to your inbox',
       'One full ticker analysis per issue, applying the framework',
