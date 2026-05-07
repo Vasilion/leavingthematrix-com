@@ -1,9 +1,9 @@
 export const SITE = {
   name: 'Leaving The Matrix',
   domain: 'leavingthematrix.io',
-  tagline: 'Investing education and smart-money signals.',
+  tagline: 'Investing education and smart-money flow.',
   description:
-    'Investing education and smart-money signals — quality businesses, valuation discount, institutional flow. Educational only — never personalized financial advice.',
+    'Investing education and smart-money flow — quality businesses, valuation discount, institutional indicators. Educational only — never personalized financial advice.',
   // Discord links remain referenced for the existing Mee6 subscriber base
   // (Standard $30 / Pro $80) until the Stripe + role-bot migration ships.
   // Public-facing CTAs no longer point here — site flow is /membership.
@@ -71,10 +71,10 @@ export const PRICING_TIERS = [
     name: '<span class="text-red-400">Red</span> Pill',
     price: '$149',
     period: '/mo',
-    tagline: 'Full access. The framework, the signals, the community, the tools.',
+    tagline: 'Full access. The framework, the research, the community, the tools.',
     features: [
       'Full education library — DCA to options Greeks, debt frameworks, long-term planning',
-      'Every signal lane — long-term picks, dip buys, swing trades, ETF momentum, crypto',
+      'Every research lane — long-term picks, dip buys, swing trades, ETF momentum, crypto',
       'Pro role in the Discord community',
       'Higher-conviction options ideas with full thesis',
       'Deep-value research — names trading near 200-week support',

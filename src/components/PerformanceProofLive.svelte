@@ -177,13 +177,11 @@
 
       {#if etf}
         <div class="mt-6 flex flex-wrap items-center gap-3 text-[11px] text-bone-mute">
-          <span class="font-mono uppercase tracking-wider">{fmtPeriod(etf)} running</span>
           {#if etf.holdingsCount}
-            <span aria-hidden="true">·</span>
             <span>{etf.holdingsCount} holdings</span>
           {/if}
           {#if etf.lastUpdatedLabel}
-            <span aria-hidden="true">·</span>
+            {#if etf.holdingsCount}<span aria-hidden="true">·</span>{/if}
             <span>updated {etf.lastUpdatedLabel}</span>
           {/if}
         </div>
@@ -237,13 +235,11 @@
 
       {#if sp}
         <div class="mt-6 flex flex-wrap items-center gap-3 text-[11px] text-bone-mute">
-          <span class="font-mono uppercase tracking-wider">{fmtPeriod(sp)} running</span>
           {#if sp.holdingsCount}
-            <span aria-hidden="true">·</span>
             <span>{sp.holdingsCount} holdings</span>
           {/if}
           {#if sp.lastUpdatedLabel}
-            <span aria-hidden="true">·</span>
+            {#if sp.holdingsCount}<span aria-hidden="true">·</span>{/if}
             <span>updated {sp.lastUpdatedLabel}</span>
           {/if}
         </div>
