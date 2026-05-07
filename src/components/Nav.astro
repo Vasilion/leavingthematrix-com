@@ -128,6 +128,16 @@ const isActive = (href: string) =>
             </svg>
             Go to Members Area
           </a>
+          <a
+            href="https://nova.leavingthematrix.io/sign-out?returnTo=https%3A%2F%2Fleavingthematrix.io"
+            role="menuitem"
+            class="flex w-full items-center gap-2 border-t border-bone/10 px-4 py-3 text-left font-mono text-[11px] uppercase tracking-[0.14em] text-bone-dim transition-colors hover:bg-ink-800 hover:text-loss"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M9 3v-1H3v10h6v-1M6 7h7m0 0L10 4m3 3L10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Sign out
+          </a>
         </div>
       </div>
 
@@ -273,17 +283,23 @@ const isActive = (href: string) =>
           Leave the Matrix
         </a>
       </div>
-      <!-- Signed-in: single Members Area pill replaces everything above -->
-      <a
-        data-auth-when="signed-in"
-        href="https://nova.leavingthematrix.io/macro"
-        class="flex w-full items-center justify-center gap-3 rounded-md border border-signal/40 bg-ink-900/60 px-4 py-3 text-sm font-bold uppercase tracking-wider text-bone transition-colors hover:bg-ink-800/60"
-        style="display: none;"
-      >
-        <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
-        <span>Members Area</span>
-        <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
-      </a>
+      <!-- Signed-in: Members Area pill + sign-out link replace everything above -->
+      <div data-auth-when="signed-in" class="flex flex-col gap-3" style="display: none;">
+        <a
+          href="https://nova.leavingthematrix.io/macro"
+          class="flex w-full items-center justify-center gap-3 rounded-md border border-signal/40 bg-ink-900/60 px-4 py-3 text-sm font-bold uppercase tracking-wider text-bone transition-colors hover:bg-ink-800/60"
+        >
+          <span data-auth-initial class="flex h-7 w-7 items-center justify-center rounded-full bg-signal text-[12px] font-semibold text-black">?</span>
+          <span>Members Area</span>
+          <span data-auth-tier class="rounded-md bg-signal/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-signal">Member</span>
+        </a>
+        <a
+          href="https://nova.leavingthematrix.io/sign-out?returnTo=https%3A%2F%2Fleavingthematrix.io"
+          class="flex w-full items-center justify-center rounded-md border border-bone/15 px-4 py-3 text-xs font-bold uppercase tracking-wider text-bone-dim transition-colors hover:border-loss/40 hover:text-loss"
+        >
+          Sign out
+        </a>
+      </div>
     </div>
   </div>
 </header>
