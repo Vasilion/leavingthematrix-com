@@ -1,6 +1,6 @@
 ---
 // Explains how Nova actually scores names — pulled from the Nova README
-// (12 signal layers across the Quality x Discount x Smart-money framework,
+// (13 signal layers across the Quality x Discount x Smart-money framework,
 // condensed into a single 0–100 Nova Score with 5 zones).
 
 const zones = [
@@ -44,7 +44,8 @@ const layerGroups = [
     title: 'Context',
     desc: 'What does the tape and macro look like?',
     layers: [
-      { name: 'technical', detail: 'Trend, momentum, RSI, distance from 52w high/low' },
+      { name: 'momentum', detail: 'Relative strength vs SPY (60d), trend vs 200d, proximity to 52w high' },
+      { name: 'technical', detail: 'Trend, RSI, distance from 52w high/low (mean-reversion bias)' },
       { name: 'regime', detail: 'Macro backdrop — SPY vs SMA200, VIX, sector rotation' },
       { name: 'catalyst', detail: 'News velocity + sentiment' },
     ],
@@ -69,9 +70,10 @@ const layerGroups = [
           and Congress are doing on every name we cover.
         </p>
         <p class="mt-4 text-bone-dim">
-          Twelve signals are condensed into a single <strong class="text-bone">Nova Score (0–100)</strong>
+          Thirteen signals are condensed into a single <strong class="text-bone">Nova Score (0–100)</strong>
           built around the same lens we use everywhere on this site:
-          <em class="text-bone">quality × discount × smart-money confirmation.</em>
+          <em class="text-bone">quality × discount × smart-money confirmation</em>, with a momentum
+          overlay that lifts names where the trend is confirming the thesis.
         </p>
       </div>
 
@@ -112,7 +114,7 @@ const layerGroups = [
     <!-- Layer breakdown -->
     <div class="mt-14 md:mt-16">
       <div class="flex items-baseline justify-between">
-        <p class="eyebrow">12 signal layers</p>
+        <p class="eyebrow">13 signal layers</p>
         <p class="font-mono text-xs text-bone-mute">Quality × Discount × Smart-money</p>
       </div>
 
