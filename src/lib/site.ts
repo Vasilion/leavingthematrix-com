@@ -92,6 +92,7 @@ export const PRICING_TIERS = [
     popular: true,
     href: 'https://nova.leavingthematrix.io/sign-up?plan=monthly',
     annualHref: 'https://nova.leavingthematrix.io/sign-up?plan=annual',
+    membersHref: 'https://nova.leavingthematrix.io/macro',
     comingSoon: false,
   },
 ] as const;

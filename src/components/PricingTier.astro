@@ -31,6 +31,14 @@ interface Props {
   newsletterSignup?: boolean;
   /** Tier name for analytics on the newsletter form, e.g. "membership-blue-pill". */
   newsletterSource?: string;
+  /**
+   * When set, the card swaps its CTA to a "Go to Members Area" link if the
+   * visitor is already signed in (cross-subdomain auth-state mirror in Nav.astro
+   * toggles [data-auth-when] children). The Monthly/Annual toggle hides too —
+   * a signed-in member already chose. Original CTA + toggle still render for
+   * signed-out visitors.
+   */
+  membersHref?: string;
 }
 
 const {
@@ -50,6 +58,7 @@ const {
   comingSoon = false,
   newsletterSignup = false,
   newsletterSource,
+  membersHref,
 } = Astro.props;
 
 const hasAnnualToggle = Boolean(annualPrice && annualPeriod && annualHref);
@@ -66,6 +75,7 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
       ? 'border-signal/60 bg-ink-800 shadow-signal-glow'
       : 'border-bone/10 bg-ink-800/60',
   ]}
+  data-auth-state={membersHref ? 'signed-out' : undefined}
 >
   {popular && (
     <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-signal px-4 py-1 text-xs font-bold uppercase tracking-widest text-black">
@@ -83,6 +93,7 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
       <div
         class="mt-5 inline-flex items-center gap-1 rounded-full border border-bone/15 bg-ink-700/60 p-1 text-[11px] font-mono uppercase tracking-[0.14em]"
         data-billing-toggle={tierKey}
+        data-auth-when={membersHref ? 'signed-out' : undefined}
         role="tablist"
         aria-label="Billing period"
       >
@@ -159,17 +170,33 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
       Coming Soon
     </button>
   ) : (
-    <a
-      href={href}
-      target={ctaTarget}
-      rel={ctaRel}
-      data-tier-cta={tierKey}
-      data-monthly-href={href}
-      data-annual-href={annualHref}
-      class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
-    >
-      {cta}
-    </a>
+    <>
+      <a
+        href={href}
+        target={ctaTarget}
+        rel={ctaRel}
+        data-tier-cta={tierKey}
+        data-monthly-href={href}
+        data-annual-href={annualHref}
+        data-auth-when={membersHref ? 'signed-out' : undefined}
+        class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
+      >
+        {cta}
+      </a>
+      {membersHref && (
+        <a
+          href={membersHref}
+          data-auth-when="signed-in"
+          style="display: none;"
+          class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
+        >
+          Go to Members Area
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      )}
+    </>
   )}
 </article>
 
