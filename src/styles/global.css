@@ -26,6 +26,14 @@
   *:focus-visible {
     @apply outline-none ring-2 ring-signal/60 ring-offset-2 ring-offset-black rounded-sm;
   }
+
+  /* Reset heading weight to 400. Anton is a single-weight display font,
+     so the browser's default `bold` on h1/h2 forces a faux-bold synthesis
+     that smudges the glyphs and makes them hard to read. Any heading that
+     genuinely wants bold weight should opt in via font-bold. */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+  }
 }
 
 @layer components {

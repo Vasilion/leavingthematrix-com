@@ -8,10 +8,177 @@ import Layout from '../../layouts/Layout.astro';
     <h1 class="mt-4 font-display text-display-md uppercase tracking-tight">Privacy Policy</h1>
 
     <div class="prose-ltm mt-12">
-      <p class="text-bone-mute">
-        <em>Placeholder. To be replaced with a privacy policy covering: what data the site collects (none currently
-        beyond standard server logs), how the Discord/mee6 subscription handles member data, third-party services
-        (TradingView widget), and your rights regarding any data we hold.</em>
+      <p class="text-bone-dim">
+        <em>Last updated: <time datetime="2026-05-07">May 7, 2026</time>. This document is a good-faith draft pending review by qualified legal counsel before public launch.</em>
+      </p>
+
+      <h2>1. Who we are</h2>
+      <p>
+        "Leaving The Matrix" (the <strong>Service</strong>) is operated by Unycross LLC, a Michigan-registered company
+        owned by Luke Vasilion ("we," "us," "our"). This policy explains what personal information we collect when you
+        use leavingthematrix.io, the Nova members area at nova.leavingthematrix.io, our Discord community, and our
+        email newsletter — and what we do with that information.
+      </p>
+      <p>
+        If you have questions about this policy or any data we hold about you, contact us at
+        <a href="mailto:luke@leavingthematrix.io">luke@leavingthematrix.io</a>.
+      </p>
+
+      <h2>2. Information we collect</h2>
+      <p>The information we collect depends on which parts of the Service you use.</p>
+
+      <h3>2.1 Newsletter ("Free Your Mind")</h3>
+      <p>
+        When you subscribe to our free newsletter, we collect your <strong>email address</strong> and the
+        <strong>signup source</strong> (which page on the site you subscribed from). We send a one-time confirmation
+        email to verify the address belongs to you (double-opt-in). After confirmation, you receive weekly newsletter
+        emails until you unsubscribe.
+      </p>
+
+      <h3>2.2 Membership accounts (Nova members area)</h3>
+      <p>
+        When you create a paid membership account, we collect:
+      </p>
+      <ul>
+        <li>Your <strong>email address</strong> and any profile information you provide to Clerk (our authentication provider)</li>
+        <li>A <strong>tier flag</strong> reflecting your active subscription state (free / pro / lapsed)</li>
+        <li>A <strong>Stripe customer ID</strong> linking your account to your billing record</li>
+        <li>Subscription metadata from Stripe (plan, status, current period end, cancellation flag)</li>
+      </ul>
+      <p>
+        We do <strong>not</strong> directly collect or store your payment card information. Card details are entered
+        on Stripe's hosted checkout and remain with Stripe; we only receive a tokenized customer reference.
+      </p>
+
+      <h3>2.3 Discord community</h3>
+      <p>
+        Membership in our Discord community is governed by Discord's own privacy policy. We see the public profile
+        information you choose to share with the server (username, avatar, roles). We do not record or store private
+        messages exchanged in the server.
+      </p>
+
+      <h3>2.4 Site usage</h3>
+      <p>
+        Our hosting providers (AWS Amplify and Vercel) automatically log standard server-side request data (IP
+        address, user agent, referring URL, timestamps) for security and performance purposes. We do not currently
+        run additional analytics tools beyond these provider-level logs. If we add analytics in the future (e.g.,
+        Plausible, Fathom), we will update this policy to disclose the tool and what it collects.
+      </p>
+
+      <h3>2.5 Cookies and similar technologies</h3>
+      <p>
+        The site uses a small number of cookies, none for advertising or cross-site tracking:
+      </p>
+      <ul>
+        <li><strong>Authentication cookies</strong> set by Clerk to keep you signed into the members area</li>
+        <li><strong>Functional cookies</strong> for session management on payment flows</li>
+      </ul>
+      <p>
+        You can disable cookies in your browser, but doing so will prevent you from signing in to the members area.
+      </p>
+
+      <h2>3. How we use your information</h2>
+      <ul>
+        <li>To deliver the newsletter you subscribed to</li>
+        <li>To create and manage your membership account</li>
+        <li>To process subscription payments and renewals</li>
+        <li>To grant access to gated content, the Discord community, and the Nova members area</li>
+        <li>To respond to questions you send us</li>
+        <li>To detect and prevent fraud, abuse, or violations of our Terms</li>
+        <li>To comply with applicable laws</li>
+      </ul>
+      <p>
+        We do not sell your personal information. We do not share your email address with third parties for their
+        marketing purposes.
+      </p>
+
+      <h2>4. Service providers we use</h2>
+      <p>
+        We rely on a small number of trusted third-party providers to run the Service. Each receives only the
+        information they need to perform their function:
+      </p>
+      <ul>
+        <li><strong>Clerk</strong> — user authentication and account management</li>
+        <li><strong>Stripe</strong> — payment processing and subscription billing</li>
+        <li><strong>Neon</strong> — encrypted database storage for account and subscription state</li>
+        <li><strong>Resend</strong> — transactional and newsletter email delivery</li>
+        <li><strong>Discord</strong> — community chat platform (governed by Discord's own privacy policy)</li>
+        <li><strong>AWS Amplify</strong> — hosting for leavingthematrix.io</li>
+        <li><strong>Vercel</strong> — hosting for the Nova members area</li>
+      </ul>
+      <p>
+        Each of these providers has its own privacy policy. We encourage you to review them; links are available on
+        request.
+      </p>
+
+      <h2>5. How long we keep your data</h2>
+      <ul>
+        <li><strong>Newsletter subscribers:</strong> we keep your email until you unsubscribe; unsubscribed records are retained for compliance auditing for up to 24 months and then deleted.</li>
+        <li><strong>Member accounts:</strong> we keep account and subscription records for the life of your account plus 7 years after account deletion (to meet financial-record retention obligations).</li>
+        <li><strong>Server logs:</strong> rotated by our hosting providers per their default retention windows (typically 30–90 days).</li>
+      </ul>
+
+      <h2>6. Your rights</h2>
+      <p>
+        Depending on where you live, you may have the right to:
+      </p>
+      <ul>
+        <li>Access the personal information we hold about you</li>
+        <li>Correct inaccurate information</li>
+        <li>Delete your account and personal information ("right to be forgotten")</li>
+        <li>Withdraw consent (e.g., unsubscribe from the newsletter)</li>
+        <li>Object to or restrict certain processing</li>
+        <li>Receive your data in a portable format</li>
+        <li>Lodge a complaint with a supervisory authority</li>
+      </ul>
+      <p>
+        To exercise any of these rights, email <a href="mailto:luke@leavingthematrix.io">luke@leavingthematrix.io</a>
+        from the address associated with your account or subscription. We respond within 30 days.
+      </p>
+      <p>
+        California residents have additional rights under the CCPA / CPRA. We do not sell or share personal
+        information for cross-context behavioral advertising.
+      </p>
+
+      <h2>7. Children's privacy</h2>
+      <p>
+        The Service is not directed at children under 16 (or under 13 in the United States). We do not knowingly
+        collect information from children. If we learn we have collected information from a minor, we will delete it
+        promptly.
+      </p>
+
+      <h2>8. International data transfers</h2>
+      <p>
+        Our service providers may store and process data in the United States and other jurisdictions. By using the
+        Service, you understand that your information may be transferred to and processed in countries other than
+        your own. We rely on our providers' standard contractual clauses and other safeguards to protect data in
+        transit.
+      </p>
+
+      <h2>9. Security</h2>
+      <p>
+        We use industry-standard practices to protect your data: encrypted connections (HTTPS), encrypted database
+        storage, hashed authentication tokens, and the principle of least privilege for internal access. No system is
+        perfectly secure, however. If we ever experience a breach affecting your data, we will notify you in
+        accordance with applicable law.
+      </p>
+
+      <h2>10. Changes to this policy</h2>
+      <p>
+        We may update this policy as the Service evolves. Material changes will be communicated via the email
+        address on your account (for members) and posted at the top of this page with a new effective date.
+      </p>
+
+      <h2>11. Contact</h2>
+      <p>
+        Questions, requests, or concerns: <a href="mailto:luke@leavingthematrix.io">luke@leavingthematrix.io</a>.
+        Postal: Unycross LLC · Sand Lake, Michigan, USA.
+      </p>
+
+      <p class="mt-12 text-sm text-bone-mute">
+        <em>This Privacy Policy is a good-faith draft. It is not legal advice and has not been reviewed by counsel as of
+        the last-updated date above. Final language is pending review by a qualified attorney before public launch of
+        the Service.</em>
       </p>
     </div>
   </section>
