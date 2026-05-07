@@ -71,6 +71,9 @@ export const PRICING_TIERS = [
     name: '<span class="text-red-400">Red</span> Pill',
     price: '$149',
     period: '/mo',
+    annualPrice: '$1,499',
+    annualPeriod: '/yr',
+    annualSavingsLabel: 'Save $289',
     tagline: 'Full access. The framework, the research, the community, the tools.',
     features: [
       'Full education library — DCA to options Greeks, debt frameworks, long-term planning',
@@ -87,7 +90,8 @@ export const PRICING_TIERS = [
     ],
     cta: 'Take the Red Pill',
     popular: true,
-    href: 'https://nova.leavingthematrix.io/sign-up',
+    href: 'https://nova.leavingthematrix.io/sign-up?plan=monthly',
+    annualHref: 'https://nova.leavingthematrix.io/sign-up?plan=annual',
     comingSoon: false,
   },
 ] as const;

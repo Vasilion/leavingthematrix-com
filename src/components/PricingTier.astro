@@ -5,6 +5,12 @@ interface Props {
   name: string;
   price: string;
   period: string;
+  /** When set alongside annualHref, renders a Monthly/Annual toggle on the card. */
+  annualPrice?: string;
+  annualPeriod?: string;
+  annualHref?: string;
+  /** Optional savings label rendered next to the Annual toggle button (e.g. "Save $289"). */
+  annualSavingsLabel?: string;
   tagline: string;
   features: readonly string[];
   cta: string;
@@ -31,6 +37,10 @@ const {
   name,
   price,
   period,
+  annualPrice,
+  annualPeriod,
+  annualHref,
+  annualSavingsLabel,
   tagline,
   features,
   cta,
@@ -41,6 +51,9 @@ const {
   newsletterSignup = false,
   newsletterSource,
 } = Astro.props;
+
+const hasAnnualToggle = Boolean(annualPrice && annualPeriod && annualHref);
+const tierKey = name.toLowerCase().replace(/<[^>]+>/g, '').replace(/\s+/g, '-');
 
 const ctaTarget = external ? '_blank' : undefined;
 const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
@@ -65,9 +78,53 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
         / "Red Pill" tier names. set:html preserves the inline span. */}
     <h3 class="font-display text-3xl uppercase tracking-tight text-bone" set:html={name}></h3>
     <p class="mt-2 text-sm text-bone-dim">{tagline}</p>
+
+    {hasAnnualToggle && (
+      <div
+        class="mt-5 inline-flex items-center gap-1 rounded-full border border-bone/15 bg-ink-700/60 p-1 text-[11px] font-mono uppercase tracking-[0.14em]"
+        data-billing-toggle={tierKey}
+        role="tablist"
+        aria-label="Billing period"
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected="true"
+          data-billing-period="monthly"
+          class="rounded-full bg-signal px-3 py-1 text-black"
+        >
+          Monthly
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected="false"
+          data-billing-period="annual"
+          class="rounded-full px-3 py-1 text-bone-dim transition-colors hover:text-bone"
+        >
+          Annual
+          {annualSavingsLabel && (
+            <span class="ml-1.5 rounded-sm bg-signal/15 px-1 py-0.5 text-[9px] tracking-[0.1em] text-signal">
+              {annualSavingsLabel}
+            </span>
+          )}
+        </button>
+      </div>
+    )}
+
     <div class="mt-6 flex items-baseline gap-1">
-      <span class="font-display text-5xl text-bone">{price}</span>
-      <span class="text-sm text-bone-mute">{period}</span>
+      <span
+        class="font-display text-5xl text-bone"
+        data-tier-price={tierKey}
+        data-monthly-price={price}
+        data-annual-price={annualPrice}
+      >{price}</span>
+      <span
+        class="text-sm text-bone-mute"
+        data-tier-period={tierKey}
+        data-monthly-period={period}
+        data-annual-period={annualPeriod}
+      >{period}</span>
     </div>
   </header>
 
@@ -103,9 +160,55 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
       href={href}
       target={ctaTarget}
       rel={ctaRel}
+      data-tier-cta={tierKey}
+      data-monthly-href={href}
+      data-annual-href={annualHref}
       class:list={['mt-6', popular ? 'btn-primary w-full' : 'btn-secondary w-full']}
     >
       {cta}
     </a>
   )}
 </article>
+
+{hasAnnualToggle && (
+  <script define:vars={{ tierKey }}>
+    const toggle = document.querySelector(`[data-billing-toggle="${tierKey}"]`);
+    if (toggle) {
+      const buttons = toggle.querySelectorAll('[data-billing-period]');
+      const priceEl = document.querySelector(`[data-tier-price="${tierKey}"]`);
+      const periodEl = document.querySelector(`[data-tier-period="${tierKey}"]`);
+      const ctaEl = document.querySelector(`[data-tier-cta="${tierKey}"]`);
+
+      const setPeriod = (period) => {
+        const isAnnual = period === 'annual';
+
+        buttons.forEach((b) => {
+          const isMatch = b.dataset.billingPeriod === period;
+          b.setAttribute('aria-selected', String(isMatch));
+          if (isMatch) {
+            b.classList.add('bg-signal', 'text-black');
+            b.classList.remove('text-bone-dim', 'hover:text-bone');
+          } else {
+            b.classList.remove('bg-signal', 'text-black');
+            b.classList.add('text-bone-dim', 'hover:text-bone');
+          }
+        });
+
+        if (priceEl) {
+          priceEl.textContent = isAnnual ? priceEl.dataset.annualPrice : priceEl.dataset.monthlyPrice;
+        }
+        if (periodEl) {
+          periodEl.textContent = isAnnual ? periodEl.dataset.annualPeriod : periodEl.dataset.monthlyPeriod;
+        }
+        if (ctaEl) {
+          const next = isAnnual ? ctaEl.dataset.annualHref : ctaEl.dataset.monthlyHref;
+          if (next) ctaEl.setAttribute('href', next);
+        }
+      };
+
+      buttons.forEach((b) => {
+        b.addEventListener('click', () => setPeriod(b.dataset.billingPeriod));
+      });
+    }
+  </script>
+)}
