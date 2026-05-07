@@ -27,12 +27,13 @@
     @apply outline-none ring-2 ring-signal/60 ring-offset-2 ring-offset-black rounded-sm;
   }
 
-  /* Reset heading weight to 400. Anton is a single-weight display font,
-     so the browser's default `bold` on h1/h2 forces a faux-bold synthesis
-     that smudges the glyphs and makes them hard to read. Any heading that
-     genuinely wants bold weight should opt in via font-bold. */
+  /* Heading weight reset. Anton is a single-weight (400) display font, so
+     specifying 100 here mostly serves as a "keep this as light as the font
+     can render" marker for any other element in the stack (Inter fallback,
+     etc.). Stops the browser's default-bold (700) faux-synthesis that was
+     smudging the Anton glyphs. */
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 400;
+    font-weight: 100;
   }
 }
 
