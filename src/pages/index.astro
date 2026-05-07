@@ -8,11 +8,6 @@ import NewsletterCallout from '../components/NewsletterCallout.astro';
 import Pill from '../components/Pill.astro';
 import { PRICING_TIERS } from '../lib/site';
 import PricingTier from '../components/PricingTier.astro';
-import { getCollection } from 'astro:content';
-
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => +b.data.date - +a.data.date)
-  .slice(0, 3);
 ---
 
 <Layout>
@@ -43,33 +38,6 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
       Cancel anytime. Educational content only — never personalized financial advice.
     </p>
   </section>
-
-  {posts.length > 0 && (
-    <section class="container-wide pb-14 md:pb-24">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="eyebrow">From the desk</p>
-          <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">Latest writing</h2>
-        </div>
-        <a href="/blog" class="text-sm text-bone-dim hover:text-signal">All posts →</a>
-      </div>
-
-      <div class="mt-8 md:mt-12 grid gap-6 md:grid-cols-3">
-        {posts.map((post) => (
-          <a href={`/blog/${post.slug}`} class="card-interactive group">
-            <p class="eyebrow text-pulse">{post.data.category}</p>
-            <h3 class="mt-3 font-display text-xl uppercase tracking-tight text-bone group-hover:text-signal">
-              {post.data.title}
-            </h3>
-            <p class="mt-3 text-sm text-bone-dim line-clamp-3">{post.data.summary}</p>
-            <div class="mt-6 text-xs text-bone-mute">
-              {post.data.date.toISOString().slice(0, 10)} · {post.data.readMinutes} min read
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
 
   <NewsletterCallout
     source="home"

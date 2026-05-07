@@ -42,7 +42,7 @@ const breadcrumbLd = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: Astro.site?.toString() },
-    { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Changelog', item: new URL('/blog/', Astro.site).toString() },
     { '@type': 'ListItem', position: 3, name: post.data.title, item: canonical },
   ],
 };
@@ -67,7 +67,7 @@ const breadcrumbLd = {
       <ol class="flex flex-wrap items-center gap-2">
         <li><a href="/" class="hover:text-signal">Home</a></li>
         <li aria-hidden="true">/</li>
-        <li><a href="/blog" class="hover:text-signal">Blog</a></li>
+        <li><a href="/blog" class="hover:text-signal">Changelog</a></li>
         <li aria-hidden="true">/</li>
         <li class="text-bone-dim" aria-current="page">{post.data.title}</li>
       </ol>
@@ -113,8 +113,8 @@ const breadcrumbLd = {
     <div class="mt-12 border-t border-bone/10 pt-12">
       <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 p-8 md:flex-row md:items-center md:justify-between">
         <div>
-          <h3 class="font-display text-2xl uppercase tracking-tight">Want this in real time?</h3>
-          <p class="mt-2 text-sm text-bone-dim">Real signals, real conversations, every day.</p>
+          <h3 class="font-display text-2xl uppercase tracking-tight">Want the full picture?</h3>
+          <p class="mt-2 text-sm text-bone-dim">Smart-money flow, real conversations, the whole framework.</p>
         </div>
         <a href="/membership" class="btn-primary whitespace-nowrap">
           Leave the Matrix
