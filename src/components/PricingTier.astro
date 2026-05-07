@@ -104,7 +104,10 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
         >
           Annual
           {annualSavingsLabel && (
-            <span class="ml-1.5 rounded-sm bg-signal/15 px-1 py-0.5 text-[9px] tracking-[0.1em] text-signal">
+            <span
+              data-savings-badge
+              class="ml-1.5 rounded-sm bg-signal/15 px-1 py-0.5 text-[9px] tracking-[0.1em] text-signal"
+            >
               {annualSavingsLabel}
             </span>
           )}
@@ -193,6 +196,14 @@ const ctaRel = ctaTarget === '_blank' ? 'noopener' : undefined;
             b.classList.add('text-bone-dim', 'hover:text-bone');
           }
         });
+
+        // Savings badge is a "switch and save" hint; redundant + unreadable
+        // (signal-on-signal) once Annual is the active selection. Hide while
+        // Annual is on, restore when user flips back to Monthly.
+        const savingsBadge = toggle.querySelector('[data-savings-badge]');
+        if (savingsBadge) {
+          savingsBadge.style.display = isAnnual ? 'none' : '';
+        }
 
         if (priceEl) {
           priceEl.textContent = isAnnual ? priceEl.dataset.annualPrice : priceEl.dataset.monthlyPrice;
