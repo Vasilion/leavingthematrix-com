@@ -177,10 +177,13 @@ const isActive = (href: string) =>
 
   <!-- Mobile menu — fullscreen overlay. Display controlled via inline style
        so JS-driven open/close beats any class-level display rules. The
-       `md:!hidden` class keeps it hidden on desktop with !important. -->
+       `md:!hidden` class keeps it hidden on desktop with !important.
+       h-dvh (not h-screen) because iOS Safari counts the URL-bar area into
+       100vh — h-screen made the bottom Sign-in/Sign-up/Leave the Matrix CTA
+       clip below the visible viewport on iPhone. -->
   <div
     id="mobile-menu"
-    class="fixed inset-0 z-50 h-screen flex-col bg-black md:!hidden"
+    class="fixed inset-0 z-50 h-dvh flex-col bg-black md:!hidden"
     style="display: none;"
   >
     <!-- Top bar with logo + close -->
