@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterCallout from '../components/NewsletterCallout.astro';
+
+/**
+ * Tools we've built. Live tools link out; anything still in development is
+ * listed without a link rather than pointing at a dead URL.
+ *
+ * Copy here follows profile/voice-and-compliance.md — frameworks and research,
+ * never advice. Options are described as risk-defined income structures, which
+ * is the brand framing, not as speculation.
+ */
+const tools = [
+  {
+    n: '01',
+    name: 'Own It Lower',
+    tagline: 'Cash-secured put screener',
+    href: 'https://ownitlower.leavingthematrix.io',
+    status: 'live',
+    body:
+      'Selling a cash-secured put is an agreement to buy a company you already want to own, at a price below where it trades today, and to be paid for the wait. Own It Lower screens for the places that trade is actually worth taking — where the premium compensates for the obligation and the underlying is a business you would be content to hold if assigned.',
+    detail: 'Free · No account required',
+  },
+  {
+    n: '02',
+    name: 'This Week',
+    tagline: 'Smart Money Confluence board',
+    href: 'https://nova.leavingthematrix.io/this-week',
+    status: 'live',
+    body:
+      'The ten names where insider buying, congressional disclosures, and 13F institutional positioning all point the same direction at once, filtered for business quality. Published weekly and free to read. Confluence is the part that matters — any single smart-money signal is noise more often than it is information.',
+    detail: 'Free · Updated weekly',
+  },
+  {
+    n: '03',
+    name: 'Personal finance planner',
+    tagline: 'In development',
+    href: null,
+    status: 'building',
+    body:
+      'A planning tool for the unglamorous side of the framework: frameworks for thinking about debt, an ordering for what to pay down first, and the arithmetic that shows why. Built around monthly check-ins, because a plan you look at once is a document, not a habit.',
+    detail: 'Name and launch date to be announced',
+  },
+] as const;
+---
+
+<Layout
+  title="Tools"
+  description="Research tools we've built — a cash-secured put screener, a weekly smart-money confluence board, and a personal finance planner in development."
+>
+  <section class="border-b border-bone/5">
+    <div class="container-prose py-24">
+      <p class="eyebrow">Tools</p>
+      <h1 class="mt-4 font-display text-display-xl uppercase tracking-tight">
+        What we build
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg text-bone-dim">
+        Every tool here came out of our own desk needing it. We publish the ones
+        that turned out to be useful to more than us.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container-prose py-20">
+      <ul class="space-y-8">
+        {tools.map((tool) => (
+          <li>
+            {tool.href ? (
+              <a
+                href={tool.href}
+                class="card-interactive block"
+                rel="noopener"
+              >
+                <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                  <p class="eyebrow text-signal">{tool.n}</p>
+                  <h2 class="font-display text-2xl sm:text-3xl uppercase tracking-tight text-bone">
+                    {tool.name}
+                  </h2>
+                  <p class="text-sm text-bone-mute">{tool.tagline}</p>
+                </div>
+                <p class="mt-4 leading-relaxed text-bone-dim">{tool.body}</p>
+                <p class="mt-4 text-xs uppercase tracking-widest text-signal">
+                  {tool.detail} &rarr;
+                </p>
+              </a>
+            ) : (
+              <div class="card opacity-80">
+                <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                  <p class="eyebrow text-bone-mute">{tool.n}</p>
+                  <h2 class="font-display text-2xl sm:text-3xl uppercase tracking-tight text-bone-dim">
+                    {tool.name}
+                  </h2>
+                  <p class="text-sm text-bone-mute">{tool.tagline}</p>
+                </div>
+                <p class="mt-4 leading-relaxed text-bone-dim">{tool.body}</p>
+                <p class="mt-4 text-xs uppercase tracking-widest text-bone-mute">
+                  {tool.detail}
+                </p>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <p class="mt-12 text-sm text-bone-mute">
+        Educational only — never personalized financial advice. These tools
+        surface research and structure; the decisions stay yours.
+      </p>
+    </div>
+  </section>
+
+  <NewsletterCallout
+    source="tools"
+    eyebrow="Free Your Mind · Free weekly newsletter"
+    headline="See the framework these tools came out of."
+    description="One ticker per issue through the same Quality × Discount × Smart-money lens the tools automate. Free, weekly, unsubscribe in one click."
+  />
+</Layout>
