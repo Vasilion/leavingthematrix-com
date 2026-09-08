@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import ScrollToTop from '../components/ScrollToTop.astro';
 import MobileStickyCta from '../components/MobileStickyCta.astro';
 import { SITE } from '../lib/site';
+import Analytics from '../components/Analytics.astro';
 
 interface Props {
   title?: string;
@@ -146,6 +147,9 @@ const ldBlocks = [
     {ldBlocks.map((block) => (
       <script type="application/ld+json" set:html={JSON.stringify(block)} is:inline />
     ))}
+
+    <!-- Analytics (no-op unless PUBLIC_GA_ID is set) -->
+    <Analytics />
   </head>
   <body class="flex min-h-screen flex-col bg-black text-bone">
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-signal focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-black">

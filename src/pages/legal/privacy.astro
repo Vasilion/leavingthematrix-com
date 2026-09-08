@@ -9,7 +9,7 @@ import Layout from '../../layouts/Layout.astro';
 
     <div class="prose-ltm mt-12">
       <p class="text-bone-dim">
-        <em>Last updated: <time datetime="2026-05-07">May 7, 2026</time>.</em>
+        <em>Last updated: <time datetime="2026-09-08">September 8, 2026</time>.</em>
       </p>
 
       <h2>1. Who we are</h2>
@@ -57,24 +57,47 @@ import Layout from '../../layouts/Layout.astro';
         messages exchanged in the server.
       </p>
 
-      <h3>2.4 Site usage</h3>
+      <h3>2.4 Site usage and analytics</h3>
       <p>
         Our hosting providers (AWS Amplify and Vercel) automatically log standard server-side request data (IP
-        address, user agent, referring URL, timestamps) for security and performance purposes. We do not currently
-        run additional analytics tools beyond these provider-level logs. If we add analytics in the future (e.g.,
-        Plausible, Fathom), we will update this policy to disclose the tool and what it collects.
+        address, user agent, referring URL, timestamps) for security and performance purposes.
+      </p>
+      <p>
+        We also use <strong>Google Analytics 4</strong> on leavingthematrix.io and on the Nova members area at
+        nova.leavingthematrix.io to understand how the Service is used — which pages are visited, how visitors
+        arrive, and which features people actually use. Google Analytics collects your IP address (which Google
+        truncates and does not store), device and browser type, an approximate location derived from that IP
+        (typically city level), the pages you view, and the URL that referred you. Google acts as our data
+        processor for this information.
+      </p>
+      <p>
+        We have <strong>not</strong> enabled Google Signals, advertising features, or ads personalization. This
+        data is not used to build cross-site advertising profiles and is not shared with Google's advertising
+        products. We do not upload your email address, member ID, or any other identifier that would let Google
+        connect this analytics data to you personally.
+      </p>
+      <p>
+        You can opt out of Google Analytics on every site you visit by installing Google's
+        <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener noreferrer" target="_blank">opt-out
+        browser add-on</a>, or you can block analytics cookies as described in section 2.5.
       </p>
 
       <h3>2.5 Cookies and similar technologies</h3>
       <p>
-        The site uses a small number of cookies, none for advertising or cross-site tracking:
+        The site uses a small number of cookies. None are used for advertising or cross-site ad targeting:
       </p>
       <ul>
         <li><strong>Authentication cookies</strong> set by Clerk to keep you signed into the members area</li>
         <li><strong>Functional cookies</strong> for session management on payment flows</li>
+        <li>
+          <strong>Analytics cookies</strong> (<code>_ga</code> and <code>_ga_*</code>) set by Google Analytics to
+          tell returning visitors apart and to measure sessions. These are first-party cookies scoped to
+          leavingthematrix.io and its subdomains, and they expire after two years.
+        </li>
       </ul>
       <p>
-        You can disable cookies in your browser, but doing so will prevent you from signing in to the members area.
+        You can disable cookies in your browser. Blocking analytics cookies will not affect your use of the site.
+        Blocking authentication or functional cookies will prevent you from signing in to the members area.
       </p>
 
       <h2>3. How we use your information</h2>

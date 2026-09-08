@@ -1,0 +1,29 @@
+---
+/**
+ * Google Analytics 4 tag.
+ *
+ * Renders nothing unless PUBLIC_GA_ID is set, so local dev, previews, and any
+ * build without the variable configured stay untracked. The ID is inlined at
+ * build time — Astro exposes PUBLIC_-prefixed vars to the client bundle.
+ *
+ * Disclosed in /legal/privacy (sections 2.4 and 2.5). If this component is
+ * changed to collect more than default GA4 pageviews, that policy has to be
+ * updated in the same change.
+ */
+const gaId = import.meta.env.PUBLIC_GA_ID;
+---
+
+{gaId && (
+  <>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script
+      is:inline
+      set:html={`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${gaId}');
+      `}
+    ></script>
+  </>
+)}
