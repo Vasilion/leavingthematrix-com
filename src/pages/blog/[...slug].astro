@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { metaDescription } from '../../lib/meta';
 import { SITE } from '../../lib/site';
 import NewsletterCallout from '../../components/NewsletterCallout.astro';
 
@@ -17,12 +18,13 @@ const { Content } = await post.render();
 
 const canonical = new URL(`/blog/${post.slug}/`, Astro.site).toString();
 const ogImage = new URL('/og-default.png', Astro.site).toString();
+const metaDesc = metaDescription(post.data.summary, post.data.metaDescription);
 
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: post.data.title,
-  description: post.data.summary,
+  description: metaDesc,
   datePublished: post.data.date.toISOString(),
   dateModified: post.data.date.toISOString(),
   author: { '@type': 'Person', name: SITE.founder },
@@ -50,7 +52,7 @@ const breadcrumbLd = {
 
 <Layout
   title={post.data.title}
-  description={post.data.summary}
+  description={metaDesc}
   ogType="article"
   article={{
     publishedTime: post.data.date.toISOString(),

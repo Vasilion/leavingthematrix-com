@@ -3,7 +3,7 @@ export const SITE = {
   domain: 'leavingthematrix.io',
   tagline: 'Investing education and smart-money flow.',
   description:
-    'Investing education and smart-money flow — quality businesses, valuation discount, institutional indicators. Educational only — never personalized financial advice.',
+    'Investing education and smart-money flow: quality businesses, valuation discount, institutional signals. Educational only — never personalized financial advice.',
   // Discord links remain referenced for the existing Mee6 subscriber base
   // (Standard $30 / Pro $80) until the Stripe + role-bot migration ships.
   // Public-facing CTAs no longer point here — site flow is /membership.

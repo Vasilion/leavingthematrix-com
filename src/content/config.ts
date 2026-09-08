@@ -6,6 +6,8 @@ const blog = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     summary: z.string(),
+    /** Optional SERP-length override; falls back to a truncated `summary`. */
+    metaDescription: z.string().max(160).optional(),
     category: z.enum(['nova-dev', 'market-notes', 'education', 'trade-reviews', 'announcements']),
     tags: z.array(z.string()).default([]),
     readMinutes: z.number().int().positive().default(5),
