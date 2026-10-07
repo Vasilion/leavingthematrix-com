@@ -24,7 +24,7 @@ const isActive = (href: string) =>
       />
     </a>
 
-    <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
+    <nav class="hidden items-center gap-0.5 xl:flex" aria-label="Primary">
       {NAV_LINKS.map((link) => {
         const isComingSoon = 'comingSoon' in link && link.comingSoon;
         if (isComingSoon) {
@@ -47,14 +47,14 @@ const isActive = (href: string) =>
             target={'external' in link && link.external ? '_blank' : undefined}
             rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
             class:list={[
-              'group relative px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
+              'group relative whitespace-nowrap px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors 2xl:px-4',
               isActive(link.href) ? 'text-signal' : 'text-bone-dim hover:text-bone',
             ]}
           >
             <span>{link.label}{'external' in link && link.external ? ' ↗' : ''}</span>
             <span
               class:list={[
-                'absolute inset-x-4 -bottom-px h-px origin-center scale-x-0 bg-signal transition-transform duration-300',
+                'absolute inset-x-3 -bottom-px h-px origin-center scale-x-0 bg-signal transition-transform duration-300 2xl:inset-x-4',
                 isActive(link.href) ? 'scale-x-100' : 'group-hover:scale-x-100',
               ]}
               aria-hidden="true"
@@ -69,17 +69,17 @@ const isActive = (href: string) =>
          Sign up, Leave the Matrix CTA) and the signed-in child (user pill +
          dropdown) in one pass. Default = signed-out so first paint is correct
          with no flicker before the /api/auth-status fetch resolves. -->
-    <div id="ltm-auth" data-auth-state="signed-out" class="hidden md:flex md:items-center md:gap-3">
+    <div id="ltm-auth" data-auth-state="signed-out" class="hidden xl:flex xl:items-center xl:gap-3">
       <div data-auth-when="signed-out" class="flex items-center gap-3">
         <a
           href="https://nova.leavingthematrix.io/sign-in"
-          class="font-mono text-[12px] uppercase tracking-[0.1em] text-bone-dim transition-colors hover:text-bone"
+          class="whitespace-nowrap font-mono text-[12px] uppercase tracking-[0.1em] text-bone-dim transition-colors hover:text-bone"
         >
           Sign in
         </a>
         <a
           href="https://nova.leavingthematrix.io/sign-up"
-          class="inline-flex items-center rounded-md border border-signal/60 px-4 py-2 text-sm font-bold uppercase tracking-wider text-signal transition-colors hover:bg-signal/10"
+          class="inline-flex items-center whitespace-nowrap rounded-md border border-signal/60 px-4 py-2 text-sm font-bold uppercase tracking-wider text-signal transition-colors hover:bg-signal/10"
         >
           Sign up
         </a>
@@ -146,7 +146,7 @@ const isActive = (href: string) =>
       <a
         data-auth-when="signed-out"
         href="/membership"
-        class="group relative inline-flex items-center gap-2 rounded-md bg-signal px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow active:translate-y-0"
+        class="group relative inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-signal px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-200 hover:-translate-y-0.5 hover:shadow-signal-glow active:translate-y-0"
       >
         <span class="relative flex h-2 w-2">
           <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/60"></span>
@@ -161,7 +161,7 @@ const isActive = (href: string) =>
 
     <button
       id="mobile-menu-toggle"
-      class="-mr-2 inline-flex h-12 w-12 items-center justify-center rounded-md text-bone hover:bg-ink-700 md:hidden"
+      class="-mr-2 inline-flex h-12 w-12 items-center justify-center rounded-md text-bone hover:bg-ink-700 xl:hidden"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -177,13 +177,13 @@ const isActive = (href: string) =>
 
   <!-- Mobile menu — fullscreen overlay. Display controlled via inline style
        so JS-driven open/close beats any class-level display rules. The
-       `md:!hidden` class keeps it hidden on desktop with !important.
+       `xl:!hidden` class keeps it hidden on desktop with !important.
        h-dvh (not h-screen) because iOS Safari counts the URL-bar area into
        100vh — h-screen made the bottom Sign-in/Sign-up/Leave the Matrix CTA
        clip below the visible viewport on iPhone. -->
   <div
     id="mobile-menu"
-    class="fixed inset-0 z-50 h-dvh flex-col bg-black md:!hidden"
+    class="fixed inset-0 z-50 h-dvh flex-col bg-black xl:!hidden"
     style="display: none;"
   >
     <!-- Top bar with logo + close -->
