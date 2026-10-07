@@ -4,6 +4,27 @@ export interface Chapter {
   lesson: string;
 }
 
+export interface StoryBeat {
+  moment: string;
+  lesson: string;
+}
+
+export interface Pillar {
+  title: string;
+  text: string;
+}
+
+export interface PlanWeek {
+  week: string;
+  title: string;
+  text: string;
+}
+
+export interface FormatStep {
+  label: string;
+  text: string;
+}
+
 export interface FaqItem {
   question: string;
   answer: string;
@@ -33,14 +54,61 @@ export const BOOK = {
     'Luke Vasilion grew up in the Lansing, Michigan area, splitting every other week between two houses and two completely different ideas about money. He got through college on a track scholarship and zero student loans, got permanently disqualified from Army Special Forces at 24, and started over selling cars for ten dollars an hour. Today he leads a front-end team building software used on NASA missions, runs Unyx Web Solutions, and founded Leaving the Matrix. He lives in Michigan with his wife, Bria, and their daughter.',
 } as const;
 
-export const EXCERPT: string[] = [
-  "At 24, the thing I'd set my mind on was the Army. Not just the Army, either. 18X, the Special Forces enlistment option. [...] All that was left was the medical pre-screen at MEPS, which is where the military checks that your body can cash the checks your paperwork wrote.",
-  'Part of that is a hearing test. You sit in a little booth, put on some headphones, and push a button every time you hear a beep. [...] Then they switched to my left ear, and things got real quiet. Like, suspiciously quiet.',
-  'Disqualified.',
-  "[...] Except the lease was still ending. The job was still ending. We had nowhere to live, no income lined up, and about two months of money before we'd be completely broke.",
+export const STORY_BEATS: StoryBeat[] = [
+  { moment: 'Two houses', lesson: 'What fear, and a total lack of structure, do to money.' },
+  { moment: 'Working at fourteen', lesson: 'What an hour is actually worth.' },
+  { moment: 'Running track to get out', lesson: 'What consistency and discipline can actually do.' },
+  { moment: 'Learning to ask', lesson: 'Not to be afraid of hearing no.' },
+  { moment: 'The Challenger', lesson: 'What a bad decision costs.' },
+  { moment: 'The hearing booth', lesson: 'To always have a Plan B.' },
+  { moment: 'Ten dollars an hour', lesson: 'That income is the biggest lever.' },
+  { moment: 'The raise that changed nothing', lesson: "That it's only a lever." },
+  { moment: 'The 2020 rally', lesson: 'That I had to get smarter. The tariff crash showed me I finally had.' },
+  { moment: 'My daughter', lesson: 'Gave all of it a reason.' },
 ];
 
-export const EXCERPT_TAKEAWAY: string = 'you need a Plan B before you need a Plan B.';
+export const STORY_CLOSER: string =
+  'I got disqualified from the life I thought I wanted. It turned out to be the best thing that ever happened to me, because it put me on the road to this one.';
+
+export const PILLARS: Pillar[] = [
+  {
+    title: 'Know your money script',
+    text: 'Why you handle money the way you do, and which rules you inherited without ever agreeing to them.',
+  },
+  {
+    title: 'Build your Plan B',
+    text: 'Your runway, an emergency fund that comes before everything else, and where to keep it.',
+  },
+  {
+    title: 'Get out from under it',
+    text: 'Credit scores, minimum payments, avalanche vs. snowball, and getting right-side up on a car.',
+  },
+  {
+    title: 'Earn more, and keep it',
+    text: "Your real hourly rate, how to ask for more, and why a bigger number on the offer letter isn't enough.",
+  },
+  {
+    title: 'Invest like a grown-up',
+    text: 'How the market works, why crashes are normal, compounding, the first two accounts, and a one-page plan.',
+  },
+  {
+    title: 'Run it as a family',
+    text: 'Talking money without the fight, living on one income, deciding what your money is for, and building something you own.',
+  },
+];
+
+export const PLAN_WEEKS: PlanWeek[] = [
+  { week: 'Week 1', title: 'See where you stand', text: 'Your reason, your money rules, your real hourly rate, and every payment you owe.' },
+  { week: 'Week 2', title: 'Build the safety net', text: 'Your runway, a high-yield Plan B account, and your first $1,000.' },
+  { week: 'Week 3', title: 'Stop the leaks', text: 'Rank your biggest expenses, call for a better rate, and pick your first debt to kill.' },
+  { week: 'Week 4', title: 'Start building', text: 'Get the full 401(k) match, open a Roth IRA, write your investing plan, and have the money talk.' },
+];
+
+export const CHAPTER_FORMAT: FormatStep[] = [
+  { label: 'What happened', text: 'The real story, mistakes included.' },
+  { label: 'What I know now', text: 'The lesson in plain English, with real numbers.' },
+  { label: 'Your move this week', text: 'A few small things to do in the next seven days. Not someday. This week.' },
+];
 
 export const WHO_FOR: string[] = [
   "You're doing everything right and still living paycheck to paycheck.",
