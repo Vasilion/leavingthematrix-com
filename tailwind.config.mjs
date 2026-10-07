@@ -29,12 +29,18 @@ export default {
           DEFAULT: '#a855f7',
           dim: '#7c3aed',
         },
+        book: {
+          red: '#D7192F',
+          paper: '#E9E6DF',
+        },
         warn: '#ffb547',
         loss: '#ff5470',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['"Anton"', '"Bebas Neue"', 'Impact', 'sans-serif'],
+        book: ['Archivo', 'Inter', 'system-ui', 'sans-serif'],
+        'book-display': ['"Archivo Black"', 'Archivo', 'Impact', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       fontSize: {

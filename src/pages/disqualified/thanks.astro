@@ -1,0 +1,142 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import BookFonts from '../../components/BookFonts.astro';
+import cover from '../../assets/books/disqualified-cover.jpg';
+import { BOOK, BOOK_API_URL } from '../../lib/book';
+---
+
+<Layout title={`Thanks for buying ${BOOK.title}`} description={`Download ${BOOK.title} by ${BOOK.author}.`} image={BOOK.ogImage} noindex>
+  <BookFonts slot="head" />
+
+  <div id="thanks" data-api={BOOK_API_URL} class="font-book text-book-paper">
+    <div class="h-px w-full bg-gradient-to-r from-transparent via-signal/40 to-transparent" aria-hidden="true"></div>
+    <div class="container-prose py-14 md:py-20">
+      <div class="flex flex-col items-center gap-8 text-center sm:flex-row sm:items-start sm:text-left">
+        <Image
+          src={cover}
+          alt={`Cover of ${BOOK.title}`}
+          widths={[160, 320]}
+          sizes="160px"
+          class="w-32 shrink-0 rounded-sm ring-1 ring-white/10 sm:w-40"
+        />
+        <div class="min-w-0 flex-1">
+          <h1 class="font-book-display text-4xl uppercase leading-none tracking-tight md:text-5xl">Thank you</h1>
+
+          <div id="state-loading" aria-live="polite">
+            <p class="mt-5 text-lg text-bone-dim">Getting your download links ready…</p>
+          </div>
+
+          <div id="state-ready" style="display: none;">
+            <p class="mt-5 text-lg text-bone-dim">
+              Your copy of <strong class="text-book-paper">{BOOK.title}</strong> is ready. Open the PDF to start reading now, or save a copy. The EPUB downloads for your e-reader app.
+            </p>
+            <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+              <a id="link-pdf" href="#" class="inline-flex items-center justify-center gap-2 rounded-md bg-book-red px-6 py-4 font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#e8253c]">
+                Open PDF
+              </a>
+              <a id="link-pdf-save" href="#" class="inline-flex items-center justify-center gap-2 rounded-md border border-book-paper/40 px-6 py-4 font-bold uppercase tracking-wider text-book-paper transition-colors hover:border-book-paper hover:bg-white/5">
+                Save PDF
+              </a>
+              <a id="link-epub" href="#" class="inline-flex items-center justify-center gap-2 rounded-md border border-book-paper/40 px-6 py-4 font-bold uppercase tracking-wider text-book-paper transition-colors hover:border-book-paper hover:bg-white/5">
+                Download EPUB
+              </a>
+            </div>
+            <p class="mt-6 text-sm leading-relaxed text-bone-mute">
+              The EPUB works on Apple Books, Kindle (via Send to Kindle), and most e-readers.
+              We've also emailed these links<span id="buyer-email"></span>. They work for 7 days, and you can
+              <a href="/disqualified/resend" class="text-book-paper underline decoration-book-red underline-offset-4">get fresh ones</a>
+              any time.
+            </p>
+          </div>
+
+          <div id="state-failed" style="display: none;" role="alert">
+            <p class="mt-5 text-lg text-bone-dim">
+              We couldn't find a completed purchase for this link. If you just paid, your download links are on their way to
+              your email. You can also <a href="/disqualified/resend" class="text-book-paper underline decoration-book-red underline-offset-4">request them again</a>,
+              or reply to the receipt email and Luke will sort it out.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  interface LinksResponse {
+    ok: boolean;
+    pdf?: string;
+    pdfSave?: string;
+    epub?: string;
+    email?: string;
+  }
+
+  const MAX_ATTEMPTS: number = 4;
+  const RETRY_MS: number = 1500;
+
+  const root: HTMLElement | null = document.getElementById('thanks');
+  const api: string = root?.dataset.api ?? '';
+  const sessionId: string = new URLSearchParams(window.location.search).get('session_id') ?? '';
+
+  function show(state: 'loading' | 'ready' | 'failed'): void {
+    const states: string[] = ['loading', 'ready', 'failed'];
+    states.forEach((name: string): void => {
+      const el: HTMLElement | null = document.getElementById(`state-${name}`);
+      if (el !== null) {
+        el.style.display = name === state ? 'block' : 'none';
+      }
+    });
+  }
+
+  function render(data: LinksResponse): void {
+    const pdf: HTMLAnchorElement | null = document.getElementById('link-pdf') as HTMLAnchorElement | null;
+    const pdfSave: HTMLAnchorElement | null = document.getElementById('link-pdf-save') as HTMLAnchorElement | null;
+    const epub: HTMLAnchorElement | null = document.getElementById('link-epub') as HTMLAnchorElement | null;
+    const email: HTMLElement | null = document.getElementById('buyer-email');
+    if (pdf !== null && data.pdf !== undefined) {
+      pdf.href = data.pdf;
+    }
+    if (pdfSave !== null && data.pdfSave !== undefined) {
+      pdfSave.href = data.pdfSave;
+    }
+    if (epub !== null && data.epub !== undefined) {
+      epub.href = data.epub;
+    }
+    if (email !== null && data.email !== undefined && data.email !== '') {
+      email.textContent = ` to ${data.email}`;
+    }
+    show('ready');
+  }
+
+  function wait(ms: number): Promise<void> {
+    return new Promise<void>((resolve: () => void): void => {
+      window.setTimeout(resolve, ms);
+    });
+  }
+
+  function load(attempt: number): Promise<void> {
+    return fetch(`${api}/links?session_id=${encodeURIComponent(sessionId)}`)
+      .then((response: Response): Promise<LinksResponse> =>
+        response.ok ? (response.json() as Promise<LinksResponse>) : Promise.resolve({ ok: false }),
+      )
+      .catch((): LinksResponse => ({ ok: false }))
+      .then((data: LinksResponse): Promise<void> => {
+        if (data.ok && data.pdf !== undefined && data.epub !== undefined) {
+          render(data);
+          return Promise.resolve();
+        }
+        if (attempt + 1 >= MAX_ATTEMPTS) {
+          show('failed');
+          return Promise.resolve();
+        }
+        return wait(RETRY_MS).then((): Promise<void> => load(attempt + 1));
+      });
+  }
+
+  if (sessionId === '') {
+    show('failed');
+  } else {
+    load(0);
+  }
+</script>

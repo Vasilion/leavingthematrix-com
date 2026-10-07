@@ -1,0 +1,59 @@
+---
+import { BOOK, BOOK_API_URL } from '../lib/book';
+
+interface Props {
+  label?: string;
+  size?: 'lg' | 'md';
+  class?: string;
+}
+
+const { label = `Buy the book · ${BOOK.price}`, size = 'lg', class: className = '' }: Props = Astro.props;
+const action: string = `${BOOK_API_URL}/checkout`;
+---
+
+<form method="post" action={action} class:list={['book-buy', className]}>
+  <button
+    type="submit"
+    class:list={[
+      'inline-flex w-full items-center justify-center gap-2 rounded-md bg-book-red font-book font-bold uppercase tracking-wider text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#e8253c] hover:shadow-[0_0_32px_rgba(215,25,47,0.45)] focus-visible:ring-book-red/70 active:translate-y-0 disabled:cursor-wait disabled:opacity-70 sm:w-auto',
+      size === 'lg' ? 'px-8 py-4 text-base' : 'px-5 py-3 text-sm',
+    ]}
+  >
+    <span class="book-buy-label" data-label={label}>{label}</span>
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+    </svg>
+  </button>
+</form>
+
+<script>
+  const forms: NodeListOf<HTMLFormElement> = document.querySelectorAll<HTMLFormElement>('form.book-buy');
+  forms.forEach((form: HTMLFormElement): void => {
+    form.addEventListener('submit', (): void => {
+      const button: HTMLButtonElement | null = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const text: HTMLElement | null = form.querySelector<HTMLElement>('.book-buy-label');
+      if (button !== null) {
+        button.disabled = true;
+      }
+      if (text !== null) {
+        text.textContent = 'Opening secure checkout…';
+      }
+    });
+  });
+
+  window.addEventListener('pageshow', (event: PageTransitionEvent): void => {
+    if (!event.persisted) {
+      return;
+    }
+    forms.forEach((form: HTMLFormElement): void => {
+      const button: HTMLButtonElement | null = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const text: HTMLElement | null = form.querySelector<HTMLElement>('.book-buy-label');
+      if (button !== null) {
+        button.disabled = false;
+      }
+      if (text !== null && text.dataset.label !== undefined) {
+        text.textContent = text.dataset.label;
+      }
+    });
+  });
+</script>

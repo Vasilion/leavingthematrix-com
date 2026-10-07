@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BookFonts from '../../components/BookFonts.astro';
+import { BOOK, BOOK_API_URL } from '../../lib/book';
+---
+
+<Layout
+  title={`Get your ${BOOK.title} download links`}
+  description={`Lost your ${BOOK.title} download links? Enter the email you bought with and we'll send fresh ones.`}
+  image={BOOK.ogImage}
+  noindex
+>
+  <BookFonts slot="head" />
+
+  <div class="font-book text-book-paper">
+    <div class="h-px w-full bg-gradient-to-r from-transparent via-signal/40 to-transparent" aria-hidden="true"></div>
+    <div class="container-prose max-w-xl py-14 md:py-20">
+      <p class="font-mono text-xs uppercase tracking-[0.25em] text-book-red">{BOOK.title}</p>
+      <h1 class="mt-3 font-book-display text-4xl uppercase leading-none tracking-tight md:text-5xl">Lost your link?</h1>
+
+      <p id="expired-note" style="display: none;" class="mt-6 rounded-md border border-book-red/40 bg-book-red/10 px-4 py-3 text-sm">
+        That download link has expired. Enter your email below and we'll send fresh ones.
+      </p>
+
+      <p class="mt-5 text-lg leading-relaxed text-bone-dim">
+        Enter the email you used at checkout. If it matches a purchase, we'll email you new download links for the PDF and EPUB.
+      </p>
+
+      <form id="resend-form" data-api={BOOK_API_URL} class="mt-8" novalidate>
+        <label for="resend-email" class="block text-sm font-semibold text-book-paper">Email address</label>
+        <div class="mt-2 flex flex-col gap-3 sm:flex-row">
+          <input
+            id="resend-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            required
+            class="min-w-0 flex-1 rounded-md border border-bone/20 bg-ink-800 px-4 py-3.5 text-base text-book-paper placeholder:text-bone-mute focus:border-book-red focus:outline-none"
+            placeholder="you@example.com"
+          />
+          <button
+            id="resend-submit"
+            type="submit"
+            class="inline-flex items-center justify-center rounded-md bg-book-red px-6 py-3.5 font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#e8253c] disabled:cursor-wait disabled:opacity-70"
+          >
+            Send my links
+          </button>
+        </div>
+        <p id="resend-error" role="alert" style="display: none;" class="mt-3 text-sm text-loss"></p>
+      </form>
+
+      <p id="resend-done" role="status" style="display: none;" class="mt-8 rounded-md border border-bone/15 bg-ink-800 px-4 py-4 leading-relaxed"></p>
+
+      <p class="mt-10 text-sm text-bone-mute">
+        Still stuck? Reply to your Stripe receipt or delivery email and Luke will sort it out.
+      </p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  interface ResendResponse {
+    ok: boolean;
+    message?: string;
+  }
+
+  const FALLBACK_MESSAGE: string = "If we found a purchase for that email, we've sent fresh download links to it.";
+  const EMAIL_PATTERN: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const form: HTMLFormElement | null = document.getElementById('resend-form') as HTMLFormElement | null;
+  const input: HTMLInputElement | null = document.getElementById('resend-email') as HTMLInputElement | null;
+  const submit: HTMLButtonElement | null = document.getElementById('resend-submit') as HTMLButtonElement | null;
+  const errorEl: HTMLElement | null = document.getElementById('resend-error');
+  const doneEl: HTMLElement | null = document.getElementById('resend-done');
+  const expiredEl: HTMLElement | null = document.getElementById('expired-note');
+
+  if (expiredEl !== null && new URLSearchParams(window.location.search).get('expired') === '1') {
+    expiredEl.style.display = 'block';
+  }
+
+  function showError(message: string): void {
+    if (errorEl !== null) {
+      errorEl.textContent = message;
+      errorEl.style.display = message === '' ? 'none' : 'block';
+    }
+  }
+
+  function finish(message: string): void {
+    if (form !== null) {
+      form.style.display = 'none';
+    }
+    if (doneEl !== null) {
+      doneEl.textContent = message;
+      doneEl.style.display = 'block';
+    }
+  }
+
+  if (form !== null && input !== null && submit !== null) {
+    form.addEventListener('submit', (event: SubmitEvent): void => {
+      event.preventDefault();
+      showError('');
+      const email: string = input.value.trim();
+      if (!EMAIL_PATTERN.test(email)) {
+        showError('Please enter a valid email address.');
+        input.focus();
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      fetch(`${form.dataset.api ?? ''}/resend`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+        .then((response: Response): Promise<ResendResponse> => response.json() as Promise<ResendResponse>)
+        .then((data: ResendResponse): void => {
+          if (data.ok) {
+            finish(data.message ?? FALLBACK_MESSAGE);
+            return;
+          }
+          showError(data.message ?? 'Something went wrong. Please try again.');
+          submit.disabled = false;
+          submit.textContent = 'Send my links';
+        })
+        .catch((): void => {
+          showError('Something went wrong. Please try again.');
+          submit.disabled = false;
+          submit.textContent = 'Send my links';
+        });
+    });
+  }
+</script>
