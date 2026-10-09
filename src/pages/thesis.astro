@@ -1,0 +1,117 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+
+interface Part {
+  label: string;
+  body: string;
+}
+
+const parts: Part[] = [
+  { label: 'Why this one, why now', body: 'Which corners of Reddit, X and Stocktwits are hyping it, and what the hype actually claims.' },
+  { label: 'The scoreboard', body: 'The real numbers from the latest filings, plus the one stat that is misleading people.' },
+  { label: "The builder's angle", body: 'How the tech and the product actually work, from someone who builds software for a living.' },
+  { label: 'The fight', body: 'The honest bull vs. bear debate, then my take.' },
+  { label: 'Bear / base / bull', body: 'Three scenarios with odds and price math you can check yourself.' },
+  { label: 'The verdict', body: 'A straight call on what kind of stock it is, what would change my mind, and what I am watching.' },
+];
+---
+
+<Layout
+  title="LTM Investing Thesis — free every Sunday"
+  description="Every Sunday at 7pm ET: one trending stock, broken down with real numbers, bear / base / bull scenarios, and a straight verdict. Free. Education, not advice."
+  image="/og/thesis.png"
+  imageAlt="LTM Investing Thesis — Everyone's hyping it. I check the math."
+>
+  <main>
+    <section class="container-wide pb-16 pt-14 md:pt-20">
+      <div class="mx-auto max-w-3xl">
+        <p class="eyebrow">LTM Investing Thesis · Free, every Sunday</p>
+        <h1 class="mt-4 font-display text-display-lg uppercase leading-[0.95] text-bone">
+          Everyone's hyping it.<br /><span class="text-signal">I check the math.</span>
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg text-bone-dim">
+          Every Sunday at 7pm ET, I take the stock blowing up your feed and break it down: real numbers from
+          the filings, bear / base / bull scenarios with the math shown, and a straight verdict on whether the
+          hype holds up. One stock, one email, about a five-minute read.
+        </p>
+        <div class="mt-8 max-w-xl">
+          <NewsletterSignup source="thesis-landing" id="thesis-top" brand="the LTM Investing Thesis" />
+        </div>
+      </div>
+    </section>
+
+    <section class="container-wide pb-16">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="border-b border-ink-500 pb-3 font-display text-2xl uppercase text-bone">What's in every issue</h2>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+          {parts.map((p: Part, i: number) => (
+            <div class="card">
+              <div class="font-mono text-[11px] uppercase tracking-[0.18em] text-signal">{String(i + 1).padStart(2, '0')} · {p.label}</div>
+              <p class="mt-2 text-sm leading-relaxed text-bone-dim">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="container-wide pb-16">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="border-b border-ink-500 pb-3 font-display text-2xl uppercase text-bone">A taste of an issue</h2>
+        <div class="mt-6 rounded-2xl border border-bone/10 bg-ink-800/60 p-6 shadow-signal-soft md:p-8">
+          <div class="font-display text-2xl uppercase tracking-wide text-bone md:text-3xl">LTM Investing Thesis: AMZN</div>
+          <div class="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-signal">Sample issue</div>
+          <div class="mt-5 border-l-4 border-signal bg-signal/5 px-4 py-3 text-bone">
+            <strong>Core compounder at a fair price.</strong> The market's mad about $220B of capex. AWS just had its
+            best quarter in 4.5 years, and the stock is still 12% off its high.
+          </div>
+          <div class="mt-5 grid grid-cols-3 gap-3">
+            <div class="rounded-lg border border-ink-500 bg-ink-900/60 px-3 py-3 text-center">
+              <div class="font-mono text-[10px] uppercase tracking-[0.16em] text-bone-mute">Bear · 25%</div>
+              <div class="mt-1 font-display text-2xl text-loss">-23%</div>
+            </div>
+            <div class="rounded-lg border border-ink-500 bg-ink-900/60 px-3 py-3 text-center">
+              <div class="font-mono text-[10px] uppercase tracking-[0.16em] text-bone-mute">Base · 55%</div>
+              <div class="mt-1 font-display text-2xl text-bone">+36%</div>
+            </div>
+            <div class="rounded-lg border border-ink-500 bg-ink-900/60 px-3 py-3 text-center">
+              <div class="font-mono text-[10px] uppercase tracking-[0.16em] text-bone-mute">Bull · 20%</div>
+              <div class="mt-1 font-display text-2xl text-signal">+89%</div>
+            </div>
+          </div>
+          <p class="mt-5 text-sm leading-relaxed text-bone-dim">
+            <strong class="text-bone">The builder's angle:</strong> switching off AWS is brutal. Once your auth,
+            storage, email and queues are wired into one cloud, moving is months of work nobody wants to do.
+            That's why I trust the $496B backlog more than most backlogs.
+          </p>
+          <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-bone-mute">Numbers as of Oct 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container-wide pb-16">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="border-b border-ink-500 pb-3 font-display text-2xl uppercase text-bone">Who's writing this</h2>
+        <p class="mt-5 text-bone-dim">
+          I'm Luke. I didn't come from money. I've spent 15 years in tech, and today I build AI products and work
+          on space software. Leaving The Matrix is where I teach what I wish someone had taught me: how to read
+          a business, not a hype cycle. I'll show you how I think about a stock, including when I'm skeptical.
+        </p>
+      </div>
+    </section>
+
+    <section class="container-wide pb-24">
+      <div class="mx-auto max-w-3xl rounded-2xl border border-signal/30 bg-ink-800/60 p-8 md:p-10">
+        <p class="eyebrow">Next issue: Sunday, 7pm ET</p>
+        <h2 class="mt-3 font-display text-3xl uppercase leading-tight text-bone md:text-4xl">Get the next one in your inbox.</h2>
+        <div class="mt-6 max-w-xl">
+          <NewsletterSignup source="thesis-landing-bottom" id="thesis-bottom" brand="the LTM Investing Thesis" />
+        </div>
+        <p class="mt-6 text-xs leading-relaxed text-bone-mute">
+          Educational content only, never personalized financial advice. I may hold positions in stocks I write
+          about. Do your own homework.
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>
