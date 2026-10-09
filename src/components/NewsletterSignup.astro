@@ -21,9 +21,10 @@ interface Props {
   /** Optional id suffix so multiple instances on the same page don't
    *  collide on element IDs. */
   id?: string;
+  brand?: string;
 }
 
-const { source = 'ltm', id = 'newsletter-signup' } = Astro.props;
+const { source = 'ltm', id = 'newsletter-signup', brand = 'Free Your Mind' } = Astro.props;
 const SUBSCRIBE_URL = 'https://nova.leavingthematrix.io/api/newsletter/subscribe';
 ---
 
@@ -63,7 +64,7 @@ const SUBSCRIBE_URL = 'https://nova.leavingthematrix.io/api/newsletter/subscribe
     <div class="rounded-md border border-signal/40 bg-signal/5 px-4 py-4 text-sm text-bone">
       <strong class="block text-signal">Check your inbox</strong>
       <span class="mt-1 block text-bone-dim">
-        We sent a confirmation link to <span class="newsletter-confirm-email font-mono"></span>. Click it to start receiving Free Your Mind.
+        We sent a confirmation link to <span class="newsletter-confirm-email font-mono"></span>. Click it to start receiving {brand}.
       </span>
     </div>
   </div>
