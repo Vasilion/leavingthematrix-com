@@ -5,8 +5,8 @@ import type { Event, Result } from "./http";
 import { clientIp, header, json, query, rawBody, redirect, selfUrl } from "./http";
 import { downloadLinks, presignFile } from "./files";
 import type { DownloadLinks } from "./files";
-import { sendDelivery } from "./email";
-import { claimDelivery, countHit, markDelivered, recordOrder, releaseClaim } from "./store";
+import { sendDelivery, sendSample } from "./email";
+import { claimDelivery, countHit, markDelivered, recordLead, recordOrder, releaseClaim } from "./store";
 import { nowSeconds, readToken } from "./tokens";
 import type { LinkClaims } from "./tokens";
 
@@ -20,6 +20,15 @@ const RESEND_PER_EMAIL: number = 3;
 const RESEND_PER_IP: number = 10;
 const NEWSLETTER_FIELD: string = "newsletter";
 const FULFILL_EVENTS: string[] = ["checkout.session.completed", "checkout.session.async_payment_succeeded"];
+const SAMPLE_PATH: string = "/downloads/disqualified-free-sample.pdf";
+const SAMPLE_SOURCE: string = "disqualified-sample";
+const SAMPLE_PER_EMAIL: number = 3;
+const SAMPLE_PER_IP: number = 20;
+
+interface SampleRequest {
+  email: string;
+  newsletter: boolean;
+}
 
 function apiBase(config: Config, event: Event): string {
   return config.publicApiUrl === "" ? selfUrl(event) : config.publicApiUrl;
@@ -29,14 +38,14 @@ function isPaidBook(session: Session): boolean {
   return session.payment_status === "paid" && session.metadata?.product === PRODUCT_TAG;
 }
 
-function subscribeNewsletter(config: Config, email: string): Promise<void> {
+function subscribeNewsletter(config: Config, email: string, source: string = "disqualified-checkout"): Promise<void> {
   if (config.newsletterUrl === "") {
     return Promise.resolve();
   }
   return fetch(config.newsletterUrl, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ email, source: "disqualified-checkout" }),
+    body: JSON.stringify({ email, source }),
   })
     .then((response: Response): void => {
       if (!response.ok) {
@@ -231,6 +240,54 @@ export function handleResend(stripe: Stripe, config: Config, event: Event): Prom
     })
     .catch((error: unknown): Result => {
       console.error("[resend] failed", error);
+      return done;
+    });
+}
+
+function parseSampleRequest(event: Event): SampleRequest {
+  const body: string = rawBody(event).toString("utf8");
+  try {
+    const parsed: unknown = JSON.parse(body);
+    if (typeof parsed !== "object" || parsed === null) {
+      return { email: "", newsletter: false };
+    }
+    const record: Record<string, unknown> = parsed as Record<string, unknown>;
+    const email: string = typeof record.email === "string" ? record.email.trim() : "";
+    return { email, newsletter: record.newsletter === true };
+  } catch {
+    return { email: "", newsletter: false };
+  }
+}
+
+export function handleSample(config: Config, event: Event): Promise<Result> {
+  const request: SampleRequest = parseSampleRequest(event);
+  const sampleUrl: string = `${config.siteUrl}${SAMPLE_PATH}`;
+  const done: Result = json(200, { ok: true, url: sampleUrl });
+  if (!EMAIL_PATTERN.test(request.email) || request.email.length > 254) {
+    return Promise.resolve(json(400, { ok: false, message: "Enter a valid email address." }));
+  }
+  const now: number = nowSeconds();
+  return Promise.all([
+    countHit(config.table, `sample-email#${request.email.toLowerCase()}`, RATE_WINDOW_SECONDS, now),
+    countHit(config.table, `sample-ip#${clientIp(event)}`, RATE_WINDOW_SECONDS, now),
+  ])
+    .then(([emailHits, ipHits]: number[]): Promise<Result> => {
+      if (emailHits > SAMPLE_PER_EMAIL || ipHits > SAMPLE_PER_IP) {
+        console.warn(`[sample] rate limited (email hits ${emailHits}, ip hits ${ipHits})`);
+        return Promise.resolve(done);
+      }
+      return recordLead(config.table, request.email, SAMPLE_SOURCE, request.newsletter, now)
+        .then((isNew: boolean): Promise<void> =>
+          isNew && request.newsletter ? subscribeNewsletter(config, request.email, SAMPLE_SOURCE) : Promise.resolve(),
+        )
+        .then((): Promise<void> => sendSample(config, request.email, sampleUrl))
+        .then((): Result => {
+          console.log("[sample] sent");
+          return done;
+        });
+    })
+    .catch((error: unknown): Result => {
+      console.error("[sample] failed", error);
       return done;
     });
 }

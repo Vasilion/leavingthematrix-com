@@ -26,6 +26,54 @@ function firstName(name: string): string {
   return first.length > 0 && first.length < 40 ? first : "";
 }
 
+export function sendSample(config: Config, to: string, sampleUrl: string): Promise<void> {
+  const bookUrl: string = `${config.siteUrl}/disqualified`;
+
+  const text: string = [
+    "Hey,",
+    "",
+    "Here's your free sample of Disqualified: the opening, Chapter 7 (the Dodge Challenger that put me $9,000 underwater), and the full 30-day plan from the back of the book.",
+    "",
+    `Read it here: ${sampleUrl}`,
+    "",
+    `If you want the rest of the story, the full book is $9.99 as a PDF and EPUB: ${bookUrl}`,
+    "",
+    "And if anything in there hits home, hit reply and tell me. I read every one.",
+    "",
+    "Luke",
+  ].join("\n");
+
+  const html: string = [
+    '<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#111;max-width:560px">',
+    "<p>Hey,</p>",
+    "<p>Here's your free sample of <strong>Disqualified</strong>: the opening, Chapter 7 (the Dodge Challenger that put me $9,000 underwater), and the full 30-day plan from the back of the book.</p>",
+    `<p><a href="${escapeHtml(sampleUrl)}">Read the free sample</a></p>`,
+    `<p>If you want the rest of the story, the full book is $9.99 as a PDF and EPUB: <a href="${escapeHtml(bookUrl)}">${escapeHtml(bookUrl)}</a></p>`,
+    "<p>And if anything in there hits home, hit reply and tell me. I read every one.</p>",
+    "<p>Luke</p>",
+    "</div>",
+  ].join("");
+
+  return ses
+    .send(
+      new SendEmailCommand({
+        FromEmailAddress: config.sesFrom,
+        ReplyToAddresses: [config.sesReplyTo],
+        Destination: { ToAddresses: [to] },
+        Content: {
+          Simple: {
+            Subject: { Data: "Your free chapter of Disqualified", Charset: "UTF-8" },
+            Body: {
+              Text: { Data: text, Charset: "UTF-8" },
+              Html: { Data: html, Charset: "UTF-8" },
+            },
+          },
+        },
+      }),
+    )
+    .then((): void => undefined);
+}
+
 export function sendDelivery(config: Config, to: string, name: string, links: DownloadLinks): Promise<void> {
   const greetingName: string = firstName(name);
   const greeting: string = greetingName === "" ? "Hey," : `Hey ${greetingName},`;
