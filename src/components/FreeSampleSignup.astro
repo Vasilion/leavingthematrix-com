@@ -1,0 +1,125 @@
+---
+import { BOOK_API_URL } from '../lib/book';
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'free-sample' }: Props = Astro.props;
+---
+
+<form id={id} data-api={BOOK_API_URL} class="free-sample-form w-full" novalidate>
+  <div class="free-sample-fields">
+    <label for={`${id}-email`} class="block text-sm font-semibold text-book-paper">Email address</label>
+    <div class="mt-2 flex flex-col gap-3 sm:flex-row">
+      <input
+        id={`${id}-email`}
+        name="email"
+        type="email"
+        autocomplete="email"
+        inputmode="email"
+        required
+        placeholder="you@example.com"
+        class="min-w-0 flex-1 rounded-md border border-bone/20 bg-ink-800 px-4 py-3.5 text-base text-book-paper placeholder:text-bone-mute focus:border-book-red focus:outline-none"
+      />
+      <button
+        type="submit"
+        class="free-sample-submit inline-flex items-center justify-center rounded-md bg-book-red px-6 py-3.5 font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#e8253c] disabled:cursor-wait disabled:opacity-70"
+      >
+        Send me the chapter
+      </button>
+    </div>
+    <label class="mt-4 flex items-start gap-3 text-sm leading-relaxed text-bone-dim">
+      <input type="checkbox" name="newsletter" class="mt-1 h-4 w-4 shrink-0 accent-book-red" />
+      <span>Also send me the free weekly email: one story, one money lesson. Unsubscribe anytime.</span>
+    </label>
+    <p class="free-sample-error mt-3 text-sm text-loss" role="alert" style="display: none;"></p>
+  </div>
+
+  <div class="free-sample-done rounded-md border border-bone/15 bg-ink-800 px-5 py-5" role="status" style="display: none;">
+    <p class="font-bold text-book-paper">It's on the way.</p>
+    <p class="mt-1 leading-relaxed text-bone-dim">Check your inbox for a copy. Or start reading right now:</p>
+    <a
+      class="free-sample-link mt-4 inline-flex items-center justify-center rounded-md bg-book-red px-6 py-3.5 font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#e8253c]"
+      href="#"
+      target="_blank"
+      rel="noopener"
+    >
+      Open the free chapter
+    </a>
+  </div>
+</form>
+
+<script>
+  interface SampleResponse {
+    ok: boolean;
+    url?: string;
+    message?: string;
+  }
+
+  const EMAIL_PATTERN: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const BUTTON_LABEL: string = 'Send me the chapter';
+  const GENERIC_ERROR: string = 'Something went wrong. Please try again.';
+
+  const forms: NodeListOf<HTMLFormElement> = document.querySelectorAll<HTMLFormElement>('form.free-sample-form');
+
+  forms.forEach((form: HTMLFormElement): void => {
+    const input: HTMLInputElement | null = form.querySelector<HTMLInputElement>('input[name="email"]');
+    const optIn: HTMLInputElement | null = form.querySelector<HTMLInputElement>('input[name="newsletter"]');
+    const submit: HTMLButtonElement | null = form.querySelector<HTMLButtonElement>('.free-sample-submit');
+    const fields: HTMLElement | null = form.querySelector<HTMLElement>('.free-sample-fields');
+    const errorEl: HTMLElement | null = form.querySelector<HTMLElement>('.free-sample-error');
+    const doneEl: HTMLElement | null = form.querySelector<HTMLElement>('.free-sample-done');
+    const link: HTMLAnchorElement | null = form.querySelector<HTMLAnchorElement>('.free-sample-link');
+
+    if (input === null || optIn === null || submit === null || fields === null || errorEl === null || doneEl === null || link === null) {
+      return;
+    }
+
+    const showError = (message: string): void => {
+      errorEl.textContent = message;
+      errorEl.style.display = message === '' ? 'none' : 'block';
+    };
+
+    const reset = (): void => {
+      submit.disabled = false;
+      input.disabled = false;
+      submit.textContent = BUTTON_LABEL;
+    };
+
+    form.addEventListener('submit', (event: SubmitEvent): void => {
+      event.preventDefault();
+      showError('');
+      const email: string = input.value.trim();
+      if (!EMAIL_PATTERN.test(email)) {
+        showError('Please enter a valid email address.');
+        input.focus();
+        return;
+      }
+      submit.disabled = true;
+      input.disabled = true;
+      submit.textContent = 'Sending…';
+      fetch(`${form.dataset.api ?? ''}/sample`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email, newsletter: optIn.checked }),
+      })
+        .then((response: Response): Promise<SampleResponse> => response.json() as Promise<SampleResponse>)
+        .then((data: SampleResponse): void => {
+          if (data.ok && data.url !== undefined) {
+            link.href = data.url;
+            fields.style.display = 'none';
+            doneEl.style.display = 'block';
+            link.focus();
+            return;
+          }
+          showError(data.message ?? GENERIC_ERROR);
+          reset();
+        })
+        .catch((): void => {
+          showError(GENERIC_ERROR);
+          reset();
+        });
+    });
+  });
+</script>

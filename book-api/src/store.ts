@@ -32,6 +32,25 @@ export function recordOrder(table: string, sessionId: string, email: string, now
     .catch(swallowConditionFailure);
 }
 
+export function recordLead(table: string, email: string, source: string, newsletter: boolean, now: number): Promise<boolean> {
+  return doc
+    .send(
+      new PutCommand({
+        TableName: table,
+        Item: {
+          pk: `lead#${email.toLowerCase()}`,
+          email,
+          source,
+          newsletter,
+          createdAt: now,
+        },
+        ConditionExpression: "attribute_not_exists(pk)",
+      }),
+    )
+    .then((): boolean => true)
+    .catch(swallowConditionFailure);
+}
+
 export function claimDelivery(table: string, sessionId: string, now: number): Promise<boolean> {
   return doc
     .send(

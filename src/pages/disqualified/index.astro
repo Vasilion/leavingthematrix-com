@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import BookBuyButton from '../../components/BookBuyButton.astro';
 import BookFonts from '../../components/BookFonts.astro';
+import FreeSampleSignup from '../../components/FreeSampleSignup.astro';
 import cover from '../../assets/books/disqualified-cover.jpg';
 import { BOOK, CHAPTER_FORMAT, CHAPTERS, CHAPTERS_PLUS, FAQ, PILLARS, PLAN_WEEKS, STORY_BEATS, STORY_CLOSER, WHO_FOR } from '../../lib/book';
 import type { Chapter, FaqItem, FormatStep, Pillar, PlanWeek, StoryBeat } from '../../lib/book';
@@ -81,6 +82,24 @@ const bookLd: Record<string, unknown> = {
             <BookBuyButton class="w-full sm:w-auto" />
             <p class="text-sm text-bone-mute">PDF + EPUB · instant download</p>
           </div>
+          <p class="mt-5 text-sm text-bone-mute">
+            Not sure yet? <a href="#free-chapter" class="text-book-paper underline decoration-book-red underline-offset-4 hover:text-white">Read a chapter free</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="free-chapter" class="scroll-mt-24 border-b border-bone/10">
+      <div class="container-wide py-14 md:py-20">
+        <div class="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2 md:gap-16">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-book-red">Free chapter</p>
+            <h2 class="mt-3 font-book-display text-3xl uppercase leading-tight tracking-tight md:text-5xl">Read it before you buy it.</h2>
+            <p class="mt-5 text-lg leading-relaxed text-bone-dim">
+              Get the opening, the chapter about the Dodge Challenger that put me $9,000 underwater, and the full 30-day plan from the back of the book. Free, straight to your inbox.
+            </p>
+          </div>
+          <FreeSampleSignup id="free-sample" />
         </div>
       </div>
     </section>
