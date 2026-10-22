@@ -13,7 +13,7 @@ const isActive = (href: string) =>
   <div class="h-px w-full bg-gradient-to-r from-transparent via-signal/40 to-transparent"></div>
 
   <div class="container-wide flex h-20 items-center justify-between gap-6 md:h-24">
-    <a href="/" class="group flex items-center gap-3" aria-label={SITE.name}>
+    <a href="/" class="group flex shrink-0 items-center gap-3" aria-label={SITE.name}>
       <Image
         src={logo}
         alt={SITE.name}
@@ -47,14 +47,14 @@ const isActive = (href: string) =>
             target={'external' in link && link.external ? '_blank' : undefined}
             rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
             class:list={[
-              'group relative whitespace-nowrap px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors 2xl:px-4',
+              'group relative whitespace-nowrap px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors',
               isActive(link.href) ? 'text-signal' : 'text-bone-dim hover:text-bone',
             ]}
           >
             <span>{link.label}{'external' in link && link.external ? ' ↗' : ''}</span>
             <span
               class:list={[
-                'absolute inset-x-3 -bottom-px h-px origin-center scale-x-0 bg-signal transition-transform duration-300 2xl:inset-x-4',
+                'absolute inset-x-3 -bottom-px h-px origin-center scale-x-0 bg-signal transition-transform duration-300',
                 isActive(link.href) ? 'scale-x-100' : 'group-hover:scale-x-100',
               ]}
               aria-hidden="true"
