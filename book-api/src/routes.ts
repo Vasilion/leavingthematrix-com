@@ -38,7 +38,7 @@ function isPaidBook(session: Session): boolean {
   return session.payment_status === "paid" && session.metadata?.product === PRODUCT_TAG;
 }
 
-function subscribeNewsletter(config: Config, email: string, source: string = "disqualified-checkout"): Promise<void> {
+export function subscribeNewsletter(config: Config, email: string, source: string = "disqualified-checkout"): Promise<void> {
   if (config.newsletterUrl === "") {
     return Promise.resolve();
   }

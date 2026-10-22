@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BookFonts from '../../components/BookFonts.astro';
+import MoneyPlan from '../../components/MoneyPlan.svelte';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import { BOOK_API_URL } from '../../lib/book';
+
+interface Outcome {
+  title: string;
+  text: string;
+}
+
+const outcomes: Outcome[] = [
+  { title: 'A monthly budget', text: 'Every dollar with a job, monthly and weekly.' },
+  { title: 'Your runway', text: 'How long you could last with no income.' },
+  { title: 'Your safety net', text: 'A starter fund first, then the full emergency fund, with dates.' },
+  { title: 'Your goal', text: 'The monthly number to hit it by your date, or the honest gap.' },
+  { title: 'Your debt order', text: 'Avalanche and snowball side by side, and where to start.' },
+  { title: 'Your first 30 days', text: 'The checklist from the book, filled in with your numbers.' },
+];
+---
+
+<Layout
+  title="The Free Money Plan"
+  description="Answer about 15 questions in 3 to 4 minutes and get a money plan built from the book Disqualified: a monthly budget, your runway, your safety net, your debt order and a 30-day checklist. Free."
+>
+  <BookFonts slot="head" />
+
+  <div class="font-book text-book-paper">
+    <section class="border-b border-bone/10">
+      <div class="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 md:py-16">
+        <p class="text-sm font-bold uppercase tracking-[0.2em] text-book-red">Free tool</p>
+        <h1 class="mt-4 font-book-display text-4xl uppercase leading-[0.95] sm:text-6xl">The Money Plan</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-bone-dim">
+          Answer about 15 questions. It takes three or four minutes. You get a plan built on the rules from
+          <a href="/disqualified" class="text-book-paper underline decoration-book-red underline-offset-4">Disqualified</a>:
+          where every dollar goes this month, how long you'd last with no income, and the order to fix things in.
+        </p>
+        <p class="mt-4 text-sm text-bone-mute">No email until you've seen your numbers. Your answers aren't saved.</p>
+      </div>
+    </section>
+
+    <section class="border-b border-bone/10">
+      <div class="mx-auto w-full max-w-2xl px-4 py-12 sm:px-6 md:py-16">
+        <MoneyPlan client:load api={BOOK_API_URL} />
+      </div>
+    </section>
+
+    <section class="border-b border-bone/10">
+      <div class="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 md:py-16">
+        <h2 class="font-book-display text-2xl uppercase sm:text-3xl">What's in the plan</h2>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+          {outcomes.map((outcome: Outcome) => (
+            <li class="rounded-md border border-bone/10 bg-ink-800 p-4">
+              <p class="font-bold">{outcome.title}</p>
+              <p class="mt-1 text-sm leading-relaxed text-bone-dim">{outcome.text}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 leading-relaxed text-bone-dim">
+          The order comes from the book: a small safety net first, then the expensive debt, then your goal and the full
+          safety net. You don't have to fix everything at once. You just have to do the next small thing.
+        </p>
+      </div>
+    </section>
+
+    <section id="weekly-email" class="scroll-mt-24 border-b border-bone/10">
+      <div class="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 md:py-16">
+        <h2 class="font-book-display text-2xl uppercase sm:text-3xl">The free weekly email</h2>
+        <p class="mt-4 leading-relaxed text-bone-dim">One story, one money lesson. Every week.</p>
+        <NewsletterSignup source="money-plan" id="money-plan-weekly" brand="the weekly email" />
+      </div>
+    </section>
+
+    <section>
+      <div class="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
+        <p class="text-xs leading-relaxed text-bone-mute">
+          Not financial advice. This tool is for education. It builds a budget and a payoff order from the numbers you
+          enter, and every date is an estimate. Built from the book Disqualified by Luke Vasilion.
+        </p>
+      </div>
+    </section>
+  </div>
+</Layout>

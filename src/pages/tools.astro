@@ -2,15 +2,17 @@
 import Layout from '../layouts/Layout.astro';
 import NewsletterCallout from '../components/NewsletterCallout.astro';
 
-/**
- * Tools we've built. Live tools link out; anything still in development is
- * listed without a link rather than pointing at a dead URL.
- *
- * Copy here follows profile/voice-and-compliance.md — frameworks and research,
- * never advice. Options are described as risk-defined income structures, which
- * is the brand framing, not as speculation.
- */
-const tools = [
+interface Tool {
+  n: string;
+  name: string;
+  tagline: string;
+  href: string | null;
+  status: 'live' | 'building';
+  body: string;
+  detail: string;
+}
+
+const tools: Tool[] = [
   {
     n: '01',
     name: 'Own It Lower',
@@ -33,20 +35,20 @@ const tools = [
   },
   {
     n: '03',
-    name: 'Personal finance planner',
-    tagline: 'In development',
-    href: null,
-    status: 'building',
+    name: 'The Money Plan',
+    tagline: 'Free budget and payoff plan',
+    href: '/tools/money-plan',
+    status: 'live',
     body:
-      'A planning tool for the unglamorous side of the framework: frameworks for thinking about debt, an ordering for what to pay down first, and the arithmetic that shows why. Built around monthly check-ins, because a plan you look at once is a document, not a habit.',
-    detail: 'Name and launch date to be announced',
+      'The unglamorous side of the framework. Answer about 15 questions and get a plan built from the book Disqualified: where every dollar goes this month, how long you could last with no income, a safety net with dates, the order to pay your debt in, and a 30-day checklist with your numbers in it.',
+    detail: 'Free · No account required',
   },
-] as const;
+];
 ---
 
 <Layout
   title="Tools"
-  description="Research tools we've built — a cash-secured put screener, a weekly smart-money confluence board, and a personal finance planner in development."
+  description="Research tools we've built — a cash-secured put screener, a weekly smart-money confluence board, and a free money plan built from the book Disqualified."
 >
   <section class="border-b border-bone/5">
     <div class="container-prose py-24">
