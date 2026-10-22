@@ -74,6 +74,71 @@ export function sendSample(config: Config, to: string, sampleUrl: string): Promi
     .then((): void => undefined);
 }
 
+export function sendPlan(config: Config, to: string, pdf: Uint8Array, gapVersion: boolean): Promise<void> {
+  const chapterUrl: string = `${config.siteUrl}/disqualified#free-chapter`;
+  const opener: string = gapVersion
+    ? "Here's your Money Plan. Your numbers don't work yet, so this one shows the gap and the two ways to close it."
+    : "Here's your Money Plan, built from your numbers and the rules in the book.";
+  const start: string = "Start with the last page. It's your first 30 days, one small move at a time.";
+  const disclaimer: string = "Not financial advice. Built from the book Disqualified by Luke Vasilion.";
+
+  const text: string = [
+    "Hey,",
+    "",
+    opener,
+    "",
+    start,
+    "",
+    `If you want the story behind the rules, the first chapter of Disqualified is free: ${chapterUrl}`,
+    "",
+    "If anything in the plan doesn't make sense, hit reply and tell me. I read every one.",
+    "",
+    "Luke",
+    "",
+    disclaimer,
+  ].join("\n");
+
+  const html: string = [
+    '<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#111;max-width:560px">',
+    "<p>Hey,</p>",
+    `<p>${escapeHtml(opener)}</p>`,
+    `<p>${escapeHtml(start)}</p>`,
+    `<p>If you want the story behind the rules, <a href="${escapeHtml(chapterUrl)}">the first chapter of Disqualified is free</a>.</p>`,
+    "<p>If anything in the plan doesn't make sense, hit reply and tell me. I read every one.</p>",
+    "<p>Luke</p>",
+    `<p style="color:#666;font-size:12px">${escapeHtml(disclaimer)}</p>`,
+    "</div>",
+  ].join("");
+
+  return ses
+    .send(
+      new SendEmailCommand({
+        FromEmailAddress: config.sesFrom,
+        ReplyToAddresses: [config.sesReplyTo],
+        Destination: { ToAddresses: [to] },
+        Content: {
+          Simple: {
+            Subject: { Data: "Your Money Plan", Charset: "UTF-8" },
+            Body: {
+              Text: { Data: text, Charset: "UTF-8" },
+              Html: { Data: html, Charset: "UTF-8" },
+            },
+            Attachments: [
+              {
+                RawContent: pdf,
+                FileName: "Your-Money-Plan.pdf",
+                ContentType: "application/pdf",
+                ContentDisposition: "ATTACHMENT",
+                ContentTransferEncoding: "BASE64",
+              },
+            ],
+          },
+        },
+      }),
+    )
+    .then((): void => undefined);
+}
+
 export function sendDelivery(config: Config, to: string, name: string, links: DownloadLinks): Promise<void> {
   const greetingName: string = firstName(name);
   const greeting: string = greetingName === "" ? "Hey," : `Hey ${greetingName},`;

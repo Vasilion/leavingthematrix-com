@@ -9,7 +9,7 @@ import Layout from '../../layouts/Layout.astro';
 
     <div class="prose-ltm mt-12">
       <p class="text-bone-dim">
-        <em>Last updated: <time datetime="2026-09-08">September 8, 2026</time>.</em>
+        <em>Last updated: <time datetime="2026-10-21">October 21, 2026</time>.</em>
       </p>
 
       <h2>1. Who we are</h2>
@@ -100,9 +100,25 @@ import Layout from '../../layouts/Layout.astro';
         Blocking authentication or functional cookies will prevent you from signing in to the members area.
       </p>
 
+      <h3>2.6 The free Money Plan tool</h3>
+      <p>
+        The Money Plan at <a href="/tools/money-plan">/tools/money-plan</a> asks for your income, monthly costs, debts,
+        savings and a goal. Those answers are used only to build your plan, and <strong>they aren't saved</strong>: we
+        don't store them in a database and we don't write them to our server logs. While you fill in the form, your
+        answers are kept in your own browser (local storage) so a refresh doesn't lose them. You can clear them with
+        "Start over" or by clearing your browser's site data.
+      </p>
+      <p>
+        To send you the PDF, we collect your <strong>email address</strong> and keep a record of it with the source
+        ("money-plan"), whether you asked for the weekly email, and the date. The PDF is emailed to you through
+        Amazon Simple Email Service and is not kept after it's sent. If you tick the weekly email box, your address
+        is added to the newsletter described in section 2.1.
+      </p>
+
       <h2>3. How we use your information</h2>
       <ul>
         <li>To deliver the newsletter you subscribed to</li>
+        <li>To build and email the Money Plan you asked for</li>
         <li>To create and manage your membership account</li>
         <li>To process subscription payments and renewals</li>
         <li>To grant access to gated content, the Discord community, and the Nova members area</li>
@@ -137,6 +153,7 @@ import Layout from '../../layouts/Layout.astro';
       <h2>5. How long we keep your data</h2>
       <ul>
         <li><strong>Newsletter subscribers:</strong> we keep your email until you unsubscribe; unsubscribed records are retained for compliance auditing for up to 24 months and then deleted.</li>
+        <li><strong>Money Plan requests:</strong> we keep your email address, the source, your weekly-email choice and the date until you ask us to delete them. Your financial answers are never kept.</li>
         <li><strong>Member accounts:</strong> we keep account and subscription records for the life of your account plus 7 years after account deletion (to meet financial-record retention obligations).</li>
         <li><strong>Server logs:</strong> rotated by our hosting providers per their default retention windows (typically 30–90 days).</li>
       </ul>
