@@ -39,7 +39,7 @@ export const BLOG_CATEGORIES = [
 
 // PRICING — collapsed to two tiers 2026-05-05.
 // Blue Pill = Free (newsletter — "Free Your Mind", weekly).
-// Red Pill = $149/mo full access (Discord Pro + Nova Fund + portfolios).
+// Red Pill = $79.99/mo (was $149 until 2026-10-26) full access (Discord Pro + Nova Fund + portfolios).
 //
 // MIGRATION TODO: existing Mee6 Standard ($30) / Pro ($80) subscribers need a
 // migration plan before public launch. Options under consideration:
@@ -71,11 +71,11 @@ export const PRICING_TIERS = [
   },
   {
     name: '<span class="text-red-400">Red</span> Pill',
-    price: '$149',
+    price: '$79.99',
     period: '/mo',
-    annualPrice: '$1,499',
+    annualPrice: '$799',
     annualPeriod: '/yr',
-    annualSavingsLabel: 'Save $289',
+    annualSavingsLabel: 'Save $160',
     tagline: 'Full access. The framework, the research, the community, the tools.',
     features: [
       'Full education library — DCA to options Greeks, debt frameworks, long-term planning',
