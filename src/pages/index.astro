@@ -6,26 +6,39 @@ import NewsletterCallout from '../components/NewsletterCallout.astro';
 import Pill from '../components/Pill.astro';
 import { PRICING_TIERS } from '../lib/site';
 import PricingTier from '../components/PricingTier.astro';
+
+// Section order (Brand Gate A, 2026-10-28): hero → free tools → membership →
+// advanced research (optional, never the hero).
 ---
 
 <Layout>
   <Hero />
 
-  <ChannelGrid />
-
-  <section class="container-wide pt-14 md:pt-24">
-    <a href="/tools/money-plan" class="card-interactive flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between md:gap-10">
+  <!-- Start here, free: directly under the hero -->
+  <section id="free" class="container-wide pt-14 md:pt-24 scroll-mt-24">
+    <p class="eyebrow">Start here, free</p>
+    <a href="/tools/money-plan" class="card-interactive mt-6 flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between md:gap-10">
       <div>
-        <p class="eyebrow">Free · Start here</p>
-        <h2 class="mt-3 font-display text-3xl uppercase tracking-tight sm:text-4xl">The Money Plan</h2>
+        <h2 class="font-display text-3xl uppercase tracking-tight sm:text-4xl">The Money Plan</h2>
         <p class="mt-3 max-w-2xl text-bone-dim">
-          Start here even if you never join. Answer about 15 questions and get a budget, your runway, a safety
-          net and a debt payoff order, built from my book Disqualified. Free, as a PDF.
+          Build the base: budget, runway, safety net, debt order. About 15 questions, 3 to 4 minutes,
+          free as a PDF, built from my book Disqualified. No email until you've seen your numbers. Your
+          answers aren't saved.
         </p>
       </div>
       <span class="btn-secondary whitespace-nowrap">Build my plan</span>
     </a>
   </section>
+
+  <NewsletterCallout
+    source="home"
+    eyebrow="Blue Pill · Free weekly email"
+    headline="One lesson a week, taught through one company."
+    description="Each issue takes one company and uses it to teach one piece of the method (quality, discount, sizing, or risk), with the numbers shown, the bear case stated, and what would change the view. The company is the case study. The lesson is the point. Plus the foundations that compound: debt, runway, safety net, DCA, ETF cores, sizing. Free, weekly. No hype, no day-trading, no spam."
+  />
+
+  <!-- Membership: after the free tools, not in the hero -->
+  <ChannelGrid />
 
   <section class="container-wide py-14 md:py-24">
     <div class="max-w-2xl">
@@ -34,9 +47,9 @@ import PricingTier from '../components/PricingTier.astro';
         Start free. <span class="text-signal">Join when it's useful.</span>
       </h2>
       <p class="mt-6 text-lg text-bone-dim">
-        The free Sunday email is a good way to see how I think. <Pill color="red" />
-        is the whole thing: your plan, the 12 week path, the library, a weekly
-        lesson, and the community.
+        <Pill color="red" /> is the members area: a calm place to get your money in order and learn to
+        invest steadily. A personal plan, one clear path, one lesson a week, and a community learning
+        the same work. Advanced research is there if you want it. You do not need it to be a member.
       </p>
     </div>
 
@@ -44,17 +57,34 @@ import PricingTier from '../components/PricingTier.astro';
       {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
     </div>
 
-    <p class="mt-8 text-center text-xs text-bone-mute">
-      Cancel anytime. Educational content only, never personalized financial advice.
-    </p>
+    <div class="mt-8 space-y-2 text-center text-xs text-bone-mute">
+      <p>$79.99/mo or $799/yr for new members. If you're already a member, your price and access don't change.</p>
+      <p>Cancel anytime. Educational content only, never personalized financial advice. Not a managed account. No return promise.</p>
+    </div>
+
+    <div class="mt-6 text-center">
+      <a href="/membership" class="btn-secondary">See what membership includes</a>
+    </div>
   </section>
 
-  <NewsletterCallout
-    source="home"
-    eyebrow="LTM Investing Thesis · Free every Sunday"
-    headline="Not ready to join? Read along first."
-    description="Every Sunday I take the stock everyone's hyping and check the math. Real numbers, bear, base and bull scenarios, and a straight read on whether it holds up. No hype, no spam."
-  />
+  <!-- Advanced research: optional, after membership -->
+  <section class="container-wide pb-14 md:pb-24">
+    <div class="card max-w-3xl">
+      <p class="eyebrow">Advanced research, optional</p>
+      <h2 class="mt-3 font-display text-2xl uppercase tracking-tight text-bone">
+        Nova: a research tool, explained with limits.
+      </h2>
+      <p class="mt-3 text-bone-dim">
+        Nova scores a company on quality, discount, and what large holders disclosed (insiders,
+        Congress, and large institutional holders) and shows the layers behind the score, with limits
+        stated. It is a way to organise research, not a prediction, not a recommendation, and not a
+        list to follow.
+      </p>
+      <p class="mt-3 text-sm text-bone-mute">
+        It is not the membership. You do not need it to follow the core path.
+      </p>
+    </div>
+  </section>
 
   <section class="container-wide pb-14 md:pb-24">
     <div class="card-interactive flex flex-col items-start gap-6 border-signal/30 bg-gradient-to-br from-ink-800 to-ink-900 p-12 md:flex-row md:items-center md:justify-between">
@@ -66,8 +96,8 @@ import PricingTier from '../components/PricingTier.astro';
           Everything else builds on it.
         </p>
       </div>
-      <a href="/membership" class="btn-primary whitespace-nowrap">
-        See membership
+      <a href="/tools/money-plan" class="btn-primary whitespace-nowrap">
+        Build my plan
       </a>
     </div>
   </section>

@@ -6,15 +6,106 @@ import Testimonials from '../components/Testimonials.astro';
 import Pill from '../components/Pill.astro';
 import { PRICING_TIERS } from '../lib/site';
 
-// FAQ q/a are HTML strings — embedded spans color "Blue"/"Red" inside the
+// Copy: Brand Gate A draft (ltm-site-copy-draft-2026-10-28.md) merged onto the
+// live page. The headline and pricing stay as shipped in PR #6; the path, the
+// community / Discord step, the optional section, "What it is NOT" and the
+// FAQ come from the draft. Swing trading basics is deliberately not listed
+// here until that lesson is written.
+
+// FAQ q/a are HTML strings: embedded spans color "Blue"/"Red" inside the
 // "Blue Pill" / "Red Pill" tier names. Rendered via set:html below.
 const PILL_BLUE = '<span class="text-sky-400">Blue</span> Pill';
 const PILL_RED = '<span class="text-red-400">Red</span> Pill';
 
+interface Stage {
+  n: string;
+  title: string;
+  weeks: string;
+  question: string;
+  body: string;
+  exit: string | null;
+  note: string | null;
+}
+
+const stages: Stage[] = [
+  {
+    n: '1',
+    title: 'Plan',
+    weeks: 'Weeks 1 to 4',
+    question: 'Where do I stand, and what is my plan?',
+    body: 'My Plan, lived in: budget, runway, safety net with dates, debt payoff order, goal number, and a first 30 days checklist. Then debt-aware investing, goals and horizon, and a quarterly review template you can reuse.',
+    exit: 'I have a written plan.',
+    note: null,
+  },
+  {
+    n: '2',
+    title: 'Investing basics',
+    weeks: 'Weeks 5 to 8',
+    question: 'How do I invest steadily, without chasing?',
+    body: 'Dollar-cost averaging and automation, ETF core construction, valuation in plain terms (quality and discount), position sizing, and risk and drawdown, including a pre-set rule for the next fall, written before it happens.',
+    exit: 'I understand DCA, a core, valuation in plain terms, sizing, and drawdown, and I have a simple plan I can explain in a minute.',
+    note: null,
+  },
+  {
+    n: '3',
+    title: 'Selling options education',
+    weeks: 'Weeks 9 to 12',
+    question: 'How do more active approaches actually work?',
+    body: 'Options basics, cash-secured puts, covered calls, and the full wheel loop on paper, with capital, assignment, and drawdown risk stated first, and Greeks only at this stage, as a risk dashboard.',
+    exit: null,
+    note: 'This stage is education only. Nothing in it is a pick, a list to follow, or a promise of premium income. Every lesson states what can go wrong before any mechanics.',
+  },
+];
+
+interface OptionalItem {
+  name: string;
+  body: string;
+}
+
+const optional: OptionalItem[] = [
+  {
+    name: 'Nova research tools',
+    body: 'Lookup, Screener, and Smart Money research (insider, congressional, and 13F disclosures, and options flow), explained as research, never as a prediction.',
+  },
+  {
+    name: 'This Week research',
+    body: 'A public top 10 research list, explained as method first, names second.',
+  },
+  {
+    name: 'Nova Fund archive',
+    body: 'The paper-traded demonstration portfolio, with memos and a ledger, kept as an archive. It is not a managed account, not a portfolio to follow, and not the core promise.',
+  },
+  {
+    name: 'Example portfolios, as archive',
+    body: 'ETF Momentum and Stock Picks portfolios, kept as archive examples, not as follow-lists and not as the core promise.',
+  },
+  {
+    name: 'Own It Lower: free, separate site, Stage 3 practice only',
+    body: "A free cash-secured put screener for practising on paper: name a price you'd happily buy a company at, and read the arithmetic back (collateral, premium, breakeven, return on collateral, support). Free, no sign-in, no account required. It is not a paid benefit, and it is not gated.",
+  },
+];
+
+const notList: string[] = [
+  'personalized financial advice',
+  'a managed account, or a portfolio run for you',
+  'a trading room, a daily picks service, or a daily list to follow',
+  'a promise of income or returns',
+  'a debt-payoff guarantee, or a replacement for your own decisions',
+  'daily one-to-one access to Luke',
+];
+
 const faq = [
   {
+    q: 'Do I need the advanced tools to be a member?',
+    a: 'No. The core path is Stage 1 → 2 → 3, one lesson a week, and the Discord community. Advanced research is there if you want it. You do not need it.',
+  },
+  {
+    q: 'I already have a plan. Where do I start?',
+    a: "In the members area, you'll be asked whether you already have a written plan (budget, runway, safety net, debt order). Answer honestly and you'll be pointed to the right stage. Nothing is assumed from tools you've used before.",
+  },
+  {
     q: 'What do I actually get?',
-    a: "A place to get your money in order and learn to invest, one step at a time. You write your own plan (budget, runway, safety net, debt order, goal), then follow a 12 week path: the plan first, then investing basics, then the basics of swing trading and selling options. Each week there's a lesson that uses one company as the case study. The community lives in our Discord, and the research tools are there when you want to go deeper.",
+    a: "A place to get your money in order and learn to invest, one step at a time. You write your own plan (budget, runway, safety net, debt order, goal), then follow a 12 week path: the plan first, then investing basics, then selling options basics on paper. Each week there's a lesson that uses one company as the case study. The community lives in our Discord, and the research tools are there when you want to go deeper.",
   },
   {
     q: 'Is this financial advice?',
@@ -22,7 +113,11 @@ const faq = [
   },
   {
     q: `How does ${PILL_RED} work?`,
-    a: 'You sign up here through Stripe, you get the Pro role in our Discord, and you land in the members area on your first step. Cancel anytime from your account.',
+    a: 'You sign up here through Stripe and land in the members area on your first step. To join the Discord, click "Pro Discord" in the members area. Cancel anytime from your account.',
+  },
+  {
+    q: 'How do I get into Discord?',
+    a: 'After you sign up, go to the members area and click "Pro Discord". That lets you into the Discord community with the Pro role.',
   },
   {
     q: `How does cancellation work?`,
@@ -30,11 +125,19 @@ const faq = [
   },
   {
     q: `What is the ${PILL_BLUE}?`,
-    a: "The free Sunday email, the LTM Investing Thesis. Every week I take one stock everyone's talking about and check the math: the real numbers, three scenarios, and a straight read on whether the hype holds up. Educational content only.",
+    a: 'The free weekly email. One lesson a week, taught through one company: the numbers shown, the bear case stated, and what would change the view. The company is the case study. The lesson is the point. Educational content only.',
   },
   {
     q: 'Do you teach options?',
     a: "Yes, as education, and only after your plan and the investing basics. Selling options is Stage 3 of the path: cash-secured puts first (what the collateral is, where breakeven sits, what happens if you're assigned), then covered calls and the wheel, practised on paper. Not for gambling, and no trades to copy.",
+  },
+  {
+    q: 'Is Own It Lower included in membership?',
+    a: 'Own It Lower is free for everyone, on its own site, with no sign-in. Members use it in Stage 3 as practice. It is not a paid benefit.',
+  },
+  {
+    q: 'Is the Nova Fund real money?',
+    a: 'No. The Nova Fund in the archive is a paper-traded demonstration portfolio. It is kept as an educational example, not as a managed account and not as a portfolio to follow.',
   },
   {
     q: "What if I'm a complete beginner?",
@@ -45,15 +148,15 @@ const faq = [
     a: 'Yes. The first stage is all money basics: a budget, how long your cash would last, a safety net with a date, the order to pay off debt, and a goal number. It is all educational, frameworks for thinking, not personalized financial advice.',
   },
   {
-    q: 'I am already a member through Discord. What changes?',
-    a: 'Nothing for now. Existing Standard and Pro subscribers keep their current access uninterrupted. Any migration to the new model will be communicated directly with plenty of notice.',
+    q: "I'm already a member. Does anything change for me?",
+    a: "Your price and access don't change. The members area has been rebuilt around a plan and a path; the research tools you used before are still reachable in the Advanced Wing and archive.",
   },
 ];
 ---
 
 <Layout
   title="Membership"
-  description="Blue Pill is the free Sunday email. Red Pill is $79.99/mo: write your money plan, follow a 12 week path from budgeting to investing basics, a weekly lesson, and the community."
+  description="Blue Pill is the free weekly email. Red Pill is $79.99/mo: a personal plan, one clear path, one lesson a week, and a community learning the same work."
 >
   <section class="border-b border-bone/5">
     <div class="container-wide py-14 md:py-24">
@@ -61,14 +164,13 @@ const faq = [
         <div class="lg:col-span-7">
           <p class="eyebrow">Membership</p>
           <h1 class="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-5xl md:text-display-xl">
-            Start free. <span class="text-signal">Join when it's useful.</span>
+            <span class="text-red-400">Red</span> Pill: <span class="text-signal">the members area.</span>
           </h1>
           <p class="mt-6 text-lg text-bone-dim">
-            <Pill color="blue" /> is the free Sunday email, a good way to see how I
+            <Pill color="blue" /> is the free weekly email, a good way to see how I
             think before you spend anything.
-            <Pill color="red" /> is the whole thing: a written plan for your money,
-            a 12 week path from budgeting to investing basics to selling options,
-            the library, a weekly lesson, and the community.
+            <Pill color="red" /> is the members area: a personal plan, one clear
+            path, one lesson a week, and a community learning the same work.
           </p>
 
           <div class="mt-8 flex flex-wrap items-center gap-4">
@@ -92,15 +194,15 @@ const faq = [
               </li>
               <li class="flex items-start gap-3">
                 <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
-                <span><strong class="text-bone">A 12 week path.</strong> The plan first, then investing basics, then swing trading and selling options.</span>
+                <span><strong class="text-bone">A 12 week path.</strong> The plan first, then investing basics, then selling options basics on paper.</span>
               </li>
               <li class="flex items-start gap-3">
                 <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
-                <span><strong class="text-bone">The library and a weekly lesson.</strong> The basics explained once, plus one new idea every week.</span>
+                <span><strong class="text-bone">The library and a weekly lesson.</strong> The basics explained once, plus one lesson a week, taught through one company.</span>
               </li>
               <li class="flex items-start gap-3">
                 <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-signal" aria-hidden="true"></span>
-                <span><strong class="text-bone">The community.</strong> The Pro role in our Discord. Ask anything, nobody minds a beginner question.</span>
+                <span><strong class="text-bone">The community.</strong> In Discord. Ask anything, nobody minds a beginner question.</span>
               </li>
             </ul>
           </div>
@@ -114,65 +216,119 @@ const faq = [
       {PRICING_TIERS.map((tier) => <PricingTier {...tier} />)}
     </div>
 
-    <p class="mt-12 text-center text-sm text-bone-mute">
-      Cancel anytime. Educational content only, never personalized financial advice.
-    </p>
+    <div class="mt-12 space-y-2 text-center text-sm text-bone-mute">
+      <p><strong class="text-bone-dim">$79.99/mo or $799/yr for new members.</strong> Cancel anytime; access continues to the end of the current billing period.</p>
+      <p>If you're already a member, your price and access don't change.</p>
+      <p>Educational content only, never personalized financial advice. Not a managed account. No return promise.</p>
+    </div>
   </section>
 
-  <PerformanceProof />
-
+  <!-- The path: the 3 stages, in order -->
   <section class="border-y border-bone/5 bg-ink-900">
     <div class="container-wide py-14 md:py-24">
       <p class="eyebrow">What you get</p>
       <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">
-        The full picture.
+        The path, in order.
       </h2>
-      <p class="mt-4 max-w-2xl text-bone-dim">
-        <Pill color="red" /> is built for members who want to actually understand
-        their money and markets, not just receive tickers. Four parts, one calm order.
-      </p>
+      <div class="mt-6 max-w-2xl space-y-4 text-bone-dim">
+        <p>This is not a trading desk, not every tool at once, and not a portfolio to follow.</p>
+        <p>
+          It's a quiet place to get your money in order and learn to invest steadily, at your own
+          pace, in about 20 to 30 minutes a week. When you've done that week's step, you're done.
+          You're not behind.
+        </p>
+      </div>
 
-      <div class="mt-8 md:mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <ol class="mt-10 grid gap-4 lg:grid-cols-3">
+        {stages.map((s) => (
+          <li class="card flex flex-col gap-3">
+            <p class="eyebrow text-signal">Stage {s.n} · {s.weeks}</p>
+            <h3 class="font-display text-2xl uppercase tracking-tight text-bone">{s.title}</h3>
+            <p class="text-sm italic text-bone-dim">"{s.question}"</p>
+            <p class="text-sm leading-relaxed text-bone-dim">{s.body}</p>
+            {s.exit ? (
+              <p class="mt-auto border-t border-bone/10 pt-3 text-sm text-bone-dim">
+                When you finish this stage, you can say: <span class="text-bone">"{s.exit}"</span>
+              </p>
+            ) : null}
+            {s.note ? (
+              <p class="mt-auto border-t border-bone/10 pt-3 text-sm text-bone-mute">{s.note}</p>
+            ) : null}
+          </li>
+        ))}
+      </ol>
+
+      <div class="mt-12 grid gap-4 md:grid-cols-2">
         <div class="card">
-          <p class="eyebrow">Your plan</p>
-          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">Written down first.</h3>
-          <p class="mt-3 text-sm text-bone-dim">
-            Budget. Runway. A safety net with a date. Debt payoff order. A goal
-            number. A quarterly review to keep it true.
+          <p class="eyebrow">Weekly lesson</p>
+          <h3 class="mt-3 font-display text-xl uppercase tracking-tight text-bone">One lesson a week, taught through one company.</h3>
+          <p class="mt-3 text-sm leading-relaxed text-bone-dim">
+            Each week, one lesson in the members area, plus the Blue Pill email. The company is the
+            case study. The lesson is the point, with the numbers shown, the bear case stated, and
+            what would change the view.
           </p>
-        </div>
-        <div class="card">
-          <p class="eyebrow">Your path</p>
-          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">Twelve weeks, in order.</h3>
-          <p class="mt-3 text-sm text-bone-dim">
-            Plan first. Then investing basics: automation, a core, valuation,
-            sizing, a rule for the next fall. Then swing trading and selling
-            options, on paper. Plus a weekly lesson.
+          <p class="mt-3 text-sm leading-relaxed text-bone-dim">
+            Past lessons stay available in path order, so a new member starts at Stage 1, not at
+            this week's lesson.
           </p>
         </div>
         <div class="card">
           <p class="eyebrow">Community</p>
-          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">Real conversations.</h3>
-          <p class="mt-3 text-sm text-bone-dim">
-            Pro role in the Discord. People working through the same path, asking
-            questions, and sharing what they're learning.
+          <h3 class="mt-3 font-display text-xl uppercase tracking-tight text-bone">Ask the community, in Discord.</h3>
+          <p class="mt-3 text-sm leading-relaxed text-bone-dim">
+            The community lives in Discord, where members learning the same path can ask questions
+            and share progress. The members area links into Discord; it does not try to rebuild a
+            forum inside the app.
           </p>
-        </div>
-        <div class="card border-signal/30">
-          <p class="eyebrow text-signal">Research tools</p>
-          <h3 class="mt-3 font-display text-xl tracking-tight text-bone">When you want to go deeper.</h3>
-          <p class="mt-3 text-sm text-bone-dim">
-            Nova Lookup, the Screener, and the Smart Money tab (insider buys,
-            congressional trades, 13F flows). Optional, never required.
+          <p class="mt-3 text-sm leading-relaxed text-bone-dim">
+            <strong class="text-bone">How Discord access works:</strong> After you sign up, go to the
+            members area and click "Pro Discord". That lets you into the Discord community with the
+            Pro role.
           </p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Optional / advanced: kept separate from the core path on purpose -->
+  <section class="container-wide py-14 md:py-24">
+    <p class="eyebrow">Optional, advanced</p>
+    <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">
+      You do not need any of this to be a member.
+    </h2>
+    <p class="mt-4 max-w-2xl text-bone-dim">
+      These live in the members area's Advanced Wing, behind a separate doorway. Nothing here is
+      pushed weekly, featured on the members home screen, or presented as the core path.
+    </p>
+    <ul class="mt-8 grid gap-4 md:grid-cols-2">
+      {optional.map((item) => (
+        <li class="card">
+          <p class="font-display text-lg tracking-tight text-bone">{item.name}</p>
+          <p class="mt-2 text-sm leading-relaxed text-bone-dim">{item.body}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- What it is NOT: part of the promise -->
+  <section class="border-y border-bone/5 bg-ink-900">
+    <div class="container-wide py-14 md:py-20">
+      <p class="eyebrow text-loss">What it is not</p>
+      <h2 class="mt-4 font-display text-display-md uppercase tracking-tight">This membership is not:</h2>
+      <ul class="mt-6 max-w-2xl list-disc space-y-2 pl-5 text-bone-dim">
+        {notList.map((item) => <li>{item}</li>)}
+      </ul>
+      <p class="mt-6 max-w-2xl text-sm text-bone-mute">
+        Outcomes vary. Past research and backtests do not predict future results.
+      </p>
+    </div>
+  </section>
+
+  <PerformanceProof />
+
   <Testimonials />
 
-  <section class="container-wide py-14 md:py-24">
+  <section id="faq" class="container-wide py-14 md:py-24 scroll-mt-24">
     <p class="eyebrow">FAQ</p>
     <h2 class="mt-4 font-display text-display-lg uppercase tracking-tight">Common questions</h2>
 
