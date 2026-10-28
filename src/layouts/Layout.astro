@@ -31,14 +31,14 @@ const {
   title,
   description = SITE.description,
   image = '/og-default.png',
-  imageAlt = `${SITE.name} — ${SITE.tagline}`,
+  imageAlt = `${SITE.name}: ${SITE.tagline}`,
   noindex = false,
   ogType = 'website',
   jsonLd,
   article,
 } = Astro.props;
 
-const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImage = new URL(image, Astro.site).toString();
 const twitterImage = new URL(image.replace('og-default.png', 'twitter-card.png'), Astro.site).toString();
@@ -143,7 +143,7 @@ const ldBlocks = [
 
     <!-- Discovery -->
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — Blog`} href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} | Blog`} href="/rss.xml" />
 
     <!-- JSON-LD structured data -->
     {ldBlocks.map((block) => (

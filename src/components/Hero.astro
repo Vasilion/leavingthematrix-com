@@ -18,32 +18,33 @@ const YOUTUBE_VIDEO_ID = 'j1qI76SLJnk';
     <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
       <!-- Text column — appears FIRST on mobile so the value prop is above the fold -->
       <div class="order-1 lg:order-1 lg:col-span-5">
-        <p class="eyebrow">↳ Investing education · Smart-money flow · Community</p>
+        <p class="eyebrow">↳ Money plan · Investing basics · Community</p>
 
         <h1 class="mt-6 font-display text-display-lg uppercase leading-[0.95] tracking-tight text-bone">
-          Quality businesses.<br />
-          Smart-money flow.<br />
-          <span class="text-gradient-signal">Real research.</span>
+          Write the plan.<br />
+          Learn the basics.<br />
+          <span class="text-gradient-signal">Stop guessing.</span>
         </h1>
 
         <p class="mt-8 text-lg text-bone-dim">
-          We teach the institutional research framework — quality, valuation discount, and
-          smart-money confirmation — and surface every name our desk is watching. Education
-          you can apply, research you can follow, a community that takes the work seriously.
+          A membership for getting your money in order and learning to invest, one step at
+          a time. You write your own plan, follow a 12 week path from budgeting to investing
+          basics to selling options, and ask questions in a Discord full of people working
+          on the same thing.
         </p>
 
         <p class="mt-3 text-sm text-bone-mute">
-          Educational content only — never personalized financial advice.
+          Educational content only. Never personalized financial advice.
         </p>
 
         <div class="mt-10 flex flex-wrap items-center gap-4">
           <a href="/membership" class="btn-primary">
-            Leave the Matrix
+            See membership
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </a>
-          <a href="/membership" class="btn-secondary">See what's inside</a>
+          <a href="/tools/money-plan" class="btn-secondary">Build a free money plan</a>
         </div>
       </div>
 
@@ -58,7 +59,7 @@ const YOUTUBE_VIDEO_ID = 'j1qI76SLJnk';
           <div class="relative aspect-video w-full overflow-hidden rounded-lg border border-bone/10 bg-black shadow-2xl shadow-signal/10">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?rel=0&modestbranding=1`}
-              title="Leaving The Matrix — services overview"
+              title="Leaving The Matrix: services overview"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
@@ -73,21 +74,21 @@ const YOUTUBE_VIDEO_ID = 'j1qI76SLJnk';
     <!-- Stats strip -->
     <dl class="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-bone/10 bg-bone/10 sm:grid-cols-3 md:mt-24">
       <div class="bg-ink-900 px-6 py-5">
-        <dt class="eyebrow">Framework</dt>
+        <dt class="eyebrow">Weeks 1 to 4 · Plan</dt>
         <dd class="mt-2 font-display text-xl uppercase tracking-tight text-bone">
-          Quality · Discount · Smart-money
+          Budget · Runway · Debt order
         </dd>
       </div>
       <div class="bg-ink-900 px-6 py-5">
-        <dt class="eyebrow">Coverage</dt>
+        <dt class="eyebrow">Weeks 5 to 8 · Invest</dt>
         <dd class="mt-2 font-display text-xl uppercase tracking-tight text-bone">
-          Stocks · ETFs · Options · Crypto
+          Automate · Core · Size
         </dd>
       </div>
       <div class="bg-ink-900 px-6 py-5">
-        <dt class="eyebrow">Discipline</dt>
+        <dt class="eyebrow">Weeks 9 to 12 · Options</dt>
         <dd class="mt-2 font-display text-xl uppercase tracking-tight text-bone">
-          Long-term · Debt-aware · Planned
+          Puts · Calls · The wheel
         </dd>
       </div>
     </dl>

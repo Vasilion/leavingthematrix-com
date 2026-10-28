@@ -1,9 +1,9 @@
 export const SITE = {
   name: 'Leaving The Matrix',
   domain: 'leavingthematrix.io',
-  tagline: 'Investing education and smart-money flow.',
+  tagline: 'A plan for your money. The investing basics, in order.',
   description:
-    'Investing education and smart-money flow: quality businesses, valuation discount, institutional signals. Educational only — never personalized financial advice.',
+    'Write a real plan for your money, learn investing one step at a time, and ask questions in a community doing the same. Educational only, never personalized financial advice.',
   // Discord links remain referenced for the existing Mee6 subscriber base
   // (Standard $30 / Pro $80) until the Stripe + role-bot migration ships.
   // Public-facing CTAs no longer point here — site flow is /membership.
@@ -22,10 +22,9 @@ export const SITE = {
 export const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/membership', label: 'Membership' },
-  { href: '/portfolios', label: 'Portfolios' },
+  { href: '/thesis', label: 'Sunday Thesis' },
   { href: '/tools', label: 'Tools' },
   { href: '/disqualified', label: 'Book' },
-  { href: '/blog', label: 'Changelog' },
   { href: '/about', label: 'About' },
 ] as const;
 
@@ -33,7 +32,7 @@ export const BLOG_CATEGORIES = [
   { id: 'nova-dev', label: 'Nova Dev', description: 'Build notes from the trading copilot powering our research.' },
   { id: 'market-notes', label: 'Market Notes', description: 'Weekly reads on what the tape is doing and why.' },
   { id: 'education', label: 'Education', description: 'Frameworks, mental models, and trade structures.' },
-  { id: 'trade-reviews', label: 'Trade Reviews', description: 'Post-mortems on real trades — wins, losses, lessons.' },
+  { id: 'trade-reviews', label: 'Trade Reviews', description: 'Post-mortems on real trades: wins, losses, lessons.' },
   { id: 'announcements', label: 'Announcements', description: 'Updates from the desk.' },
 ] as const;
 
@@ -55,13 +54,13 @@ export const PRICING_TIERS = [
     name: '<span class="text-sky-400">Blue</span> Pill',
     price: 'Free',
     period: '',
-    tagline: "Free Your Mind — our weekly read on quality investing.",
+    tagline: 'The Sunday email. One stock, math checked.',
     features: [
-      'Weekly newsletter delivered to your inbox',
-      'One full ticker analysis per issue, applying the framework',
-      'Lessons that compound — debt-aware investing, valuation, position sizing',
-      'Macro snapshot + smart-money pulse for context',
-      'Educational content only — never personalized advice',
+      'The LTM Investing Thesis every Sunday at 7pm ET',
+      'One stock everyone is hyping, broken down with real numbers',
+      'Bear, base and bull scenarios with the math shown',
+      'The free Money Plan and Own It Lower, no account needed',
+      'Educational content only, never personalized advice',
     ],
     cta: 'Subscribe', // unused when newsletterSignup=true; kept for type compat
     popular: false,
@@ -76,20 +75,21 @@ export const PRICING_TIERS = [
     annualPrice: '$799',
     annualPeriod: '/yr',
     annualSavingsLabel: 'Save $160',
-    tagline: 'Full access. A written plan, a 12-week path, the community, the tools.',
+    tagline: 'The whole thing. Your plan, the path, the community.',
     features: [
-      'My Plan — your budget, runway, safety net, debt order and goal, written down in one place',
-      'A 12-week path — your plan, then investing basics, then swing trading and selling options',
-      'A weekly lesson — one idea, with one company as the case study',
-      'Pro role in the Discord community',
-      'Research tools — Nova Lookup, Screener, Smart Money tab (insider buys, congressional trades, 13F flows)',
-      'Educational content only — never personalized advice',
+      'My Plan: your budget, runway, safety net, debt order and goal, written down in one place',
+      'A 12 week path: the plan first, then investing basics, then swing trading and selling options',
+      'The Library: the basics explained once, from budgeting to the Greeks',
+      'A weekly lesson with one company as the worked example',
+      'The Pro role in our Discord, where you can ask anything',
+      'Research tools when you want them: Nova Lookup, the Screener, Smart Money',
+      'Educational content only, never personalized advice',
     ],
-    cta: 'Take the Red Pill',
+    cta: 'Join',
     popular: true,
     href: 'https://nova.leavingthematrix.io/sign-up?plan=monthly',
     annualHref: 'https://nova.leavingthematrix.io/sign-up?plan=annual',
-    membersHref: 'https://nova.leavingthematrix.io/macro',
+    membersHref: 'https://nova.leavingthematrix.io/home',
     upgradeHref: 'https://nova.leavingthematrix.io/checkout?plan=monthly',
     annualUpgradeHref: 'https://nova.leavingthematrix.io/checkout?plan=annual',
     comingSoon: false,
