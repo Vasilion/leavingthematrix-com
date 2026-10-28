@@ -39,7 +39,7 @@ export const BLOG_CATEGORIES = [
 
 // PRICING — collapsed to two tiers 2026-05-05.
 // Blue Pill = Free (newsletter — "Free Your Mind", weekly).
-// Red Pill = $79.99/mo (was $149 until 2026-10-26) full access (Discord Pro + Nova Fund + portfolios).
+// Red Pill = $79.99/mo (was $149 until 2026-10-26) full access (plan + path + weekly lesson + Discord Pro + research tools; members-area v1, 2026-10-28).
 //
 // MIGRATION TODO: existing Mee6 Standard ($30) / Pro ($80) subscribers need a
 // migration plan before public launch. Options under consideration:
@@ -76,19 +76,14 @@ export const PRICING_TIERS = [
     annualPrice: '$799',
     annualPeriod: '/yr',
     annualSavingsLabel: 'Save $160',
-    tagline: 'Full access. The framework, the research, the community, the tools.',
+    tagline: 'Full access. A written plan, a 12-week path, the community, the tools.',
     features: [
-      'Full education library — DCA to options Greeks, debt frameworks, long-term planning',
-      'Every research lane — long-term picks, dip buys, swing trades, ETF momentum, crypto',
+      'My Plan — your budget, runway, safety net, debt order and goal, written down in one place',
+      'A 12-week path — your plan, then investing basics, then swing trading and selling options',
+      'A weekly lesson — one idea, with one company as the case study',
       'Pro role in the Discord community',
-      'Higher-conviction options ideas with full thesis',
-      'Deep-value research — names trading near 200-week support',
-      'Nova Fund — live AI-managed portfolio with weekly memos',
-      'Smart Money tab — insider buys, congressional trades, 13F flows',
-      "Luke's ETF Momentum + Stock Picks portfolios — auto-tracked",
-      'Sector exposure + market context dashboards',
-      'vs SPY benchmark with dividend reinvestment',
-      'Direct line for trade questions, 1-on-1 portfolio review',
+      'Research tools — Nova Lookup, Screener, Smart Money tab (insider buys, congressional trades, 13F flows)',
+      'Educational content only — never personalized advice',
     ],
     cta: 'Take the Red Pill',
     popular: true,
