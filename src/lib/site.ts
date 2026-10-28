@@ -29,11 +29,11 @@ export const NAV_LINKS = [
 ] as const;
 
 export const BLOG_CATEGORIES = [
-  { id: 'nova-dev', label: 'Nova Dev', description: 'Build notes from the trading copilot powering our research.' },
-  { id: 'market-notes', label: 'Market Notes', description: 'Weekly reads on what the tape is doing and why.' },
   { id: 'education', label: 'Education', description: 'Frameworks, mental models, and trade structures.' },
+  { id: 'nova-dev', label: 'Nova Dev', description: 'How the research tool works, in plain terms.' },
+  { id: 'market-notes', label: 'Market Notes', description: 'Weekly reads on what the tape is doing and why.' },
   { id: 'trade-reviews', label: 'Trade Reviews', description: 'Post-mortems on real trades: wins, losses, lessons.' },
-  { id: 'announcements', label: 'Announcements', description: 'Updates from the desk.' },
+  { id: 'announcements', label: 'Announcements', description: 'Updates.' },
 ] as const;
 
 // PRICING — collapsed to two tiers 2026-05-05.
@@ -54,11 +54,12 @@ export const PRICING_TIERS = [
     name: '<span class="text-sky-400">Blue</span> Pill',
     price: 'Free',
     period: '',
-    tagline: 'The Sunday email. One stock, math checked.',
+    tagline: 'One lesson a week, taught through one company.',
     features: [
-      'The LTM Investing Thesis every Sunday at 7pm ET',
-      'One stock everyone is hyping, broken down with real numbers',
-      'Bear, base and bull scenarios with the math shown',
+      'The free weekly email, every Sunday at 7pm ET',
+      'One lesson a week, taught through one company',
+      'The numbers shown, the bear case stated, and what would change the view',
+      'Plus the foundations that compound: debt, runway, safety net, DCA, ETF cores, sizing',
       'The free Money Plan and Own It Lower, no account needed',
       'Educational content only, never personalized advice',
     ],
@@ -78,11 +79,11 @@ export const PRICING_TIERS = [
     tagline: 'The whole thing. Your plan, the path, the community.',
     features: [
       'My Plan: your budget, runway, safety net, debt order and goal, written down in one place',
-      'A 12 week path: the plan first, then investing basics, then swing trading and selling options',
+      'A 12 week path: the plan first, then investing basics, then selling options basics on paper',
       'The Library: the basics explained once, from budgeting to the Greeks',
-      'A weekly lesson with one company as the worked example',
-      'The Pro role in our Discord, where you can ask anything',
-      'Research tools when you want them: Nova Lookup, the Screener, Smart Money',
+      'One lesson a week, taught through one company',
+      'The Discord community: click "Pro Discord" in the members area to join',
+      'Optional advanced research: Nova Lookup, the Screener, Smart Money',
       'Educational content only, never personalized advice',
     ],
     cta: 'Join',

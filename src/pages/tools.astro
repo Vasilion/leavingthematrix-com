@@ -2,105 +2,117 @@
 import Layout from '../layouts/Layout.astro';
 import NewsletterCallout from '../components/NewsletterCallout.astro';
 
+// Order is the point of this page (Brand Gate A, 2026-10-28): build the base
+// first (Money Plan), then the free weekly email, then advanced research only
+// if you want it. Own It Lower and This Week stay free and stay listed, just
+// last, and labelled advanced.
+
 interface Tool {
   n: string;
   name: string;
   tagline: string;
-  href: string | null;
-  status: 'live' | 'building';
-  body: string;
+  href: string;
+  body: string[];
   detail: string;
 }
 
-const tools: Tool[] = [
-  {
-    n: '01',
-    name: 'Own It Lower',
-    tagline: 'Cash-secured put screener',
-    href: 'https://ownitlower.leavingthematrix.io',
-    status: 'live',
-    body:
-      'Selling a cash-secured put is an agreement to buy a company you already want to own, at a price below where it trades today, and to be paid for the wait. Own It Lower screens for the places that trade is actually worth taking: where the premium compensates for the obligation and the underlying is a business you would be content to hold if assigned.',
-    detail: 'Free · No account required',
-  },
-  {
-    n: '02',
-    name: 'This Week',
-    tagline: 'Weekly top 10 board',
-    href: 'https://nova.leavingthematrix.io/this-week',
-    status: 'live',
-    body:
-      'The ten highest Nova Scores from the latest daily scan that also clear the Rule of 40, a quick check on growth plus profitability. It is a research starting point, not a buy list. Free to read.',
-    detail: 'Free · Updated weekly',
-  },
+const moneyPlan: Tool = {
+  n: '01',
+  name: 'The Money Plan',
+  tagline: 'Free · Build the base',
+  href: '/tools/money-plan',
+  body: [
+    'Before you invest, build the base. Answer about 15 questions and get a budget, your runway, a safety net, and a debt payoff order, built from the book Disqualified. Free, as a PDF. About 3 to 4 minutes.',
+    "No email until you've seen your numbers. Your answers aren't saved.",
+    'Next step after your plan: the free weekly email, one money lesson a week, building on your plan.',
+  ],
+  detail: 'Build my plan',
+};
+
+const advanced: Tool[] = [
   {
     n: '03',
-    name: 'The Money Plan',
-    tagline: 'Free budget and payoff plan',
-    href: '/tools/money-plan',
-    status: 'live',
-    body:
-      'The unglamorous side of the framework. Answer about 15 questions and get a plan built from the book Disqualified: where every dollar goes this month, how long you could last with no income, a safety net with dates, the order to pay your debt in, and a 30-day checklist with your numbers in it.',
+    name: 'Own It Lower',
+    tagline: 'Free · Advanced · Stage 3 practice',
+    href: 'https://ownitlower.leavingthematrix.io',
+    body: [
+      "A free cash-secured put screener: name the price you'd happily buy a company at, and read the arithmetic back. Collateral, premium, breakeven, return on collateral, and support, in words you can check at a broker. Free, no account required, on its own site.",
+      'New to this? Start with The Money Plan first.',
+    ],
     detail: 'Free · No account required',
+  },
+  {
+    n: '04',
+    name: 'This Week',
+    tagline: 'Free · Advanced research',
+    href: 'https://nova.leavingthematrix.io/this-week',
+    body: [
+      "A research list of ten names, explained as method first, names second: ranked by Nova Score from the latest daily scan, filtered to Rule of 40 ≥ 40. A research starting point, not a buy list. The full research breakdown is in the members area's Advanced Wing.",
+    ],
+    detail: 'Free · Updated daily',
   },
 ];
 ---
 
 <Layout
   title="Tools"
-  description="Free tools I built: a money plan from the book Disqualified, a cash-secured put screener, and a weekly top 10 board."
+  description="Three free tools, in the order to use them: the Money Plan to build the base, the free weekly email, then advanced research only if you want it."
 >
   <section class="border-b border-bone/5">
     <div class="container-prose py-24">
       <p class="eyebrow">Tools</p>
       <h1 class="mt-4 font-display text-display-xl uppercase tracking-tight">
-        What we build
+        Free tools
       </h1>
       <p class="mt-6 max-w-2xl text-lg text-bone-dim">
-        Every tool here came out of our own desk needing it. We publish the ones
-        that turned out to be useful to more than us.
+        Three free tools, in the order to use them.
+      </p>
+      <p class="mt-3 max-w-2xl text-lg text-bone-dim">
+        Build the base first, then learn weekly, then, only if you want to, explore advanced research.
       </p>
     </div>
   </section>
 
   <section>
     <div class="container-prose py-20">
-      <ul class="space-y-8">
-        {tools.map((tool) => (
+      <a href={moneyPlan.href} class="card-interactive block border-signal/30">
+        <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+          <p class="eyebrow text-signal">{moneyPlan.n}</p>
+          <h2 class="font-display text-2xl sm:text-3xl uppercase tracking-tight text-bone">{moneyPlan.name}</h2>
+          <p class="text-sm text-bone-mute">{moneyPlan.tagline}</p>
+        </div>
+        {moneyPlan.body.map((p) => <p class="mt-4 leading-relaxed text-bone-dim">{p}</p>)}
+        <p class="mt-4 text-xs uppercase tracking-widest text-signal">{moneyPlan.detail} &rarr;</p>
+      </a>
+    </div>
+  </section>
+
+  <NewsletterCallout
+    source="tools"
+    eyebrow="02 · Blue Pill · Free weekly email"
+    headline="One lesson a week, taught through one company."
+    description="Plus the foundations that compound: debt, runway, safety net, DCA, ETF cores, sizing. No hype, no day-trading, no spam."
+  />
+
+  <section>
+    <div class="container-prose py-20">
+      <p class="eyebrow">Advanced, optional</p>
+      <h2 class="mt-3 font-display text-2xl uppercase tracking-tight text-bone sm:text-3xl">
+        Only after the foundations, only if you want to.
+      </h2>
+
+      <ul class="mt-10 space-y-8">
+        {advanced.map((tool) => (
           <li>
-            {tool.href ? (
-              <a
-                href={tool.href}
-                class="card-interactive block"
-                rel="noopener"
-              >
-                <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-                  <p class="eyebrow text-signal">{tool.n}</p>
-                  <h2 class="font-display text-2xl sm:text-3xl uppercase tracking-tight text-bone">
-                    {tool.name}
-                  </h2>
-                  <p class="text-sm text-bone-mute">{tool.tagline}</p>
-                </div>
-                <p class="mt-4 leading-relaxed text-bone-dim">{tool.body}</p>
-                <p class="mt-4 text-xs uppercase tracking-widest text-signal">
-                  {tool.detail} &rarr;
-                </p>
-              </a>
-            ) : (
-              <div class="card opacity-80">
-                <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-                  <p class="eyebrow text-bone-mute">{tool.n}</p>
-                  <h2 class="font-display text-2xl sm:text-3xl uppercase tracking-tight text-bone-dim">
-                    {tool.name}
-                  </h2>
-                  <p class="text-sm text-bone-mute">{tool.tagline}</p>
-                </div>
-                <p class="mt-4 leading-relaxed text-bone-dim">{tool.body}</p>
-                <p class="mt-4 text-xs uppercase tracking-widest text-bone-mute">
-                  {tool.detail}
-                </p>
+            <a href={tool.href} class="card-interactive block" rel="noopener">
+              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                <p class="eyebrow text-signal">{tool.n}</p>
+                <h3 class="font-display text-2xl sm:text-3xl uppercase tracking-tight text-bone">{tool.name}</h3>
+                <p class="text-sm text-bone-mute">{tool.tagline}</p>
               </div>
-            )}
+              {tool.body.map((p) => <p class="mt-4 leading-relaxed text-bone-dim">{p}</p>)}
+              <p class="mt-4 text-xs uppercase tracking-widest text-signal">{tool.detail} &rarr;</p>
+            </a>
           </li>
         ))}
       </ul>
@@ -111,11 +123,4 @@ const tools: Tool[] = [
       </p>
     </div>
   </section>
-
-  <NewsletterCallout
-    source="tools"
-    eyebrow="Free Your Mind · Free weekly newsletter"
-    headline="See the framework these tools came out of."
-    description="One ticker per issue through the same Quality × Discount × Smart-money lens the tools automate. Free, weekly, unsubscribe in one click."
-  />
 </Layout>
