@@ -1,9 +1,19 @@
 ---
-// Hero video: services overview on YouTube. Using youtube-nocookie embed
-// for privacy mode (doesn't drop tracking cookies until playback starts)
-// and lazy loading so the iframe doesn't block first paint above the fold
-// on mobile.
-const YOUTUBE_VIDEO_ID = 'j1qI76SLJnk';
+// Hero right column: what a member actually does in week one (replaced the
+// old services video, 2026-10-28). Steps mirror Stage 1 of My Path in the
+// members area (apps/web/lib/member/path.ts in the NOVA repo).
+interface WeekOneStep {
+  title: string;
+  detail: string;
+}
+
+const weekOne: WeekOneStep[] = [
+  { title: 'Read the order of operations', detail: 'Emergency fund, the match, high interest debt, then investing.' },
+  { title: 'Build your Money Plan', detail: 'About 15 questions. Free, even if you never join.' },
+  { title: 'Write it into My Plan', detail: 'Budget, runway, a safety net with a date, debt order, a goal number.' },
+  { title: 'Pick your 30 day checklist', detail: 'A short list of things you will actually do this month.' },
+  { title: 'Say hi in the Discord', detail: 'Ask anything. Nobody minds a beginner question.' },
+];
 ---
 
 <section class="relative isolate overflow-hidden bg-black">
@@ -48,24 +58,32 @@ const YOUTUBE_VIDEO_ID = 'j1qI76SLJnk';
         </div>
       </div>
 
-      <!-- Video column — services overview. Second on mobile, right side on desktop -->
+      <!-- Week one: what a member does first. Second on mobile, right side on desktop -->
       <div class="order-2 lg:order-2 lg:col-span-7">
         <div class="relative">
-          <!-- Soft radial glow behind the video -->
           <div
             class="pointer-events-none absolute -inset-12 -z-10 bg-signal/[0.08] blur-[80px]"
             aria-hidden="true"
           ></div>
-          <div class="relative aspect-video w-full overflow-hidden rounded-lg border border-bone/10 bg-black shadow-2xl shadow-signal/10">
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEO_ID}?rel=0&modestbranding=1`}
-              title="Leaving The Matrix: services overview"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-              class="absolute inset-0 h-full w-full"
-            ></iframe>
+          <div class="relative rounded-lg border border-bone/10 bg-ink-900/90 p-6 shadow-2xl shadow-signal/10 sm:p-8">
+            <p class="eyebrow text-signal">What week one looks like</p>
+            <ol class="mt-6 space-y-5">
+              {weekOne.map((step, i) => (
+                <li class="flex gap-4">
+                  <span class="flex h-7 w-7 flex-none items-center justify-center rounded-full border border-signal/40 font-mono text-xs text-signal">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p class="font-display text-lg uppercase tracking-tight text-bone">{step.title}</p>
+                    <p class="mt-1 text-sm text-bone-dim">{step.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p class="mt-6 border-t border-bone/10 pt-4 text-sm text-bone-mute">
+              Then eleven more weeks: investing basics, then swing trading and selling
+              options, on paper first.
+            </p>
           </div>
         </div>
       </div>
