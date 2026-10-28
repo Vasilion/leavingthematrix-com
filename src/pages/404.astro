@@ -1,24 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Pill from '../components/Pill.astro';
 ---
 
-<Layout title="404 — Lost in the noise" description="The page you're looking for doesn't exist." noindex>
+<Layout title="404 | Lost in the noise" description="The page you're looking for doesn't exist." noindex>
   <section class="container-wide flex min-h-[70vh] flex-col items-center justify-center py-24 text-center">
     <p class="eyebrow">404</p>
     <h1 class="mt-6 font-display text-display-xl uppercase tracking-tight">
       <span class="text-gradient-signal">Lost in the noise.</span>
     </h1>
     <p class="mt-6 max-w-xl text-lg text-bone-dim">
-      That route doesn't exist — or it used to and we moved it. Try the home page,
-      check the blog, or take the <Pill color="red" />.
+      That page doesn't exist, or it used to and it moved. Head back home or have a
+      look at membership.
     </p>
 
     <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
       <a href="/" class="btn-primary">Back home</a>
-      <a href="/blog" class="btn-secondary">Read the blog</a>
       <a href="/membership" class="btn-ghost">
-        Leave the Matrix →
+        See membership →
       </a>
     </div>
 
